@@ -1,2 +1,2 @@
 # gnrd
-when i work in guonengTech company
+工作中遇到的一些问题，记录下处理过程
