@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017 Baidu, Inc. All Rights Reserve.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * Copyright 2023 gnrd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gnrd.uid.worker;
 
+package org.gnrd.uid.worker;
 
 import org.gnrd.uid.utils.ValuedEnum;
 
@@ -27,23 +28,23 @@ import org.gnrd.uid.utils.ValuedEnum;
  */
 public enum WorkerNodeType implements ValuedEnum<Integer> {
 
-    CONTAINER(1), ACTUAL(2);
+	CONTAINER(1), ACTUAL(2);
 
-    /**
-     * Lock type
-     */
-    private final Integer type;
+	/**
+	 * Lock type
+	 */
+	private final Integer type;
 
-    /**
-     * Constructor with field of type
-     */
-    private WorkerNodeType(Integer type) {
-        this.type = type;
-    }
+	/**
+	 * Constructor with field of type
+	 */
+	private WorkerNodeType(Integer type) {
+		this.type = type;
+	}
 
-    @Override
-    public Integer value() {
-        return type;
-    }
+	@Override
+	public Integer value() {
+		return type;
+	}
 
 }

@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017 Baidu, Inc. All Rights Reserve.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * Copyright 2023 gnrd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.gnrd.uid.utils;
 
 /**
  * {@code ValuedEnum} defines an enumeration which is bounded to a value, you
  * may implements this interface when you defines such kind of enumeration, that
  * you can use {@link EnumUtils} to simplify parse and valueOf operation.
- *  
+ * 
  * @author yutianbao
  */
 public interface ValuedEnum<T> {
-    T value();
+	T value();
 }

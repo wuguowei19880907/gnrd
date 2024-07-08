@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017 Baidu, Inc. All Rights Reserve.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * Copyright 2023 gnrd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gnrd.uid;
 
+package org.gnrd.uid;
 
 import org.gnrd.uid.exception.UidGenerateException;
 
@@ -25,21 +26,21 @@ import org.gnrd.uid.exception.UidGenerateException;
  */
 public interface UidGenerator {
 
-    /**
-     * Get a unique ID
-     *
-     * @return UID
-     * @throws UidGenerateException
-     */
-    long getUID() throws UidGenerateException;
+	/**
+	 * Get a unique ID
+	 *
+	 * @return UID
+	 * @throws UidGenerateException
+	 */
+	long getUID() throws UidGenerateException;
 
-    /**
-     * Parse the UID into elements which are used to generate the UID. <br>
-     * Such as timestamp & workerId & sequence...
-     *
-     * @param uid
-     * @return Parsed info
-     */
-    String parseUID(long uid);
+	/**
+	 * Parse the UID into elements which are used to generate the UID. <br>
+	 * Such as timestamp & workerId & sequence...
+	 *
+	 * @param uid
+	 * @return Parsed info
+	 */
+	String parseUID(long uid);
 
 }

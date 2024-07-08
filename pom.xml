@@ -15,6 +15,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <spotless.version>2.30.0</spotless.version>
         <spring-boot.version>2.7.18</spring-boot.version>
         <spring-framework.version>5.3.32</spring-framework.version>
         <lombok.version>1.18.30</lombok.version>
@@ -76,6 +77,28 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.version}</version>
+                <configuration>
+                    <!-- define a language-specific format -->
+                    <java>
+                        <eclipse/>
+
+                        <!-- make sure every file has the following copyright header.
+                          optionally, Spotless can set copyright years by digging
+                          through git history (see "license" section below) -->
+                        <licenseHeader>
+                            <file>${project.basedir}/header.txt</file>
+                        </licenseHeader>
+
+                        <removeUnusedImports/>
+                    </java>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
 </project>

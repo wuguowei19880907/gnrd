@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017 Baidu, Inc. All Rights Reserve.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * Copyright 2023 gnrd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.gnrd.uid.buffer;
 
 import java.util.List;
 
 /**
- * Buffered UID provider(Lambda supported), which provides UID in the same one second
+ * Buffered UID provider(Lambda supported), which provides UID in the same one
+ * second
  * 
  * @author yutianbao
  */
 @FunctionalInterface
 public interface BufferedUidProvider {
 
-    /**
-     * Provides UID in one second
-     * 
-     * @param momentInSecond
-     * @return
-     */
-    List<Long> provide(long momentInSecond);
+	/**
+	 * Provides UID in one second
+	 * 
+	 * @param momentInSecond
+	 * @return
+	 */
+	List<Long> provide(long momentInSecond);
 }

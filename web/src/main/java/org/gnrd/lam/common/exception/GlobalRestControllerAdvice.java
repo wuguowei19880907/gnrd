@@ -1,10 +1,10 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * Copyright 2023 gnrd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.gnrd.lam.common.exception;
 
 import com.google.common.base.Throwables;
@@ -50,153 +51,153 @@ import java.util.Set;
 @Slf4j
 public class GlobalRestControllerAdvice {
 
-    /**
-     * 应用到所有@RequestMapping注解方法，在其执行之前初始化数据绑定器
-     */
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
+	/**
+	 * 应用到所有@RequestMapping注解方法，在其执行之前初始化数据绑定器
+	 */
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
 
-    }
+	}
 
-    /**
-     * 把值绑定到Model中，使全局@RequestMapping可以获取到该值
-     */
-    @ModelAttribute
-    public void addAttributes(Model model) {
+	/**
+	 * 把值绑定到Model中，使全局@RequestMapping可以获取到该值
+	 */
+	@ModelAttribute
+	public void addAttributes(Model model) {
 
-    }
+	}
 
-    /**
-     * 全局异常捕捉处理
-     */
-    @ExceptionHandler(value = Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, Object> errorHandler(Exception ex, HttpServletRequest request,
-            HttpServletResponse response) {
-        log.error("全局异常：", ex);
-        Map<String, Object> map = new HashMap<>();
-        map.put("code", 100000);
-        map.put("message", ex.getMessage());
-        return map;
-    }
+	/**
+	 * 全局异常捕捉处理
+	 */
+	@ExceptionHandler(value = Exception.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public Map<String, Object> errorHandler(Exception ex, HttpServletRequest request, HttpServletResponse response) {
+		log.error("全局异常：", ex);
+		Map<String, Object> map = new HashMap<>();
+		map.put("code", 100000);
+		map.put("message", ex.getMessage());
+		return map;
+	}
 
-    /**
-     * 拦截捕捉自定义异常 BaseException.class
-     */
-    @ExceptionHandler(value = BaseException.class)
-    public Map<String, Object> baseErrorHandler(BaseException ex, HttpServletRequest request,
-            HttpServletResponse response) {
-        // baseException只记录信息，不记录堆栈，堆栈信息太多了
-        log.error("错误编码：{}。错误描述：{}", ex.getCode(), ex.getMessage());
-        Map<String, Object> map = new HashMap<>();
-        map.put("code", ex.getCode());
-        map.put("message", ex.getMessage());
-        response.setStatus(ex.getStatus().value());
-        return map;
-    }
+	/**
+	 * 拦截捕捉自定义异常 BaseException.class
+	 */
+	@ExceptionHandler(value = BaseException.class)
+	public Map<String, Object> baseErrorHandler(BaseException ex, HttpServletRequest request,
+			HttpServletResponse response) {
+		// baseException只记录信息，不记录堆栈，堆栈信息太多了
+		log.error("错误编码：{}。错误描述：{}", ex.getCode(), ex.getMessage());
+		Map<String, Object> map = new HashMap<>();
+		map.put("code", ex.getCode());
+		map.put("message", ex.getMessage());
+		response.setStatus(ex.getStatus().value());
+		return map;
+	}
 
-//    /**
-//     * 捕获spring security认证异常
-//     */
-//    @ExceptionHandler(value = AccessDeniedException.class)
-//    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-//    public Map<String, Object> denyLoginHandler(Exception ex, HttpServletRequest request,
-//            HttpServletResponse response) {
-//        log.error("认证异常：", ex);
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("code", 100012);
-//        map.put("message", ex.getMessage());
-//        return map;
-//    }
+	// /**
+	// * 捕获spring security认证异常
+	// */
+	// @ExceptionHandler(value = AccessDeniedException.class)
+	// @ResponseStatus(HttpStatus.UNAUTHORIZED)
+	// public Map<String, Object> denyLoginHandler(Exception ex, HttpServletRequest
+	// request,
+	// HttpServletResponse response) {
+	// log.error("认证异常：", ex);
+	// Map<String, Object> map = new HashMap<>();
+	// map.put("code", 100012);
+	// map.put("message", ex.getMessage());
+	// return map;
+	// }
 
-//    /**
-//     * 拦截捕"手动"验证异常[实体类检测]
-//     */
-//    @ExceptionHandler(value = com.tfe.server.common.dispose.exception.ValidationException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public Map<String, Object> validationErrorHandler(
-//            com.tfe.server.common.dispose.exception.ValidationException ex,
-//            HttpServletRequest request, HttpServletResponse response) {
-//        log.error("参数检验异常：", Throwables.getRootCause(ex));
-//        Map<String, Object> map = new HashMap<>(2);
-//        map.put("code", ECode.E100006.getNumber());
-//        map.put("message", ECode.E100006.getMessage());
-//        List<FieldError> fieldErrors = ex.getFieldErrors();
-//        Map<Object, Object> errors = new HashMap<>(fieldErrors.size());
-//        for (FieldError fieldError : fieldErrors) {
-//            errors.put(fieldError.getField(), fieldError.getDefaultMessage());
-//        }
-//        map.put("errors", errors);
-//        return map;
-//    }
+	// /**
+	// * 拦截捕"手动"验证异常[实体类检测]
+	// */
+	// @ExceptionHandler(value =
+	// com.tfe.server.common.dispose.exception.ValidationException.class)
+	// @ResponseStatus(HttpStatus.BAD_REQUEST)
+	// public Map<String, Object> validationErrorHandler(
+	// com.tfe.server.common.dispose.exception.ValidationException ex,
+	// HttpServletRequest request, HttpServletResponse response) {
+	// log.error("参数检验异常：", Throwables.getRootCause(ex));
+	// Map<String, Object> map = new HashMap<>(2);
+	// map.put("code", ECode.E100006.getNumber());
+	// map.put("message", ECode.E100006.getMessage());
+	// List<FieldError> fieldErrors = ex.getFieldErrors();
+	// Map<Object, Object> errors = new HashMap<>(fieldErrors.size());
+	// for (FieldError fieldError : fieldErrors) {
+	// errors.put(fieldError.getField(), fieldError.getDefaultMessage());
+	// }
+	// map.put("errors", errors);
+	// return map;
+	// }
 
-    /**
-     * 拦截捕捉验证异常[实体类检测]
-     */
-    @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, Object> verificationErrorHandler(MethodArgumentNotValidException ex,
-            HttpServletRequest request, HttpServletResponse response) {
-        log.error("参数检验异常：", Throwables.getRootCause(ex));
-        Map<String, Object> map = new HashMap<>(2);
-        map.put("code", ECode.E_999998.getCode());
-        map.put("message", ECode.E_999998.getMessage());
-        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
-        Map<Object, Object> errors = new HashMap<>(fieldErrors.size());
-        for (FieldError fieldError : fieldErrors) {
-            errors.put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-        map.put("errors", errors);
+	/**
+	 * 拦截捕捉验证异常[实体类检测]
+	 */
+	@ExceptionHandler(value = MethodArgumentNotValidException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public Map<String, Object> verificationErrorHandler(MethodArgumentNotValidException ex, HttpServletRequest request,
+			HttpServletResponse response) {
+		log.error("参数检验异常：", Throwables.getRootCause(ex));
+		Map<String, Object> map = new HashMap<>(2);
+		map.put("code", ECode.E_999998.getCode());
+		map.put("message", ECode.E_999998.getMessage());
+		List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
+		Map<Object, Object> errors = new HashMap<>(fieldErrors.size());
+		for (FieldError fieldError : fieldErrors) {
+			errors.put(fieldError.getField(), fieldError.getDefaultMessage());
+		}
+		map.put("errors", errors);
 
-        return map;
-    }
+		return map;
+	}
 
-    /**
-     * 拦截捕捉验证异常[方法参数检测]
-     */
-    @ExceptionHandler(value = ValidationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, Object> handle(ValidationException ex, HttpServletRequest request,
-            HttpServletResponse response) {
-        log.error("检验异常：", Throwables.getRootCause(ex));
-        Map<String, Object> map = new HashMap<>(2);
-        map.put("code", ECode.E_999998.getCode());
-        map.put("message", ECode.E_999998.getMessage());
-        Map<Object, Object> errors = new HashMap<>();
-        if (ex instanceof ConstraintViolationException) {
-            ConstraintViolationException exs = (ConstraintViolationException) ex;
-            Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
-            for (ConstraintViolation<?> item : violations) {
-                String[] strs = item.getMessage().split(":");
-                if (strs.length > 1) {
-                    errors.put(strs[0], strs[1]);
-                } else {
-                    errors.put(item.getPropertyPath(), item.getMessage());
-                }
-            }
-        }
-        map.put("errors", errors);
-        return map;
-    }
+	/**
+	 * 拦截捕捉验证异常[方法参数检测]
+	 */
+	@ExceptionHandler(value = ValidationException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public Map<String, Object> handle(ValidationException ex, HttpServletRequest request,
+			HttpServletResponse response) {
+		log.error("检验异常：", Throwables.getRootCause(ex));
+		Map<String, Object> map = new HashMap<>(2);
+		map.put("code", ECode.E_999998.getCode());
+		map.put("message", ECode.E_999998.getMessage());
+		Map<Object, Object> errors = new HashMap<>();
+		if (ex instanceof ConstraintViolationException) {
+			ConstraintViolationException exs = (ConstraintViolationException) ex;
+			Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
+			for (ConstraintViolation<?> item : violations) {
+				String[] strs = item.getMessage().split(":");
+				if (strs.length > 1) {
+					errors.put(strs[0], strs[1]);
+				} else {
+					errors.put(item.getPropertyPath(), item.getMessage());
+				}
+			}
+		}
+		map.put("errors", errors);
+		return map;
+	}
 
-    /**
-     * 拦截捕捉验证异常[实体类检测]
-     */
-    @ExceptionHandler(value = BindException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, Object> handle(BindException ex, HttpServletRequest request,
-            HttpServletResponse response) {
-        log.error("BindException：", Throwables.getRootCause(ex));
-        Map<String, Object> map = new HashMap<>(2);
-        map.put("code", ECode.E_999998.getCode());
-        map.put("message", ECode.E_999998.getMessage());
-        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
-        Map<Object, Object> errors = new HashMap<>(fieldErrors.size());
-        for (FieldError fieldError : fieldErrors) {
-            errors.put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-        map.put("errors", errors);
-        return map;
-    }
+	/**
+	 * 拦截捕捉验证异常[实体类检测]
+	 */
+	@ExceptionHandler(value = BindException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public Map<String, Object> handle(BindException ex, HttpServletRequest request, HttpServletResponse response) {
+		log.error("BindException：", Throwables.getRootCause(ex));
+		Map<String, Object> map = new HashMap<>(2);
+		map.put("code", ECode.E_999998.getCode());
+		map.put("message", ECode.E_999998.getMessage());
+		List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
+		Map<Object, Object> errors = new HashMap<>(fieldErrors.size());
+		for (FieldError fieldError : fieldErrors) {
+			errors.put(fieldError.getField(), fieldError.getDefaultMessage());
+		}
+		map.put("errors", errors);
+		return map;
+	}
 
 }

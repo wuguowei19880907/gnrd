@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017 Baidu, Inc. All Rights Reserve.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * Copyright 2023 gnrd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gnrd.uid.worker.dao;
 
+package org.gnrd.uid.worker.dao;
 
 import org.gnrd.uid.worker.entity.WorkerNodeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,12 +27,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface WorkerNodeDAO extends JpaRepository<WorkerNodeEntity, Long> {
 
-    /**
-     * Get {@link WorkerNodeEntity} by node host
-     * 
-     * @param host
-     * @param port
-     * @return
-     */
-    WorkerNodeEntity findByHostNameAndPort(String host, String port);
+	/**
+	 * Get {@link WorkerNodeEntity} by node host
+	 * 
+	 * @param host
+	 * @param port
+	 * @return
+	 */
+	WorkerNodeEntity findByHostNameAndPort(String host, String port);
 }

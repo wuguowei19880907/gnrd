@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017 Baidu, Inc. All Rights Reserve.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * Copyright 2023 gnrd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.gnrd.uid.buffer;
 
 /**
- * If cursor catches the tail it means that the ring buffer is empty, any more buffer take request will be rejected.
- * Specify the policy to handle the reject. This is a Lambda supported interface
+ * If cursor catches the tail it means that the ring buffer is empty, any more
+ * buffer take request will be rejected. Specify the policy to handle the
+ * reject. This is a Lambda supported interface
  * 
  * @author yutianbao
  */
 @FunctionalInterface
 public interface RejectedTakeBufferHandler {
 
-    /**
-     * Reject take buffer request
-     * 
-     * @param ringBuffer
-     */
-    void rejectTakeBuffer(RingBuffer ringBuffer);
+	/**
+	 * Reject take buffer request
+	 * 
+	 * @param ringBuffer
+	 */
+	void rejectTakeBuffer(RingBuffer ringBuffer);
 }

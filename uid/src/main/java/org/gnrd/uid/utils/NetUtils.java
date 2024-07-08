@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017 Baidu, Inc. All Rights Reserve.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * Copyright 2023 gnrd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.gnrd.uid.utils;
 
 import java.net.InetAddress;
@@ -27,58 +29,60 @@ import java.util.Enumeration;
  */
 public abstract class NetUtils {
 
-    /**
-     * Pre-loaded local address
-     */
-    public static InetAddress localAddress;
+	/**
+	 * Pre-loaded local address
+	 */
+	public static InetAddress localAddress;
 
-    static {
-        try {
-            localAddress = getLocalInetAddress();
-        } catch (SocketException e) {
-            throw new RuntimeException("fail to get local ip.");
-        }
-    }
+	static {
+		try {
+			localAddress = getLocalInetAddress();
+		} catch (SocketException e) {
+			throw new RuntimeException("fail to get local ip.");
+		}
+	}
 
-    /**
-     * Retrieve the first validated local ip address(the Public and LAN ip addresses are validated).
-     *
-     * @return the local address
-     * @throws SocketException the socket exception
-     */
-    public static InetAddress getLocalInetAddress() throws SocketException {
-        // enumerates all network interfaces
-        Enumeration<NetworkInterface> enu = NetworkInterface.getNetworkInterfaces();
+	/**
+	 * Retrieve the first validated local ip address(the Public and LAN ip addresses
+	 * are validated).
+	 *
+	 * @return the local address
+	 * @throws SocketException
+	 *             the socket exception
+	 */
+	public static InetAddress getLocalInetAddress() throws SocketException {
+		// enumerates all network interfaces
+		Enumeration<NetworkInterface> enu = NetworkInterface.getNetworkInterfaces();
 
-        while (enu.hasMoreElements()) {
-            NetworkInterface ni = enu.nextElement();
-            if (ni.isLoopback()) {
-                continue;
-            }
+		while (enu.hasMoreElements()) {
+			NetworkInterface ni = enu.nextElement();
+			if (ni.isLoopback()) {
+				continue;
+			}
 
-            Enumeration<InetAddress> addressEnumeration = ni.getInetAddresses();
-            while (addressEnumeration.hasMoreElements()) {
-                InetAddress address = addressEnumeration.nextElement();
+			Enumeration<InetAddress> addressEnumeration = ni.getInetAddresses();
+			while (addressEnumeration.hasMoreElements()) {
+				InetAddress address = addressEnumeration.nextElement();
 
-                // ignores all invalidated addresses
-                if (address.isLinkLocalAddress() || address.isLoopbackAddress() || address.isAnyLocalAddress()) {
-                    continue;
-                }
+				// ignores all invalidated addresses
+				if (address.isLinkLocalAddress() || address.isLoopbackAddress() || address.isAnyLocalAddress()) {
+					continue;
+				}
 
-                return address;
-            }
-        }
+				return address;
+			}
+		}
 
-        throw new RuntimeException("No validated local address!");
-    }
+		throw new RuntimeException("No validated local address!");
+	}
 
-    /**
-     * Retrieve local address
-     * 
-     * @return the string local address
-     */
-    public static String getLocalAddress() {
-        return localAddress.getHostAddress();
-    }
+	/**
+	 * Retrieve local address
+	 * 
+	 * @return the string local address
+	 */
+	public static String getLocalAddress() {
+		return localAddress.getHostAddress();
+	}
 
 }

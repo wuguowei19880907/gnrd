@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017 Baidu, Inc. All Rights Reserve.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * Copyright 2023 gnrd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.gnrd.uid.worker;
 
 /**
- * Represents a worker id assigner for {@link org.gnrd.uid.impl.DefaultUidGenerator}
+ * Represents a worker id assigner for
+ * {@link org.gnrd.uid.impl.DefaultUidGenerator}
  * 
  * @author yutianbao
  */
 public interface WorkerIdAssigner {
 
-    /**
-     * Assign worker id for {@link org.gnrd.uid.impl.DefaultUidGenerator}
-     * 
-     * @return assigned worker id
-     */
-    long assignWorkerId();
+	/**
+	 * Assign worker id for {@link org.gnrd.uid.impl.DefaultUidGenerator}
+	 * 
+	 * @return assigned worker id
+	 */
+	long assignWorkerId();
 
 }

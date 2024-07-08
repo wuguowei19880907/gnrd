@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017 Baidu, Inc. All Rights Reserve.
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * Copyright 2023 gnrd
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.gnrd.uid.exception;
 
 /**
@@ -22,54 +24,54 @@ package org.gnrd.uid.exception;
  */
 public class UidGenerateException extends RuntimeException {
 
-    /**
-     * Serial Version UID
-     */
-    private static final long serialVersionUID = -27048199131316992L;
+	/**
+	 * Serial Version UID
+	 */
+	private static final long serialVersionUID = -27048199131316992L;
 
-    /**
-     * Default constructor
-     */
-    public UidGenerateException() {
-        super();
-    }
+	/**
+	 * Default constructor
+	 */
+	public UidGenerateException() {
+		super();
+	}
 
-    /**
-     * Constructor with message & cause
-     * 
-     * @param message
-     * @param cause
-     */
-    public UidGenerateException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * Constructor with message & cause
+	 * 
+	 * @param message
+	 * @param cause
+	 */
+	public UidGenerateException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
-    /**
-     * Constructor with message
-     * 
-     * @param message
-     */
-    public UidGenerateException(String message) {
-        super(message);
-    }
-    
-    /**
-     * Constructor with message format
-     * 
-     * @param msgFormat
-     * @param args
-     */
-    public UidGenerateException(String msgFormat, Object... args) {
-        super(String.format(msgFormat, args));
-    }
+	/**
+	 * Constructor with message
+	 * 
+	 * @param message
+	 */
+	public UidGenerateException(String message) {
+		super(message);
+	}
 
-    /**
-     * Constructor with cause
-     * 
-     * @param cause
-     */
-    public UidGenerateException(Throwable cause) {
-        super(cause);
-    }
+	/**
+	 * Constructor with message format
+	 * 
+	 * @param msgFormat
+	 * @param args
+	 */
+	public UidGenerateException(String msgFormat, Object... args) {
+		super(String.format(msgFormat, args));
+	}
+
+	/**
+	 * Constructor with cause
+	 * 
+	 * @param cause
+	 */
+	public UidGenerateException(Throwable cause) {
+		super(cause);
+	}
 
 }
