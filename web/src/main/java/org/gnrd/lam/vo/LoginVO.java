@@ -17,6 +17,14 @@
 
 package org.gnrd.lam.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+@AllArgsConstructor
 public class LoginVO {
 
+	private String token;
 }

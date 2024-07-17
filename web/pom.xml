@@ -10,6 +10,22 @@
     <artifactId>web</artifactId>
     <packaging>war</packaging>
 
+    <properties>
+        <spring-security.version>5.7.12</spring-security.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-bom</artifactId>
+                <version>${spring-security.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.gnrd</groupId>
@@ -86,10 +102,10 @@
             <artifactId>redisson-spring-data-27</artifactId>
             <version>3.32.0</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <artifactId>jackson-dataformat-yaml</artifactId>
             <groupId>com.fasterxml.jackson.dataformat</groupId>

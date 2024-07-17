@@ -17,20 +17,16 @@
 
 package org.gnrd.lam.configuration;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
+import org.springframework.session.web.http.HttpSessionIdResolver;
 
 @Configuration
-public class RedisConfiguration {
+public class SessionConfiguration {
 
-	// @Bean
-	// public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory
-	// redisConnectionFactory) {
-	// RedisTemplate<Object, Object> template = new RedisTemplate<>();
-	// template.setConnectionFactory(redisConnectionFactory);
-	// Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new
-	// Jackson2JsonRedisSerializer();
-	// template.setDefaultSerializer(jackson2JsonRedisSerializer);
-	// template.afterPropertiesSet();
-	// return template;
-	// }
+	@Bean
+	public HttpSessionIdResolver httpSessionIdResolver() {
+		return HeaderHttpSessionIdResolver.xAuthToken();
+	}
 }

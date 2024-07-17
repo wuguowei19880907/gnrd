@@ -28,6 +28,8 @@ import org.gnrd.lam.vo.LoginVO;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @Component("indexService")
@@ -40,7 +42,7 @@ public class WebIndexService implements IndexService {
 	private RSAUtil rsaUtil;
 
 	@Override
-	public LoginVO login(String username, String password) {
+	public LoginVO login(String username, String password, HttpServletRequest request) {
 		final String plainUsername;
 		final String plainPassword;
 		try {
@@ -59,6 +61,8 @@ public class WebIndexService implements IndexService {
 			log.debug("密码错误");
 			throw new BaseException(ECode.E_000001);
 		}
+		HttpSession session = request.getSession();
+		session.setAttribute("username", plainUsername);
 		return null;
 	}
 }

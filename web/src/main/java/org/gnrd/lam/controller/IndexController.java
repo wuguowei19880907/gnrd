@@ -20,18 +20,18 @@ package org.gnrd.lam.controller;
 import org.gnrd.lam.common.result.CommonResult;
 import org.gnrd.lam.ro.LoginRO;
 import org.gnrd.lam.service.IndexService;
-import org.springframework.stereotype.Controller;
+import org.gnrd.lam.vo.LoginVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-@Controller
+@RestController
 @RequestMapping("api")
 public class IndexController {
 
@@ -44,16 +44,13 @@ public class IndexController {
 	}
 
 	@PostMapping(value = "auth/login")
-	@ResponseBody
-	public CommonResult<String> auth(@RequestBody LoginRO loginRO, HttpServletRequest request) throws Exception {
-		indexService.login(loginRO.getUsername(), loginRO.getPassword());
-		HttpSession session = request.getSession();
-		session.setAttribute("username", loginRO.getUsername());
-		return new CommonResult<>("ok");
+	public CommonResult<LoginVO> auth(@RequestBody LoginRO loginRO, HttpServletRequest request) throws Exception {
+		indexService.login(loginRO.getUsername(), loginRO.getPassword(), request);
+		String id = request.getSession().getId();
+		return new CommonResult<>(new LoginVO(id));
 	}
 
 	@GetMapping(value = "me")
-	@ResponseBody
 	public CommonResult<String> getInfo(HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession();
 		Object username = session.getAttribute("username");
@@ -61,7 +58,6 @@ public class IndexController {
 	}
 
 	@PostMapping(value = "auth/logout")
-	@ResponseBody
 	public CommonResult<String> logout(HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession();
 		session.invalidate();

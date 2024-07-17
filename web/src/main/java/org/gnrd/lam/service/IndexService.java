@@ -19,7 +19,9 @@ package org.gnrd.lam.service;
 
 import org.gnrd.lam.vo.LoginVO;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface IndexService {
 
-	LoginVO login(String username, String password) throws Exception;
+	LoginVO login(String username, String password, HttpServletRequest request) throws Exception;
 }

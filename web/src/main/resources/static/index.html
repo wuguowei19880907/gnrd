@@ -69,9 +69,10 @@
                 dataType: 'json',
                 data: JSON.stringify({'username': encryptUsername, 'password': encryptPassword}),
                 contentType: "application/json;charset=utf-8",
-                success: function (res) {
+                success: function (res, textStatus, jqXHR) {
                     // 只有请求成功（状态码为200）才会执行这个函数
                     if (res.code === '000000') {
+                        window.sessionStorage.setItem("token_id", res.result.token);
                         alert("登录成功");
                     } else {
                         alert(res.message);
@@ -91,6 +92,7 @@
             $.ajax({
                 url: 'api/auth/logout',
                 type: 'POST',
+                headers: {"X-Auth-Token": window.sessionStorage.getItem("token_id")},
                 dataType: 'json',
                 success: function (res) {
                     // 只有请求成功（状态码为200）才会执行这个函数
@@ -115,6 +117,7 @@
                 url: 'api/me',
                 type: 'GET',
                 dataType: 'json',
+                headers: {"X-Auth-Token": window.sessionStorage.getItem("token_id")},
                 success: function (res) {
                     // 只有请求成功（状态码为200）才会执行这个函数
                     if (res.code === '000000') {
