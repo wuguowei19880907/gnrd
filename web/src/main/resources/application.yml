@@ -1,8 +1,12 @@
+server:
+  port: 8081
+
+
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/dev
-    username: common
+    url: jdbc:postgresql://172.19.12.80:5432/dev
+    username: dev
     password: '123456'
     driver-class-name: 'org.postgresql.Driver'
   jpa:
@@ -15,10 +19,11 @@ spring:
     store-type: redis
     redis:
       namespace: 'gnrd:session'
-    timeout: 30s
+    timeout: 30m
   redis:
     redisson:
       file: classpath:redisson.yaml
+
 uid:
   epoch-str: '2024-05-01'
 

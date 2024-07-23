@@ -64,7 +64,7 @@
             const encryptPassword = encrypt.encrypt(password);
 
             $.ajax({
-                url: 'api/auth/login',
+                url: 'auth/login',
                 type: 'POST',
                 dataType: 'json',
                 data: JSON.stringify({'username': encryptUsername, 'password': encryptPassword}),
@@ -81,7 +81,7 @@
                 error: function (xhr) {
                     // 只有请求不正常（状态码不为200）才会执行
                     console.log('error', xhr);
-                    alert(res.message);
+                    alert(xhr.responseJSON.message);
                 }
             });
 
@@ -90,13 +90,14 @@
         $("#logout").click(function(){
 
             $.ajax({
-                url: 'api/auth/logout',
+                url: '/auth/logout',
                 type: 'POST',
                 headers: {"X-Auth-Token": window.sessionStorage.getItem("token_id")},
                 dataType: 'json',
                 success: function (res) {
                     // 只有请求成功（状态码为200）才会执行这个函数
                     if (res.code === '000000') {
+                        window.sessionStorage.removeItem("token_id");
                         alert("退出成功");
                     } else {
                         alert(res.message);
@@ -105,7 +106,7 @@
                 error: function (xhr) {
                     // 只有请求不正常（状态码不为200）才会执行
                     console.log('error', xhr);
-                    alert(xhr.message);
+                    alert(xhr.responseJSON.message);
                 }
             });
 
@@ -129,7 +130,7 @@
                 error: function (xhr) {
                     // 只有请求不正常（状态码不为200）才会执行
                     console.log('error', xhr);
-                    alert(xhr.message);
+                    alert(xhr.responseJSON.message);
                 }
             });
 

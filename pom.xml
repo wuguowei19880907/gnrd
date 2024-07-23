@@ -21,7 +21,8 @@
         <lombok.version>1.18.30</lombok.version>
         <postgresql.version>42.7.3</postgresql.version>
         <guava.version>33.0.0-jre</guava.version>
-        <spring-security.version>6.3.1</spring-security.version>
+        <modelmapper.version>3.0.0</modelmapper.version>
+        <fastjson.version>2.0.31</fastjson.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -47,6 +48,16 @@
                 <artifactId>snakeyaml</artifactId>
                 <groupId>org.yaml</groupId>
                 <version>2.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.modelmapper</groupId>
+                <artifactId>modelmapper</artifactId>
+                <version>${modelmapper.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-lang</groupId>

@@ -1,0 +1,9 @@
+flyway.url=jdbc:postgresql://localhost:5432/dev
+flyway.user=dev
+flyway.password=1q2w3e4r
+flyway.locations=filesystem:sql
+
+# 使用说明：
+#   1. 首先安装 flyway 命令行工具：https://flywaydb.org/download/community
+#   2. 将 以上4行代码 复制并更名为 flyway.conf，根据需求修改连接信息
+#   3. 在flyway目录内执行：`flyway -configFiles=flyway.conf migrate`

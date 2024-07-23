@@ -63,4 +63,21 @@ public class UserPO extends BasePO {
 	@Column(name = "create_time")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof UserPO))
+			return false;
+
+		UserPO entity = (UserPO) o;
+
+		return id.equals(entity.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return id != null ? id.hashCode() : 0;
+	}
 }

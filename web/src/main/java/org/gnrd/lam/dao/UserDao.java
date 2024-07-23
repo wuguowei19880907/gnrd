@@ -25,4 +25,5 @@ import java.util.Optional;
 public interface UserDao extends JpaRepository<UserPO, Long> {
 
 	Optional<UserPO> findByName(String name);
+
 }

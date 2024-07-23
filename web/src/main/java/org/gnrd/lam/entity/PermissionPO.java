@@ -57,4 +57,21 @@ public class PermissionPO extends BasePO {
 	@Column(name = "create_time")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof PermissionPO))
+			return false;
+
+		PermissionPO entity = (PermissionPO) o;
+
+		return id.equals(entity.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return id != null ? id.hashCode() : 0;
+	}
 }

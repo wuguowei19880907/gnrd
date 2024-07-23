@@ -17,8 +17,16 @@
 
 package org.gnrd.lam.dao;
 
+import org.gnrd.lam.entity.PermissionPO;
 import org.gnrd.lam.entity.UserRolePO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.Set;
 
 public interface UserRoleDao extends JpaRepository<UserRolePO, Long> {
+
+    @Query(value = "select p from UserRolePO ur,RolePO r,RolePermissionPO rp,PermissionPO p where ur.userId = :userId")
+    Set<PermissionPO> findByUserId(@Param("userId") Long userId);
 }

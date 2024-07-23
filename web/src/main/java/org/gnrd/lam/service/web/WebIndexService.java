@@ -22,15 +22,24 @@ import org.gnrd.lam.common.encrypt.RSAUtil;
 import org.gnrd.lam.common.exception.BaseException;
 import org.gnrd.lam.common.exception.ECode;
 import org.gnrd.lam.dao.UserDao;
+import org.gnrd.lam.dao.UserRoleDao;
+import org.gnrd.lam.dto.LoginPermissionDTO;
+import org.gnrd.lam.dto.LoginUserDTO;
+import org.gnrd.lam.entity.PermissionPO;
 import org.gnrd.lam.entity.UserPO;
 import org.gnrd.lam.service.IndexService;
 import org.gnrd.lam.vo.LoginVO;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component("indexService")
 @Slf4j
@@ -39,7 +48,11 @@ public class WebIndexService implements IndexService {
 	@Resource
 	private UserDao userDao;
 	@Resource
+	private UserRoleDao userRoleDao;
+	@Resource
 	private RSAUtil rsaUtil;
+	@Resource
+	private ModelMapper modelMapper;
 
 	@Override
 	public LoginVO login(String username, String password, HttpServletRequest request) {
@@ -61,8 +74,14 @@ public class WebIndexService implements IndexService {
 			log.debug("密码错误");
 			throw new BaseException(ECode.E_000001);
 		}
+		Set<PermissionPO> permissionPOSet = userRoleDao.findByUserId(user.getId());
+		List<LoginPermissionDTO> permissionDTOS = permissionPOSet.stream().sorted(Comparator.comparing(PermissionPO::getId)).
+				map(permissionPO -> modelMapper.map(permissionPO, LoginPermissionDTO.class)).collect(Collectors.toList());
+		LoginUserDTO loginUserDTO = modelMapper.map(user, LoginUserDTO.class);
 		HttpSession session = request.getSession();
-		session.setAttribute("username", plainUsername);
-		return null;
+		session.setAttribute("login-user", loginUserDTO);
+		session.setAttribute("login-permissions", permissionDTOS);
+		String id = request.getSession().getId();
+		return new LoginVO(id);
 	}
 }

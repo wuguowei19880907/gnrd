@@ -85,7 +85,7 @@ public class GlobalRestControllerAdvice {
 	 */
 	@ExceptionHandler(value = BaseException.class)
 	public Map<String, Object> baseErrorHandler(BaseException ex, HttpServletRequest request,
-			HttpServletResponse response) {
+												HttpServletResponse response) {
 		// baseException只记录信息，不记录堆栈，堆栈信息太多了
 		log.error("错误编码：{}。错误描述：{}", ex.getCode(), ex.getMessage());
 		Map<String, Object> map = new HashMap<>();
@@ -95,50 +95,13 @@ public class GlobalRestControllerAdvice {
 		return map;
 	}
 
-	// /**
-	// * 捕获spring security认证异常
-	// */
-	// @ExceptionHandler(value = AccessDeniedException.class)
-	// @ResponseStatus(HttpStatus.UNAUTHORIZED)
-	// public Map<String, Object> denyLoginHandler(Exception ex, HttpServletRequest
-	// request,
-	// HttpServletResponse response) {
-	// log.error("认证异常：", ex);
-	// Map<String, Object> map = new HashMap<>();
-	// map.put("code", 100012);
-	// map.put("message", ex.getMessage());
-	// return map;
-	// }
-
-	// /**
-	// * 拦截捕"手动"验证异常[实体类检测]
-	// */
-	// @ExceptionHandler(value =
-	// com.tfe.server.common.dispose.exception.ValidationException.class)
-	// @ResponseStatus(HttpStatus.BAD_REQUEST)
-	// public Map<String, Object> validationErrorHandler(
-	// com.tfe.server.common.dispose.exception.ValidationException ex,
-	// HttpServletRequest request, HttpServletResponse response) {
-	// log.error("参数检验异常：", Throwables.getRootCause(ex));
-	// Map<String, Object> map = new HashMap<>(2);
-	// map.put("code", ECode.E100006.getNumber());
-	// map.put("message", ECode.E100006.getMessage());
-	// List<FieldError> fieldErrors = ex.getFieldErrors();
-	// Map<Object, Object> errors = new HashMap<>(fieldErrors.size());
-	// for (FieldError fieldError : fieldErrors) {
-	// errors.put(fieldError.getField(), fieldError.getDefaultMessage());
-	// }
-	// map.put("errors", errors);
-	// return map;
-	// }
-
 	/**
 	 * 拦截捕捉验证异常[实体类检测]
 	 */
 	@ExceptionHandler(value = MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public Map<String, Object> verificationErrorHandler(MethodArgumentNotValidException ex, HttpServletRequest request,
-			HttpServletResponse response) {
+														HttpServletResponse response) {
 		log.error("参数检验异常：", Throwables.getRootCause(ex));
 		Map<String, Object> map = new HashMap<>(2);
 		map.put("code", ECode.E_999998.getCode());
@@ -159,7 +122,7 @@ public class GlobalRestControllerAdvice {
 	@ExceptionHandler(value = ValidationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public Map<String, Object> handle(ValidationException ex, HttpServletRequest request,
-			HttpServletResponse response) {
+									  HttpServletResponse response) {
 		log.error("检验异常：", Throwables.getRootCause(ex));
 		Map<String, Object> map = new HashMap<>(2);
 		map.put("code", ECode.E_999998.getCode());

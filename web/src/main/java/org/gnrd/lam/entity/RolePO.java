@@ -22,10 +22,13 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "c_role")
@@ -57,4 +60,25 @@ public class RolePO extends BasePO {
 	@Column(name = "create_time")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
+
+	@OneToMany
+	@JoinColumn(name = "c_role_id")
+	private Set<RolePermissionPO> rolePermissionPOSet;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (!(o instanceof RolePO))
+			return false;
+
+		RolePO entity = (RolePO) o;
+
+		return id.equals(entity.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return id != null ? id.hashCode() : 0;
+	}
 }

@@ -17,13 +17,11 @@
 
 package org.gnrd.lam.controller;
 
+import org.gnrd.lam.aop.auth.AuthUtil;
+import org.gnrd.lam.aop.auth.Authorize;
 import org.gnrd.lam.common.result.CommonResult;
-import org.gnrd.lam.ro.LoginRO;
-import org.gnrd.lam.service.IndexService;
-import org.gnrd.lam.vo.LoginVO;
+import org.gnrd.lam.dto.LoginUserDTO;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,31 +34,13 @@ import javax.servlet.http.HttpSession;
 public class IndexController {
 
 	@Resource
-	private IndexService indexService;
-
-	@GetMapping(value = "index")
-	public String index() {
-		return "ok";
-	}
-
-	@PostMapping(value = "auth/login")
-	public CommonResult<LoginVO> auth(@RequestBody LoginRO loginRO, HttpServletRequest request) throws Exception {
-		indexService.login(loginRO.getUsername(), loginRO.getPassword(), request);
-		String id = request.getSession().getId();
-		return new CommonResult<>(new LoginVO(id));
-	}
+	private AuthUtil authUtil;
 
 	@GetMapping(value = "me")
+	@Authorize("@authUtil.hasPermissions('get_user_me')")
 	public CommonResult<String> getInfo(HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession();
-		Object username = session.getAttribute("username");
-		return new CommonResult<>(username.toString());
-	}
-
-	@PostMapping(value = "auth/logout")
-	public CommonResult<String> logout(HttpServletRequest request) throws Exception {
-		HttpSession session = request.getSession();
-		session.invalidate();
-		return new CommonResult<>("logout ok");
+		LoginUserDTO loginUser = (LoginUserDTO) session.getAttribute("login-user");
+		return new CommonResult<>(loginUser.toString());
 	}
 }
