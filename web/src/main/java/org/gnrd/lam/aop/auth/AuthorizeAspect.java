@@ -1,10 +1,10 @@
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * Copyright 2023 gnrd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.gnrd.lam.aop.auth;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,29 +37,29 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class AuthorizeAspect {
 
-    private final SpelExpressionParser spelExpressionParser;
+	private final SpelExpressionParser spelExpressionParser;
 
-    private final BeanFactoryResolver beanFactoryResolver;
+	private final BeanFactoryResolver beanFactoryResolver;
 
-    public AuthorizeAspect(BeanFactory beanFactory) {
-        this.spelExpressionParser = new SpelExpressionParser();
-        this.beanFactoryResolver = new BeanFactoryResolver(beanFactory);
-    }
+	public AuthorizeAspect(BeanFactory beanFactory) {
+		this.spelExpressionParser = new SpelExpressionParser();
+		this.beanFactoryResolver = new BeanFactoryResolver(beanFactory);
+	}
 
+	@Pointcut("@annotation(authorize)")
+	public void point(Authorize authorize) {
+	}
 
-    @Pointcut("@annotation(authorize)")
-    public void point(Authorize authorize) {}
-
-    @Before(value = "point(authorize)")
-    public void successLog(JoinPoint joinPoint, Authorize authorize) {
-        // 创建StandardEvaluationContext
-        StandardEvaluationContext evaluationContext = new StandardEvaluationContext();
-        evaluationContext.setBeanResolver(beanFactoryResolver);
-        String value = authorize.value();
-        Expression expression = spelExpressionParser.parseExpression(value);
-        Boolean result = expression.getValue(evaluationContext, Boolean.class);
-        if (Boolean.FALSE.equals(result)) {
-            throw new BaseException(HttpStatus.BAD_REQUEST, ECode.E_100002);
-        }
-    }
+	@Before(value = "point(authorize)")
+	public void successLog(JoinPoint joinPoint, Authorize authorize) {
+		// 创建StandardEvaluationContext
+		StandardEvaluationContext evaluationContext = new StandardEvaluationContext();
+		evaluationContext.setBeanResolver(beanFactoryResolver);
+		String value = authorize.value();
+		Expression expression = spelExpressionParser.parseExpression(value);
+		Boolean result = expression.getValue(evaluationContext, Boolean.class);
+		if (Boolean.FALSE.equals(result)) {
+			throw new BaseException(HttpStatus.BAD_REQUEST, ECode.E_100002);
+		}
+	}
 }

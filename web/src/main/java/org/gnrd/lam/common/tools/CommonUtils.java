@@ -17,18 +17,26 @@
 
 package org.gnrd.lam.common.tools;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+import org.springframework.stereotype.Component;
 
-public class Convert {
+import javax.annotation.Resource;
+import java.util.UUID;
 
-	public static <T> List<T> toList(Object object, Class<T> clazz) {
-		final List<T> result = new ArrayList<T>();
-		if (object instanceof List<?>) {
-			for (Object o : (List<?>) object) {
-				result.add(clazz.cast(o));
-			}
+@Component
+public class CommonUtils {
+
+	@Resource
+	private RedissonClient redisson;
+
+	public String getUUid() {
+		RLock lock = redisson.getLock("uuidLock");
+		lock.lock();
+		try {
+			return UUID.randomUUID().toString();
+		} finally {
+			lock.unlock();
 		}
-		return result;
 	}
 }

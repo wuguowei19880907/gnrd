@@ -17,11 +17,15 @@
 
 package org.gnrd.lam.service;
 
-import org.gnrd.lam.vo.LoginVO;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public interface IndexService {
 
-	LoginVO login(String username, String password, HttpServletRequest request) throws Exception;
+	ModelAndView login(String username, String password, HttpServletRequest request, HttpServletResponse response)
+			throws Exception;
+
+	String index(HttpServletRequest request, HttpServletResponse response);
 }

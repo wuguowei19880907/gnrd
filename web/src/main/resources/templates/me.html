@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <title>登录成功，请稍后......</title>
+
+  </head>
+  <body>
+  <h6 th:text="${username}">aaa</h6>你好，登录成功请稍后......
+  <input type="hidden" th:value="${token}" id="token"/>
+  <input type="hidden" th:value="${url}" id="url"/>
+  </body>
+  <script type="text/javascript">
+    const url = document.getElementById('url').value;
+    const token = document.getElementById('token').value;
+    window.sessionStorage.setItem("df_token_id", token);
+    debugger
+    window.location.href=url;
+  </script>
+</html>

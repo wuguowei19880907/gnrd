@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.gnrd.lam.common.encrypt.RSAUtil;
 import org.gnrd.lam.common.exception.BaseException;
 import org.gnrd.lam.common.exception.ECode;
+import org.gnrd.lam.configuration.AppProperties;
 import org.gnrd.lam.dao.UserDao;
 import org.gnrd.lam.dao.UserRoleDao;
 import org.gnrd.lam.dto.LoginPermissionDTO;
@@ -28,13 +29,16 @@ import org.gnrd.lam.dto.LoginUserDTO;
 import org.gnrd.lam.entity.PermissionPO;
 import org.gnrd.lam.entity.UserPO;
 import org.gnrd.lam.service.IndexService;
-import org.gnrd.lam.vo.LoginVO;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.util.CastUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.net.URLEncoder;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +49,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class WebIndexService implements IndexService {
 
+	private final String REDIRECT_URL = "redirect:%s?%s=%s";
+
 	@Resource
 	private UserDao userDao;
 	@Resource
@@ -53,9 +59,14 @@ public class WebIndexService implements IndexService {
 	private RSAUtil rsaUtil;
 	@Resource
 	private ModelMapper modelMapper;
+	@Resource
+	private AppProperties appProperties;
+
+	private final LoginPermissionDTO SUPER_PERMISSION = new LoginPermissionDTO("超级管理员", "super");
 
 	@Override
-	public LoginVO login(String username, String password, HttpServletRequest request) {
+	public ModelAndView login(String username, String password, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		final String plainUsername;
 		final String plainPassword;
 		try {
@@ -75,13 +86,33 @@ public class WebIndexService implements IndexService {
 			throw new BaseException(ECode.E_000001);
 		}
 		Set<PermissionPO> permissionPOSet = userRoleDao.findByUserId(user.getId());
-		List<LoginPermissionDTO> permissionDTOS = permissionPOSet.stream().sorted(Comparator.comparing(PermissionPO::getId)).
-				map(permissionPO -> modelMapper.map(permissionPO, LoginPermissionDTO.class)).collect(Collectors.toList());
+		List<LoginPermissionDTO> permissionDTOS = permissionPOSet.stream()
+				.sorted(Comparator.comparing(PermissionPO::getId))
+				.map(permissionPO -> modelMapper.map(permissionPO, LoginPermissionDTO.class))
+				.collect(Collectors.toList());
 		LoginUserDTO loginUserDTO = modelMapper.map(user, LoginUserDTO.class);
 		HttpSession session = request.getSession();
 		session.setAttribute("login-user", loginUserDTO);
 		session.setAttribute("login-permissions", permissionDTOS);
-		String id = request.getSession().getId();
-		return new LoginVO(id);
+		if (permissionDTOS.contains(SUPER_PERMISSION)) {
+			return new ModelAndView("dashboard");
+		} else {
+			String url = String.format(REDIRECT_URL, appProperties.getIndexUrl(), "df-auth-id",
+					URLEncoder.encode(session.getId(), "UTF-8"));
+			return new ModelAndView(url);
+		}
 	}
+
+	@Override
+	public String index(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		List<LoginPermissionDTO> list = CastUtils.cast(session.getAttribute("login-permissions"));
+		response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
+		if (list.contains(SUPER_PERMISSION)) {
+			return "super/dashboard";
+		} else {
+			return appProperties.getIndexUrl();
+		}
+	}
+
 }

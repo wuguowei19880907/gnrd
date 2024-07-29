@@ -15,20 +15,25 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.tools;
+package org.gnrd.lam.configuration;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
-public class Convert {
+@Component
+@ConfigurationProperties(prefix = "app")
+public class AppProperties {
 
-	public static <T> List<T> toList(Object object, Class<T> clazz) {
-		final List<T> result = new ArrayList<T>();
-		if (object instanceof List<?>) {
-			for (Object o : (List<?>) object) {
-				result.add(clazz.cast(o));
-			}
-		}
-		return result;
+	/**
+	 * 登录后跳转的地址
+	 */
+	private String indexUrl = "/index";
+
+	public String getIndexUrl() {
+		return indexUrl;
+	}
+
+	public void setIndexUrl(String indexUrl) {
+		this.indexUrl = indexUrl;
 	}
 }

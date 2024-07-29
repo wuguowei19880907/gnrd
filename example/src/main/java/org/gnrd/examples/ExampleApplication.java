@@ -15,20 +15,16 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.tools;
+package org.gnrd.examples;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-public class Convert {
+@SpringBootApplication
+public class ExampleApplication {
 
-	public static <T> List<T> toList(Object object, Class<T> clazz) {
-		final List<T> result = new ArrayList<T>();
-		if (object instanceof List<?>) {
-			for (Object o : (List<?>) object) {
-				result.add(clazz.cast(o));
-			}
-		}
-		return result;
+	public static void main(String[] args) {
+		SpringApplication.run(ExampleApplication.class, args);
 	}
+
 }

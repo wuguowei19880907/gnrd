@@ -15,20 +15,16 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.tools;
+package org.gnrd.examples;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-public class Convert {
+public class ServletInitializer extends SpringBootServletInitializer {
 
-	public static <T> List<T> toList(Object object, Class<T> clazz) {
-		final List<T> result = new ArrayList<T>();
-		if (object instanceof List<?>) {
-			for (Object o : (List<?>) object) {
-				result.add(clazz.cast(o));
-			}
-		}
-		return result;
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(ExampleApplication.class);
 	}
+
 }

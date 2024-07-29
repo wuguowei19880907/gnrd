@@ -15,20 +15,16 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.tools;
+package org.gnrd.examples;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-public class Convert {
+@Controller
+public class IndexController {
 
-	public static <T> List<T> toList(Object object, Class<T> clazz) {
-		final List<T> result = new ArrayList<T>();
-		if (object instanceof List<?>) {
-			for (Object o : (List<?>) object) {
-				result.add(clazz.cast(o));
-			}
-		}
-		return result;
+	@RequestMapping("")
+	public String index() {
+		return "index";
 	}
 }

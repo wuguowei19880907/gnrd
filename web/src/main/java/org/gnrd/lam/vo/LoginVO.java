@@ -26,5 +26,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class LoginVO {
 
-	private String token;
+	/**
+	 * 跳转路径
+	 */
+	private String url;
 }

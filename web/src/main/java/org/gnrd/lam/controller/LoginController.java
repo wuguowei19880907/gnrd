@@ -21,31 +21,26 @@ import org.gnrd.lam.common.exception.BaseException;
 import org.gnrd.lam.common.result.CommonResult;
 import org.gnrd.lam.ro.LoginRO;
 import org.gnrd.lam.service.IndexService;
-import org.gnrd.lam.vo.LoginVO;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@RestController
+@Controller
 public class LoginController {
 
 	@Resource
 	private IndexService indexService;
 
-	@GetMapping(value = "index")
-	public String index() {
-		return "ok";
-	}
-
 	@PostMapping(value = "auth/login")
-	public CommonResult<LoginVO> auth(@RequestBody LoginRO loginRO, HttpServletRequest request) throws Exception {
-		LoginVO login = indexService.login(loginRO.getUsername(), loginRO.getPassword(), request);
-		return new CommonResult<>(login);
+	public ModelAndView auth(LoginRO loginRO, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		return indexService.login(loginRO.getUsername(), loginRO.getPassword(), request, response);
 	}
 
 	@PostMapping(value = "auth/logout")
@@ -58,6 +53,6 @@ public class LoginController {
 	@GetMapping(value = "base-exception")
 	public CommonResult<Void> baseException(HttpServletRequest request) throws Exception {
 		Object baseException = request.getAttribute("BaseException");
-        throw (BaseException) baseException;
+		throw (BaseException) baseException;
 	}
 }

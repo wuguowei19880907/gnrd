@@ -27,6 +27,6 @@ import java.util.Set;
 
 public interface UserRoleDao extends JpaRepository<UserRolePO, Long> {
 
-    @Query(value = "select p from UserRolePO ur,RolePO r,RolePermissionPO rp,PermissionPO p where ur.userId = :userId")
-    Set<PermissionPO> findByUserId(@Param("userId") Long userId);
+	@Query(value = "select p from UserRolePO ur left join ur.role r left join r.rolePermissionPOSet rp left join rp.permissionPO p where ur.userId = :userId")
+	Set<PermissionPO> findByUserId(@Param("userId") Long userId);
 }

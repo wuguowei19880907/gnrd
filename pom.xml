@@ -9,6 +9,7 @@
     <modules>
         <module>web</module>
         <module>uid</module>
+        <module>example</module>
     </modules>
 
     <properties>
@@ -23,6 +24,7 @@
         <guava.version>33.0.0-jre</guava.version>
         <modelmapper.version>3.0.0</modelmapper.version>
         <fastjson.version>2.0.31</fastjson.version>
+        <jquery.version>3.6.4</jquery.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -53,6 +55,11 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars.bowergithub.jquery</groupId>
+                <artifactId>jquery</artifactId>
+                <version>${jquery.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.modelmapper</groupId>
