@@ -22,6 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Setter
 @Getter
@@ -41,6 +42,11 @@ public class LoginUserDTO implements Serializable {
 	 * 状态 0-禁用 1-启用
 	 */
 	private Integer state;
+
+	/**
+	 * 权限信息
+	 */
+	private List<LoginPermissionDTO> permissions;
 
 	@Override
 	public String toString() {

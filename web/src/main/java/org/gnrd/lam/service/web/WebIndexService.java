@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.gnrd.lam.common.encrypt.RSAUtil;
 import org.gnrd.lam.common.exception.BaseException;
 import org.gnrd.lam.common.exception.ECode;
+import org.gnrd.lam.common.tools.SessionUtils;
 import org.gnrd.lam.configuration.AppProperties;
 import org.gnrd.lam.dao.UserDao;
 import org.gnrd.lam.dao.UserRoleDao;
@@ -61,6 +62,8 @@ public class WebIndexService implements IndexService {
 	private ModelMapper modelMapper;
 	@Resource
 	private AppProperties appProperties;
+	@Resource
+	private SessionUtils sessionUtil;
 
 	private final LoginPermissionDTO SUPER_PERMISSION = new LoginPermissionDTO("超级管理员", "super");
 
@@ -91,14 +94,15 @@ public class WebIndexService implements IndexService {
 				.map(permissionPO -> modelMapper.map(permissionPO, LoginPermissionDTO.class))
 				.collect(Collectors.toList());
 		LoginUserDTO loginUserDTO = modelMapper.map(user, LoginUserDTO.class);
-		HttpSession session = request.getSession();
-		session.setAttribute("login-user", loginUserDTO);
-		session.setAttribute("login-permissions", permissionDTOS);
+		loginUserDTO.setPermissions(permissionDTOS);
+		String uuid = sessionUtil.getUUid();
+		sessionUtil.storeInfo(uuid, loginUserDTO);
 		if (permissionDTOS.contains(SUPER_PERMISSION)) {
+			response.setHeader("X-Auth-Token", uuid);
 			return new ModelAndView("dashboard");
 		} else {
 			String url = String.format(REDIRECT_URL, appProperties.getIndexUrl(), "df-auth-id",
-					URLEncoder.encode(session.getId(), "UTF-8"));
+					URLEncoder.encode(uuid, "UTF-8"));
 			return new ModelAndView(url);
 		}
 	}

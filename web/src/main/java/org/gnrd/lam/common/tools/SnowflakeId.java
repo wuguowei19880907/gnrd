@@ -17,26 +17,21 @@
 
 package org.gnrd.lam.common.tools;
 
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
-import org.springframework.stereotype.Component;
+import org.gnrd.uid.impl.CachedUidGenerator;
+import org.gnrd.uid.utils.ApplicationContextHelper;
+import org.hibernate.HibernateException;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.id.IdentifierGenerator;
 
-import javax.annotation.Resource;
-import java.util.UUID;
+import java.io.Serializable;
 
-@Component
-public class CommonUtils {
+public class SnowflakeId implements IdentifierGenerator {
 
-	@Resource
-	private RedissonClient redisson;
-
-	public String getUUid() {
-		RLock lock = redisson.getLock("uuidLock");
-		lock.lock();
-		try {
-			return UUID.randomUUID().toString();
-		} finally {
-			lock.unlock();
-		}
+	@Override
+	public Serializable generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object o)
+			throws HibernateException {
+		CachedUidGenerator cachedUidGenerator = (CachedUidGenerator) ApplicationContextHelper
+				.getBean("cachedUidGenerator");
+		return cachedUidGenerator.getUID();
 	}
 }

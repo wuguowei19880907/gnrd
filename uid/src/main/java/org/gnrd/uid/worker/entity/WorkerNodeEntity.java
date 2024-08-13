@@ -17,13 +17,6 @@
 
 package org.gnrd.uid.worker.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.TableGenerator;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -32,32 +25,20 @@ import java.util.Date;
  *
  * @author WUGUOWEI 2024年06月28日
  */
-@Entity
-@Table(name = "worker_node")
 public class WorkerNodeEntity implements Serializable {
 
-	@Id
-	@Column(updatable = false)
-	@GeneratedValue(strategy = GenerationType.TABLE, generator = "WorkNodeId")
-	@TableGenerator(name = "WorkNodeId", table = "tb_generator", pkColumnName = "gen_name", schema = "public", valueColumnName = "gen_value", pkColumnValue = "WorkNodeId", allocationSize = 1)
 	private Long id;
 
-	@Column(name = "host_name")
 	private String hostName;
 
-	@Column(name = "port")
 	private String port;
 
-	@Column(name = "type")
 	private Integer type;
 
-	@Column(name = "launch_date")
 	private Date launchDate = new Date();
 
-	@Column(name = "modified")
 	private Date modified = new Date();
 
-	@Column(name = "created")
 	private Date created = new Date();
 
 	public Long getId() {

@@ -15,21 +15,11 @@
  * limitations under the License.
  */
 
-package org.gnrd.uid;
+package org.gnrd.lam.dao;
 
-import org.gnrd.uid.utils.ApplicationContextHelper;
-import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SharedSessionContractImplementor;
-import org.hibernate.id.IdentifierGenerator;
+import org.gnrd.lam.entity.RequestMappingPO;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.io.Serializable;
+public interface RequestMappingDao extends JpaRepository<RequestMappingPO, Long> {
 
-public class SnowflakeId implements IdentifierGenerator {
-
-	@Override
-	public Serializable generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object o)
-			throws HibernateException {
-		UidGenerator uidGenerator = ApplicationContextHelper.getBean(UidGenerator.class);
-		return uidGenerator.getUID();
-	}
 }

@@ -22,31 +22,64 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name = "c_role_permission")
+@Table(name = "df_request_mapping")
 @Setter
 @Getter
-public class RolePermissionPO extends BasePO {
+public class RequestMappingPO extends BasePO {
 
 	/**
-	 * 角色id
+	 * RequestMapping.name
 	 */
-	@Column(name = "c_role_id")
-	private Long roleId;
+	@Column(name = "df_name")
+	private String name;
 
 	/**
-	 * 权限id
+	 * RequestMapping.path
 	 */
-	@Column(name = "c_permission_id")
-	private Long permissionId;
+	@Column(name = "df_path")
+	private String path;
+
+	/**
+	 * RequestMapping.method
+	 */
+	@Column(name = "df_method")
+	private String method;
+
+	/**
+	 * RequestMapping.params
+	 */
+	@Column(name = "df_params")
+	private String params;
+
+	/**
+	 * RequestMapping.headers
+	 */
+	@Column(name = "df_headers")
+	private String headers;
+
+	/**
+	 * RequestMapping.consumes
+	 */
+	@Column(name = "df_consumes")
+	private String consumes;
+
+	/**
+	 * RequestMapping.produces
+	 */
+	@Column(name = "df_produces")
+	private String produces;
+
+	/**
+	 * url是否还存在，有可能被移除或修改
+	 */
+	@Column(name = "is_lost")
+	private Integer isLost;
 
 	/**
 	 * 创建时间
@@ -55,18 +88,21 @@ public class RolePermissionPO extends BasePO {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 
-	@OneToMany
-	@JoinColumn(name = "c_permission_id", insertable = false, updatable = false)
-	private List<PermissionPO> permissionPO;
+	/**
+	 * 更新时间
+	 */
+	@Column(name = "update_time")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updatedAt;
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
-		if (!(o instanceof RolePermissionPO))
+		if (!(o instanceof RequestMappingPO))
 			return false;
 
-		RolePermissionPO entity = (RolePermissionPO) o;
+		RequestMappingPO entity = (RequestMappingPO) o;
 
 		return id.equals(entity.getId());
 	}

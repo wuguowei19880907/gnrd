@@ -21,17 +21,15 @@ import org.gnrd.uid.impl.CachedUidGenerator;
 import org.gnrd.uid.worker.DisposableWorkerIdAssigner;
 import org.gnrd.uid.worker.WorkerIdAssigner;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.context.annotation.ComponentScan;
 
 import javax.annotation.Resource;
 
 @AutoConfiguration
 @EnableConfigurationProperties({UidProperties.class})
-@EnableJpaRepositories(basePackages = {"org.gnrd.uid.worker.dao"})
-@EntityScan(basePackages = {"org.gnrd.uid.worker.entity"})
+@ComponentScan({"org.gnrd.uid"})
 public class UtilConfiguration {
 
 	@Resource

@@ -34,19 +34,19 @@ import java.util.List;
 @Table(name = "c_role_permission")
 @Setter
 @Getter
-public class RolePermissionPO extends BasePO {
-
-	/**
-	 * 角色id
-	 */
-	@Column(name = "c_role_id")
-	private Long roleId;
+public class PermissionRequestPO extends BasePO {
 
 	/**
 	 * 权限id
 	 */
-	@Column(name = "c_permission_id")
+	@Column(name = "df_permission_id")
 	private Long permissionId;
+
+	/**
+	 * RequestMapping表id
+	 */
+	@Column(name = "df_request_id")
+	private Long requestId;
 
 	/**
 	 * 创建时间
@@ -56,17 +56,17 @@ public class RolePermissionPO extends BasePO {
 	private Date createdAt;
 
 	@OneToMany
-	@JoinColumn(name = "c_permission_id", insertable = false, updatable = false)
-	private List<PermissionPO> permissionPO;
+	@JoinColumn(name = "df_request_id", insertable = false, updatable = false)
+	private List<RequestMappingPO> requestMappings;
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
-		if (!(o instanceof RolePermissionPO))
+		if (!(o instanceof PermissionRequestPO))
 			return false;
 
-		RolePermissionPO entity = (RolePermissionPO) o;
+		PermissionRequestPO entity = (PermissionRequestPO) o;
 
 		return id.equals(entity.getId());
 	}

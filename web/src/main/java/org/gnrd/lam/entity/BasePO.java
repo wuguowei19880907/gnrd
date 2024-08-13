@@ -37,7 +37,7 @@ public class BasePO implements Serializable {
 	 */
 	@Id
 	@Column(updatable = false)
-	@GenericGenerator(name = "uid", strategy = "org.gnrd.uid.SnowflakeId")
+	@GenericGenerator(name = "uid", strategy = "org.gnrd.lam.common.tools.SnowflakeId")
 	@GeneratedValue(generator = "uid")
 	protected Long id;
 }

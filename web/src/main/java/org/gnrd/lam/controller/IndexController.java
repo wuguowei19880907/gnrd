@@ -37,7 +37,8 @@ public class IndexController {
 	@Resource
 	private IndexService indexService;
 
-	@GetMapping(value = "me")
+	@GetMapping(name = "abcde", value = "me", params = {"abc", "def"}, headers = {"auth=text/*"}, consumes = {
+			"text/plain", "application/*"}, produces = {"text/plain", "application/*"})
 	@ResponseBody
 	@Authorize("@authUtil.hasPermissions('get_user_me')")
 	public CommonResult<String> getInfo(HttpServletRequest request) throws Exception {

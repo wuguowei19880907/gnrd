@@ -29,6 +29,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static org.gnrd.lam.common.exception.ECode.E_100001;
@@ -53,13 +54,8 @@ public class AuthAFilter implements Filter {
 			request.getRequestDispatcher("/base-exception").forward(request, servletResponse);
 			return;
 		}
-		Object usernameObj = request.getSession().getAttribute("login-user");
-		if (usernameObj == null) {
-			log.error("username is null");
-			request.setAttribute("BaseException", new BaseException(HttpStatus.UNAUTHORIZED, E_100001));
-			request.getRequestDispatcher("/base-exception").forward(request, servletResponse);
-			return;
-		}
+		HttpServletResponse response = (HttpServletResponse) servletResponse;
+		response.setHeader("X-Auth-Token", authToken);
 		filterChain.doFilter(servletRequest, servletResponse);
 	}
 }

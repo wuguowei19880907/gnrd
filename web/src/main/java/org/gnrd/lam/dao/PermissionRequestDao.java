@@ -15,18 +15,11 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.configuration;
+package org.gnrd.lam.dao;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
-import org.springframework.session.web.http.HttpSessionIdResolver;
+import org.gnrd.lam.entity.PermissionRequestPO;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Configuration
-public class SessionConfiguration {
+public interface PermissionRequestDao extends JpaRepository<PermissionRequestPO, Long> {
 
-	@Bean
-	public HttpSessionIdResolver httpSessionIdResolver() {
-		return HeaderHttpSessionIdResolver.xAuthToken();
-	}
 }

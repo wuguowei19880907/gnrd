@@ -50,7 +50,7 @@ public class LoginController {
 		return new CommonResult<>("logout ok");
 	}
 
-	@GetMapping(value = "base-exception")
+	@GetMapping(value = {"/", "base-exception"})
 	public CommonResult<Void> baseException(HttpServletRequest request) throws Exception {
 		Object baseException = request.getAttribute("BaseException");
 		throw (BaseException) baseException;
