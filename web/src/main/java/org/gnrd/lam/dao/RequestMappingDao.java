@@ -20,6 +20,9 @@ package org.gnrd.lam.dao;
 import org.gnrd.lam.entity.RequestMappingPO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface RequestMappingDao extends JpaRepository<RequestMappingPO, Long> {
 
+	List<RequestMappingPO> findByIsLost(Integer isLost);
 }

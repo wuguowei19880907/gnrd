@@ -23,12 +23,11 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "c_user_role")
@@ -55,9 +54,9 @@ public class UserRolePO extends BasePO {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 
-	@OneToMany
+	@ManyToOne
 	@JoinColumn(name = "c_role_id", insertable = false, updatable = false)
-	private List<RolePO> roles;
+	private RolePO roles;
 
 	@Override
 	public boolean equals(Object o) {

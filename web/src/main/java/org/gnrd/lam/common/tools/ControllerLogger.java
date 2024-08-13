@@ -48,9 +48,8 @@ public class ControllerLogger implements ApplicationListener<ApplicationReadyEve
 	@Override
 	public void onApplicationEvent(ApplicationReadyEvent event) {
 		Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
-		final List<RequestMappingPO> requestMappingsInDB = requestMappingDao.findAll();
+		final List<RequestMappingPO> requestMappingsInDB = requestMappingDao.findByIsLost(0);
 		final List<RequestMappingPO> requestMappings = new ArrayList<>(handlerMethods.entrySet().size());
-
 		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()) {
 			RequestMappingInfo mappingInfo = entry.getKey();
 
