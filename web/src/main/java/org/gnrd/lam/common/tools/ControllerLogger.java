@@ -71,7 +71,7 @@ public class ControllerLogger implements ApplicationListener<ApplicationReadyEve
 			po.setConsumes(consume);
 			po.setParams(params);
 			po.setProduces(produce);
-			log.info("Controller Name : {}, Method: {}, URL: {}, params: {}, header: {}, consume: {}, produce: {}",
+			log.debug("Controller Name : {}, Method: {}, URL: {}, params: {}, header: {}, consume: {}, produce: {}",
 					name, method, url, params, header, consume, produce);
 			if (!contains(requestMappingsInDB, po)) {
 				requestMappings.add(po);
