@@ -52,6 +52,12 @@ public class UserPO extends BasePO {
 	private String password;
 
 	/**
+	 * 超级管理员 0-不是 1-是
+	 */
+	@Column(name = "is_super")
+	private Integer superAdmin;
+
+	/**
 	 * 状态 0-禁用 1-启用
 	 */
 	@Column(name = "c_state")

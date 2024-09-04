@@ -17,44 +17,52 @@
 
 package org.gnrd.lam.dto;
 
-import com.alibaba.fastjson2.JSONObject;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Setter
 @Getter
-public class LoginUserDTO implements Serializable {
+@AllArgsConstructor
+@NoArgsConstructor
+public class LoginMenuDTO implements Serializable {
 
 	/**
-	 * 用户名称
+	 * 菜单名称
 	 */
 	private String name;
 
 	/**
-	 * 手机号
+	 * 菜单编码
 	 */
-	private String phone;
+	private String code;
 
 	/**
-	 * 状态 0-禁用 1-启用
+	 * 菜单网页地址
 	 */
-	private Integer state;
-
-	/**
-	 * 权限信息
-	 */
-	private List<LoginPermissionDTO> permissions;
-
-	/**
-	 * 菜单信息
-	 */
-	private List<LoginMenuDTO> menus;
+	private String path;
 
 	@Override
-	public String toString() {
-		return JSONObject.toJSONString(this);
+	public boolean equals(Object object) {
+		if (this == object)
+			return true;
+		if (!(object instanceof LoginMenuDTO))
+			return false;
+
+		LoginMenuDTO that = (LoginMenuDTO) object;
+
+		if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
+			return false;
+		return getCode() != null ? getCode().equals(that.getCode()) : that.getCode() == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = getName() != null ? getName().hashCode() : 0;
+		result = 31 * result + (getCode() != null ? getCode().hashCode() : 0);
+		return result;
 	}
 }

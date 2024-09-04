@@ -15,37 +15,14 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.constants;
+package org.gnrd.lam.common.encrypt.password;
 
-public enum UserStatusEnum {
+/**
+ * 登录密码处理工具
+ */
+public interface PasswordEncoder {
 
-	/**
-	 * 禁用
-	 */
-	DISABLED(Constants.DISABLED),
-	/**
-	 * 启用
-	 */
-	ENABLED(Constants.ENABLED);
+	String encode(CharSequence rawPassword);
 
-	private final int value;
-
-	UserStatusEnum(int value) {
-		this.value = value;
-	}
-
-	public int getValue() {
-		return value;
-	}
-
-	public static final class Constants {
-		/**
-		 * 禁用
-		 */
-		public static final int DISABLED = 0;
-		/**
-		 * 启用
-		 */
-		public static final int ENABLED = 1;
-	}
+	boolean matches(CharSequence rawPassword, String encodedPassword);
 }

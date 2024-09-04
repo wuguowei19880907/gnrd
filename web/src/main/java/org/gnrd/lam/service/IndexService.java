@@ -17,15 +17,25 @@
 
 package org.gnrd.lam.service;
 
+import org.gnrd.lam.common.result.ParamPager;
+import org.gnrd.lam.vo.CommonLoginVO;
+import org.gnrd.lam.vo.MenuVO;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public interface IndexService {
 
 	ModelAndView login(String username, String password, HttpServletRequest request, HttpServletResponse response)
 			throws Exception;
 
+	CommonLoginVO login(String username, String password) throws Exception;
+
 	String index(HttpServletRequest request, HttpServletResponse response);
+
+	ModelAndView getAdminUsers(String username, ParamPager pager);
+
+	List<MenuVO> getMe(String token);
 }

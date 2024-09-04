@@ -15,37 +15,19 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.constants;
+package org.gnrd.lam.ro.admin;
 
-public enum UserStatusEnum {
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+public class ResetPasswordRO {
 
 	/**
-	 * 禁用
+	 * 重置后的密码
+	 *
+	 * @mock 123456
 	 */
-	DISABLED(Constants.DISABLED),
-	/**
-	 * 启用
-	 */
-	ENABLED(Constants.ENABLED);
-
-	private final int value;
-
-	UserStatusEnum(int value) {
-		this.value = value;
-	}
-
-	public int getValue() {
-		return value;
-	}
-
-	public static final class Constants {
-		/**
-		 * 禁用
-		 */
-		public static final int DISABLED = 0;
-		/**
-		 * 启用
-		 */
-		public static final int ENABLED = 1;
-	}
+	private String password;
 }

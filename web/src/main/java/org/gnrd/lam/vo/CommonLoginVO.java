@@ -15,37 +15,24 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.constants;
+package org.gnrd.lam.vo;
 
-public enum UserStatusEnum {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+@AllArgsConstructor
+public class CommonLoginVO {
 
 	/**
-	 * 禁用
+	 * 信息标志。true/false
 	 */
-	DISABLED(Constants.DISABLED),
+	private boolean flag;
+
 	/**
-	 * 启用
+	 * 返回信息。 当flag=true，返回的是token；如果flag=false,返回的是跳转的地址（全路径）
 	 */
-	ENABLED(Constants.ENABLED);
-
-	private final int value;
-
-	UserStatusEnum(int value) {
-		this.value = value;
-	}
-
-	public int getValue() {
-		return value;
-	}
-
-	public static final class Constants {
-		/**
-		 * 禁用
-		 */
-		public static final int DISABLED = 0;
-		/**
-		 * 启用
-		 */
-		public static final int ENABLED = 1;
-	}
+	private String content;
 }

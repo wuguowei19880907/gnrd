@@ -14,3 +14,6 @@
 /web/target
 /web/flyway.conf
 /example/target
+/gnrdweb/.idea/*
+/gnrdweb/.vscode/*
+/gnrdweb/node_modules/*

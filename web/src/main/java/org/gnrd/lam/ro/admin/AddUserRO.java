@@ -15,37 +15,38 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.constants;
+package org.gnrd.lam.ro.admin;
 
-public enum UserStatusEnum {
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.validation.constraints.NotEmpty;
+
+@Setter
+@Getter
+public class AddUserRO {
 
 	/**
-	 * 禁用
+	 * 用户名
+	 *
+	 * @mock admin
 	 */
-	DISABLED(Constants.DISABLED),
+	@NotEmpty(message = "用户名不可为空")
+	private String name;
+
 	/**
-	 * 启用
+	 * 登录密码
+	 *
+	 * @mock 123456
 	 */
-	ENABLED(Constants.ENABLED);
+	@NotEmpty(message = "登录密码不可为空")
+	private String password;
 
-	private final int value;
-
-	UserStatusEnum(int value) {
-		this.value = value;
-	}
-
-	public int getValue() {
-		return value;
-	}
-
-	public static final class Constants {
-		/**
-		 * 禁用
-		 */
-		public static final int DISABLED = 0;
-		/**
-		 * 启用
-		 */
-		public static final int ENABLED = 1;
-	}
+	/**
+	 * 手机号
+	 *
+	 * @mock 15500100020
+	 */
+	@NotEmpty(message = "手机号不可为空")
+	private String phone;
 }

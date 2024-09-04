@@ -15,37 +15,28 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.constants;
+package org.gnrd.lam.service.admin;
 
-public enum UserStatusEnum {
+import org.gnrd.lam.common.result.ParamPager;
+import org.gnrd.lam.common.result.ResultPager;
+import org.gnrd.lam.ro.admin.AddUserRO;
+import org.gnrd.lam.ro.admin.ModifyUserRO;
+import org.gnrd.lam.ro.admin.ResetPasswordRO;
+import org.gnrd.lam.vo.admin.UserItemVO;
 
-	/**
-	 * 禁用
-	 */
-	DISABLED(Constants.DISABLED),
-	/**
-	 * 启用
-	 */
-	ENABLED(Constants.ENABLED);
+public interface UserService {
 
-	private final int value;
+	ResultPager<UserItemVO> list(String nameQuery, Integer status, ParamPager pager);
 
-	UserStatusEnum(int value) {
-		this.value = value;
-	}
+	void addUser(AddUserRO ro);
 
-	public int getValue() {
-		return value;
-	}
+	void modifyUser(Long id, ModifyUserRO ro);
 
-	public static final class Constants {
-		/**
-		 * 禁用
-		 */
-		public static final int DISABLED = 0;
-		/**
-		 * 启用
-		 */
-		public static final int ENABLED = 1;
-	}
+	void resetPassword(Long id, ResetPasswordRO ro);
+
+	void deleteUser(Long id);
+
+	void disableUser(Long id);
+
+	void enableUser(Long id);
 }

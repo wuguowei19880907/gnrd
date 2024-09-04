@@ -15,37 +15,45 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.constants;
+package org.gnrd.lam.vo.admin;
 
-public enum UserStatusEnum {
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * 用户列表数据
+ *
+ * @author WUGUOWEI 2024年08月28日
+ */
+@Setter
+@Getter
+public class UserItemVO {
 
 	/**
-	 * 禁用
+	 * 用户id
+	 *
+	 * @mock 100010
 	 */
-	DISABLED(Constants.DISABLED),
+	private String id;
+
 	/**
-	 * 启用
+	 * 用户名
+	 *
+	 * @mock admin
 	 */
-	ENABLED(Constants.ENABLED);
+	private String name;
 
-	private final int value;
+	/**
+	 * 手机号
+	 *
+	 * @mock 15500100020
+	 */
+	private String phone;
 
-	UserStatusEnum(int value) {
-		this.value = value;
-	}
-
-	public int getValue() {
-		return value;
-	}
-
-	public static final class Constants {
-		/**
-		 * 禁用
-		 */
-		public static final int DISABLED = 0;
-		/**
-		 * 启用
-		 */
-		public static final int ENABLED = 1;
-	}
+	/**
+	 * 用户状态；0-禁用 1-启用
+	 *
+	 * @mock 1
+	 */
+	private Integer state;
 }

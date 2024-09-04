@@ -73,6 +73,11 @@ public class SessionUtils {
 	public Object getInfo(final String id) {
 		Preconditions.checkNotNull(id, "id cannot be null");
 		RBucket<Object> bucket = redisson.getBucket(appProperties.getSessionNamespace() + ":" + id);
+		Object value = bucket.get();
+		// 如果对象存在，更新其过期时间
+		if (value != null) {
+			bucket.expire(appProperties.getSessionTimeout());
+		}
 		return bucket.get();
 	}
 

@@ -15,37 +15,31 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.constants;
+package org.gnrd.lam.vo;
 
-public enum UserStatusEnum {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class MenuVO {
 
 	/**
-	 * 禁用
+	 * 菜单名称
 	 */
-	DISABLED(Constants.DISABLED),
+	private String name;
+
 	/**
-	 * 启用
+	 * 菜单编码
 	 */
-	ENABLED(Constants.ENABLED);
+	private String code;
 
-	private final int value;
-
-	UserStatusEnum(int value) {
-		this.value = value;
-	}
-
-	public int getValue() {
-		return value;
-	}
-
-	public static final class Constants {
-		/**
-		 * 禁用
-		 */
-		public static final int DISABLED = 0;
-		/**
-		 * 启用
-		 */
-		public static final int ENABLED = 1;
-	}
+	/**
+	 * 路径
+	 */
+	private String path;
 }

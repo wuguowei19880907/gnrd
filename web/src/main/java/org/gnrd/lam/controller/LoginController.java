@@ -17,19 +17,27 @@
 
 package org.gnrd.lam.controller;
 
+import org.gnrd.lam.common.constants.AuthToken;
 import org.gnrd.lam.common.exception.BaseException;
 import org.gnrd.lam.common.result.CommonResult;
 import org.gnrd.lam.ro.LoginRO;
 import org.gnrd.lam.service.IndexService;
+import org.gnrd.lam.vo.CommonLoginVO;
+import org.gnrd.lam.vo.MenuVO;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class LoginController {
@@ -43,11 +51,26 @@ public class LoginController {
 		return indexService.login(loginRO.getUsername(), loginRO.getPassword(), request, response);
 	}
 
+	@PostMapping(value = "common/login")
+	@ResponseBody
+	public CommonResult<CommonLoginVO> commonLogin(@RequestBody @Validated LoginRO loginRO) throws Exception {
+		CommonLoginVO login = indexService.login(loginRO.getUsername(), loginRO.getPassword());
+		return new CommonResult<>(login);
+	}
+
 	@PostMapping(value = "auth/logout")
+	@ResponseBody
 	public CommonResult<String> logout(HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession();
 		session.invalidate();
 		return new CommonResult<>("logout ok");
+	}
+
+	@GetMapping(value = "current-user")
+	@ResponseBody
+	public CommonResult<List<MenuVO>> me(@RequestHeader(AuthToken.COOKIE_NAME) String token) throws Exception {
+		List<MenuVO> me = indexService.getMe(token);
+		return new CommonResult<>(me);
 	}
 
 	@GetMapping(value = {"base-exception"})

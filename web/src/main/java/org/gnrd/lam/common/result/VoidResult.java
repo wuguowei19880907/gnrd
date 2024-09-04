@@ -15,37 +15,30 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.constants;
+package org.gnrd.lam.common.result;
 
-public enum UserStatusEnum {
+import lombok.Getter;
+import lombok.Setter;
 
-	/**
-	 * 禁用
-	 */
-	DISABLED(Constants.DISABLED),
-	/**
-	 * 启用
-	 */
-	ENABLED(Constants.ENABLED);
+import java.io.Serializable;
 
-	private final int value;
+@Setter
+@Getter
+public class VoidResult implements Serializable {
 
-	UserStatusEnum(int value) {
-		this.value = value;
+	private final String SUCCESS = "000000";
+
+	private String code;
+
+	private String message;
+
+	public VoidResult() {
+		this.code = SUCCESS;
+		this.message = "success";
 	}
 
-	public int getValue() {
-		return value;
-	}
-
-	public static final class Constants {
-		/**
-		 * 禁用
-		 */
-		public static final int DISABLED = 0;
-		/**
-		 * 启用
-		 */
-		public static final int ENABLED = 1;
+	public VoidResult(String code, String message) {
+		this.code = code;
+		this.message = message;
 	}
 }

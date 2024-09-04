@@ -19,11 +19,19 @@ package org.gnrd.lam.dao;
 
 import org.gnrd.lam.entity.UserPO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Optional;
 
-public interface UserDao extends JpaRepository<UserPO, Long> {
+public interface UserDao extends JpaRepository<UserPO, Long>, JpaSpecificationExecutor<UserPO> {
 
 	Optional<UserPO> findByName(String name);
 
+	long countByName(String name);
+
+	long countByPhone(String phone);
+
+	long countByIdNotAndName(Long id, String name);
+
+	long countByIdNotAndPhone(Long id, String phone);
 }

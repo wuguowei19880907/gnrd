@@ -17,6 +17,9 @@
 
 package org.gnrd.lam.configuration;
 
+import org.gnrd.lam.common.encrypt.password.PasswordEncoder;
+import org.gnrd.lam.common.encrypt.password.bcrypt.BCryptPasswordEncoder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -26,12 +29,16 @@ public class WebConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**")
-				// .allowedOrigins("*")
-				.allowedOriginPatterns("*").allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
+		registry.addMapping("/**").allowedOriginPatterns("http://localhost:*")
+				.allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
 				// 解决跨域读取不出header的内容
 				.allowedHeaders("*").exposedHeaders("Accept", "Origin", "X-Requested-With", "Content-Type",
 						"Last-Modified", "content-disposition")
 				.allowCredentials(true);
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 }

@@ -22,36 +22,45 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
-import java.util.Set;
 
 @Entity
-@Table(name = "c_role")
+@Table(name = "df_menu")
 @Setter
 @Getter
-public class RolePO extends BasePO {
+public class MenuPO extends BasePO {
 
 	/**
-	 * 角色名称
+	 * 菜单名称
 	 */
-	@Column(name = "c_name")
+	@Column(name = "df_name")
 	private String name;
 
 	/**
-	 * 角色编码
+	 * 菜单编码
 	 */
-	@Column(name = "c_code")
+	@Column(name = "df_code")
 	private String code;
+
+	/**
+	 * 菜单路径
+	 */
+	@Column(name = "df_path")
+	private String path;
+
+	/**
+	 * 排序，值越大，菜单越靠上
+	 */
+	@Column(name = "df_sort")
+	private Integer sort;
 
 	/**
 	 * 状态 0-禁用 1-启用
 	 */
-	@Column(name = "c_state")
+	@Column(name = "df_status")
 	private Integer state;
 
 	/**
@@ -61,22 +70,14 @@ public class RolePO extends BasePO {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 
-	@OneToMany
-	@JoinColumn(name = "c_role_id")
-	private Set<RolePermissionPO> rolePermissionPOSet;
-
-	@OneToMany
-	@JoinColumn(name = "df_role_id")
-	private Set<RoleMenuPO> roleMenuPOSet;
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
-		if (!(o instanceof RolePO))
+		if (!(o instanceof MenuPO))
 			return false;
 
-		RolePO entity = (RolePO) o;
+		MenuPO entity = (MenuPO) o;
 
 		return id.equals(entity.getId());
 	}
