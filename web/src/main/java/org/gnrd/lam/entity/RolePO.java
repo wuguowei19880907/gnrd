@@ -36,53 +36,53 @@ import java.util.Set;
 @Getter
 public class RolePO extends BasePO {
 
-	/**
-	 * 角色名称
-	 */
-	@Column(name = "c_name")
-	private String name;
+    /**
+     * 角色名称
+     */
+    @Column(name = "c_name")
+    private String name;
 
-	/**
-	 * 角色编码
-	 */
-	@Column(name = "c_code")
-	private String code;
+    /**
+     * 角色编码
+     */
+    @Column(name = "c_code")
+    private String code;
 
-	/**
-	 * 状态 0-禁用 1-启用
-	 */
-	@Column(name = "c_state")
-	private Integer state;
+    /**
+     * 状态 0-禁用 1-启用
+     */
+    @Column(name = "c_state")
+    private Integer state;
 
-	/**
-	 * 创建时间
-	 */
-	@Column(name = "create_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-	@OneToMany
-	@JoinColumn(name = "c_role_id")
-	private Set<RolePermissionPO> rolePermissionPOSet;
+    @OneToMany
+    @JoinColumn(name = "c_role_id")
+    private Set<RolePermissionPO> rolePermissionPOSet;
 
-	@OneToMany
-	@JoinColumn(name = "df_role_id")
-	private Set<RoleMenuPO> roleMenuPOSet;
+    @OneToMany
+    @JoinColumn(name = "df_role_id")
+    private Set<RoleMenuPO> roleMenuPOSet;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof RolePO))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof RolePO))
+            return false;
 
-		RolePO entity = (RolePO) o;
+        RolePO entity = (RolePO) o;
 
-		return id.equals(entity.getId());
-	}
+        return id.equals(entity.getId());
+    }
 
-	@Override
-	public int hashCode() {
-		return id != null ? id.hashCode() : 0;
-	}
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

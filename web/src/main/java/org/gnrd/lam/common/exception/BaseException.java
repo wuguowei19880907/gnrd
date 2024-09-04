@@ -28,32 +28,32 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class BaseException extends RuntimeException {
 
-	public BaseException(HttpStatus status, String code, String message) {
-		this.status = status;
-		this.code = code;
-		this.message = message;
-	}
+    public BaseException(HttpStatus status, String code, String message) {
+        this.status = status;
+        this.code = code;
+        this.message = message;
+    }
 
-	public BaseException(ECode eCodeEnum) {
-		this(HttpStatus.BAD_REQUEST, eCodeEnum);
-	}
+    public BaseException(ECode eCodeEnum) {
+        this(HttpStatus.BAD_REQUEST, eCodeEnum);
+    }
 
-	public BaseException(HttpStatus status, ECode eCodeEnum) {
-		this(status, eCodeEnum.getCode(), eCodeEnum.getMessage());
-	}
+    public BaseException(HttpStatus status, ECode eCodeEnum) {
+        this(status, eCodeEnum.getCode(), eCodeEnum.getMessage());
+    }
 
-	/**
-	 * Http请求状态码
-	 */
-	private HttpStatus status;
+    /**
+     * Http请求状态码
+     */
+    private HttpStatus status;
 
-	/**
-	 * 自定义状态码 [ 统一6位整数 ] 由请求状态码+自定义状态码
-	 */
-	private String code;
+    /**
+     * 自定义状态码 [ 统一6位整数 ] 由请求状态码+自定义状态码
+     */
+    private String code;
 
-	/**
-	 * 自定义相应信息
-	 */
-	private String message;
+    /**
+     * 自定义相应信息
+     */
+    private String message;
 }

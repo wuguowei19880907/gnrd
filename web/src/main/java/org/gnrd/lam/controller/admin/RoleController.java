@@ -15,38 +15,14 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.ro.admin;
+package org.gnrd.lam.controller.admin;
 
-import lombok.Getter;
-import lombok.Setter;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotEmpty;
+@RestController
+@RequestMapping(value = "df-admin/roles", name = "df.admin.roles")
+public class RoleController {
 
-@Setter
-@Getter
-public class AddUserRO {
 
-	/**
-	 * 用户名
-	 *
-	 * @mock admin
-	 */
-	@NotEmpty(message = "用户名不可为空")
-	private String name;
-
-	/**
-	 * 登录密码
-	 *
-	 * @mock 123456
-	 */
-	@NotEmpty(message = "登录密码不可为空")
-	private String password;
-
-	/**
-	 * 手机号
-	 *
-	 * @mock 15500100020
-	 */
-	@NotEmpty(message = "手机号不可为空")
-	private String phone;
 }

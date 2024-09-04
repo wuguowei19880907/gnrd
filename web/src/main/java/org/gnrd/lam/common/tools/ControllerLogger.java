@@ -39,73 +39,77 @@ import java.util.Map;
 @Slf4j
 public class ControllerLogger implements ApplicationListener<ApplicationReadyEvent> {
 
-	@Resource
-	private RequestMappingHandlerMapping requestMappingHandlerMapping;
+    @Resource
+    private RequestMappingHandlerMapping requestMappingHandlerMapping;
 
-	@Resource
-	private RequestMappingDao requestMappingDao;
+    @Resource
+    private RequestMappingDao requestMappingDao;
 
-	@Override
-	public void onApplicationEvent(ApplicationReadyEvent event) {
-		Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
-		final List<RequestMappingPO> requestMappingsInDB = requestMappingDao.findByIsLost(0);
-		final List<RequestMappingPO> requestMappings = new ArrayList<>(handlerMethods.entrySet().size());
-		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()) {
-			RequestMappingInfo mappingInfo = entry.getKey();
+    @Override
+    public void onApplicationEvent(ApplicationReadyEvent event) {
+        Map<RequestMappingInfo, HandlerMethod> handlerMethods =
+                requestMappingHandlerMapping.getHandlerMethods();
+        final List<RequestMappingPO> requestMappingsInDB = requestMappingDao.findByIsLost(0);
+        final List<RequestMappingPO> requestMappings =
+                new ArrayList<>(handlerMethods.entrySet().size());
+        for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()) {
+            RequestMappingInfo mappingInfo = entry.getKey();
 
-			String name = mappingInfo.getName();
-			String url = mappingInfo.getPatternsCondition() != null
-					? mappingInfo.getPatternsCondition().toString()
-					: mappingInfo.getPathPatternsCondition().toString();
-			String method = mappingInfo.getMethodsCondition().toString();
-			String params = mappingInfo.getParamsCondition().toString();
-			String header = mappingInfo.getHeadersCondition().toString();
-			String consume = mappingInfo.getConsumesCondition().toString();
-			String produce = mappingInfo.getProducesCondition().toString();
-			RequestMappingPO po = new RequestMappingPO();
-			po.setName(name);
-			po.setPath(url);
-			po.setMethod(method);
-			po.setHeaders(header);
-			po.setConsumes(consume);
-			po.setParams(params);
-			po.setProduces(produce);
-			log.debug("Controller Name : {}, Method: {}, URL: {}, params: {}, header: {}, consume: {}, produce: {}",
-					name, method, url, params, header, consume, produce);
-			if (!contains(requestMappingsInDB, po)) {
-				requestMappings.add(po);
-			}
-		}
-		final Date now = new Date();
-		// requestMappingsInDB剩余的标记为丢失
-		for (RequestMappingPO requestMappingPO : requestMappingsInDB) {
-			requestMappingPO.setIsLost(1);
-			requestMappingPO.setUpdatedAt(now);
-		}
-		requestMappingDao.saveAll(requestMappingsInDB);
-		// requestMappings的数据需要插入到数据库
-		for (RequestMappingPO requestMapping : requestMappings) {
-			requestMapping.setIsLost(0);
-			requestMapping.setCreatedAt(now);
-		}
-		requestMappingDao.saveAll(requestMappings);
-	}
+            String name = mappingInfo.getName();
+            String url = mappingInfo.getPatternsCondition() != null
+                    ? mappingInfo.getPatternsCondition().toString()
+                    : mappingInfo.getPathPatternsCondition().toString();
+            String method = mappingInfo.getMethodsCondition().toString();
+            String params = mappingInfo.getParamsCondition().toString();
+            String header = mappingInfo.getHeadersCondition().toString();
+            String consume = mappingInfo.getConsumesCondition().toString();
+            String produce = mappingInfo.getProducesCondition().toString();
+            RequestMappingPO po = new RequestMappingPO();
+            po.setName(name);
+            po.setPath(url);
+            po.setMethod(method);
+            po.setHeaders(header);
+            po.setConsumes(consume);
+            po.setParams(params);
+            po.setProduces(produce);
+            log.debug(
+                    "Controller Name : {}, Method: {}, URL: {}, params: {}, header: {}, consume: {}, produce: {}",
+                    name, method, url, params, header, consume, produce);
+            if (!contains(requestMappingsInDB, po)) {
+                requestMappings.add(po);
+            }
+        }
+        final Date now = new Date();
+        // requestMappingsInDB剩余的标记为丢失
+        for (RequestMappingPO requestMappingPO : requestMappingsInDB) {
+            requestMappingPO.setIsLost(1);
+            requestMappingPO.setUpdatedAt(now);
+        }
+        requestMappingDao.saveAll(requestMappingsInDB);
+        // requestMappings的数据需要插入到数据库
+        for (RequestMappingPO requestMapping : requestMappings) {
+            requestMapping.setIsLost(0);
+            requestMapping.setCreatedAt(now);
+        }
+        requestMappingDao.saveAll(requestMappings);
+    }
 
-	private boolean contains(final List<RequestMappingPO> list, RequestMappingPO po) {
-		Iterator<RequestMappingPO> iterator = list.iterator();
-		while (iterator.hasNext()) {
-			RequestMappingPO item = iterator.next();
-			// 判断，如果po的数据完全能存在于list，则将list中的该元素清楚
-			if (StringUtils.equals(item.getName(), po.getName()) && StringUtils.equals(item.getPath(), po.getPath())
-					&& StringUtils.equals(item.getMethod(), po.getMethod())
-					&& StringUtils.equals(item.getHeaders(), po.getHeaders())
-					&& StringUtils.equals(item.getConsumes(), po.getConsumes())
-					&& StringUtils.equals(item.getParams(), po.getParams())
-					&& StringUtils.equals(item.getProduces(), po.getProduces())) {
-				iterator.remove();
-				return true;
-			}
-		}
-		return false;
-	}
+    private boolean contains(final List<RequestMappingPO> list, RequestMappingPO po) {
+        Iterator<RequestMappingPO> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            RequestMappingPO item = iterator.next();
+            // 判断，如果po的数据完全能存在于list，则将list中的该元素清楚
+            if (StringUtils.equals(item.getName(), po.getName())
+                    && StringUtils.equals(item.getPath(), po.getPath())
+                    && StringUtils.equals(item.getMethod(), po.getMethod())
+                    && StringUtils.equals(item.getHeaders(), po.getHeaders())
+                    && StringUtils.equals(item.getConsumes(), po.getConsumes())
+                    && StringUtils.equals(item.getParams(), po.getParams())
+                    && StringUtils.equals(item.getProduces(), po.getProduces())) {
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
+    }
 }

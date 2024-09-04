@@ -33,45 +33,45 @@ import java.util.Date;
 @Getter
 public class PermissionPO extends BasePO {
 
-	/**
-	 * 权限名称
-	 */
-	@Column(name = "c_name")
-	private String name;
+    /**
+     * 权限名称
+     */
+    @Column(name = "c_name")
+    private String name;
 
-	/**
-	 * 权限编码
-	 */
-	@Column(name = "c_code")
-	private String code;
+    /**
+     * 权限编码
+     */
+    @Column(name = "c_code")
+    private String code;
 
-	/**
-	 * 状态 0-禁用 1-启用
-	 */
-	@Column(name = "c_state")
-	private Integer state;
+    /**
+     * 状态 0-禁用 1-启用
+     */
+    @Column(name = "c_state")
+    private Integer state;
 
-	/**
-	 * 创建时间
-	 */
-	@Column(name = "create_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof PermissionPO))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof PermissionPO))
+            return false;
 
-		PermissionPO entity = (PermissionPO) o;
+        PermissionPO entity = (PermissionPO) o;
 
-		return id.equals(entity.getId());
-	}
+        return id.equals(entity.getId());
+    }
 
-	@Override
-	public int hashCode() {
-		return id != null ? id.hashCode() : 0;
-	}
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

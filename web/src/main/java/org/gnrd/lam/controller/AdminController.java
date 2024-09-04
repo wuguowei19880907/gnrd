@@ -31,32 +31,31 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("admin")
 public class AdminController {
 
-	@Resource
-	private IndexService indexService;
+    @Resource
+    private IndexService indexService;
 
-	/**
-	 * 获取用户信息列表
-	 * 
-	 * @author wuguowei
-	 * @param username
-	 *            用户名，支持模糊查询|user0
-	 */
-	@GetMapping(value = "users")
-	public ModelAndView users(String username, ParamPager pager) throws Exception {
-		ModelAndView modelAndView = new ModelAndView("admin/adminUsers");
-		modelAndView.addObject("currentMenu", "admin_user_M");
-		return modelAndView;
-	}
+    /**
+     * 获取用户信息列表
+     * 
+     * @author wuguowei
+     * @param username 用户名，支持模糊查询|user0
+     */
+    @GetMapping(value = "users")
+    public ModelAndView users(String username, ParamPager pager) throws Exception {
+        ModelAndView modelAndView = new ModelAndView("admin/adminUsers");
+        modelAndView.addObject("currentMenu", "admin_user_M");
+        return modelAndView;
+    }
 
-	@GetMapping(value = "roles")
-	public ModelAndView roles(HttpServletRequest request) throws Exception {
-		ModelAndView modelAndView = new ModelAndView();
-		return modelAndView;
-	}
+    @GetMapping(value = "roles")
+    public ModelAndView roles(HttpServletRequest request) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        return modelAndView;
+    }
 
-	@GetMapping(value = "permissions")
-	public ModelAndView permissions(HttpServletRequest request) throws Exception {
-		ModelAndView modelAndView = new ModelAndView();
-		return modelAndView;
-	}
+    @GetMapping(value = "permissions")
+    public ModelAndView permissions(HttpServletRequest request) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        return modelAndView;
+    }
 }

@@ -19,24 +19,24 @@ package org.gnrd.lam.service.admin;
 
 import org.gnrd.lam.common.result.ParamPager;
 import org.gnrd.lam.common.result.ResultPager;
-import org.gnrd.lam.ro.admin.AddUserRO;
-import org.gnrd.lam.ro.admin.ModifyUserRO;
-import org.gnrd.lam.ro.admin.ResetPasswordRO;
+import org.gnrd.lam.ro.admin.user.AddUserRO;
+import org.gnrd.lam.ro.admin.user.ModifyUserRO;
+import org.gnrd.lam.ro.admin.user.ResetPasswordRO;
 import org.gnrd.lam.vo.admin.UserItemVO;
 
 public interface UserService {
 
-	ResultPager<UserItemVO> list(String nameQuery, Integer status, ParamPager pager);
+    ResultPager<UserItemVO> list(String nameQuery, Integer status, ParamPager pager);
 
-	void addUser(AddUserRO ro);
+    void addUser(AddUserRO ro);
 
-	void modifyUser(Long id, ModifyUserRO ro);
+    void modifyUser(Long id, ModifyUserRO ro);
 
-	void resetPassword(Long id, ResetPasswordRO ro);
+    void resetPassword(Long id, ResetPasswordRO ro);
 
-	void deleteUser(Long id);
+    void deleteUser(Long id);
 
-	void disableUser(Long id);
+    void disableUser(Long id);
 
-	void enableUser(Long id);
+    void enableUser(Long id);
 }

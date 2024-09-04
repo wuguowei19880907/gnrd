@@ -26,22 +26,22 @@ import java.io.Serializable;
 @Getter
 public class CommonResult<T> implements Serializable {
 
-	private final String SUCCESS = "000000";
+    private final String SUCCESS = "000000";
 
-	private String code;
+    private String code;
 
-	private String message;
+    private String message;
 
-	private T result;
+    private T result;
 
-	public CommonResult(T result) {
-		this.code = SUCCESS;
-		this.message = "success";
-		this.result = result;
-	}
+    public CommonResult(T result) {
+        this.code = SUCCESS;
+        this.message = "success";
+        this.result = result;
+    }
 
-	public CommonResult(String code, String message) {
-		this.code = code;
-		this.message = message;
-	}
+    public CommonResult(String code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 }

@@ -42,40 +42,42 @@ import java.util.List;
 @Controller
 public class LoginController {
 
-	@Resource
-	private IndexService indexService;
+    @Resource
+    private IndexService indexService;
 
-	@PostMapping(value = "auth/login")
-	public ModelAndView auth(LoginRO loginRO, HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-		return indexService.login(loginRO.getUsername(), loginRO.getPassword(), request, response);
-	}
+    @PostMapping(value = "auth/login")
+    public ModelAndView auth(LoginRO loginRO, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        return indexService.login(loginRO.getUsername(), loginRO.getPassword(), request, response);
+    }
 
-	@PostMapping(value = "common/login")
-	@ResponseBody
-	public CommonResult<CommonLoginVO> commonLogin(@RequestBody @Validated LoginRO loginRO) throws Exception {
-		CommonLoginVO login = indexService.login(loginRO.getUsername(), loginRO.getPassword());
-		return new CommonResult<>(login);
-	}
+    @PostMapping(value = "common/login")
+    @ResponseBody
+    public CommonResult<CommonLoginVO> commonLogin(@RequestBody @Validated LoginRO loginRO)
+            throws Exception {
+        CommonLoginVO login = indexService.login(loginRO.getUsername(), loginRO.getPassword());
+        return new CommonResult<>(login);
+    }
 
-	@PostMapping(value = "auth/logout")
-	@ResponseBody
-	public CommonResult<String> logout(HttpServletRequest request) throws Exception {
-		HttpSession session = request.getSession();
-		session.invalidate();
-		return new CommonResult<>("logout ok");
-	}
+    @PostMapping(value = "auth/logout")
+    @ResponseBody
+    public CommonResult<String> logout(HttpServletRequest request) throws Exception {
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return new CommonResult<>("logout ok");
+    }
 
-	@GetMapping(value = "current-user")
-	@ResponseBody
-	public CommonResult<List<MenuVO>> me(@RequestHeader(AuthToken.COOKIE_NAME) String token) throws Exception {
-		List<MenuVO> me = indexService.getMe(token);
-		return new CommonResult<>(me);
-	}
+    @GetMapping(value = "current-user")
+    @ResponseBody
+    public CommonResult<List<MenuVO>> me(@RequestHeader(AuthToken.COOKIE_NAME) String token)
+            throws Exception {
+        List<MenuVO> me = indexService.getMe(token);
+        return new CommonResult<>(me);
+    }
 
-	@GetMapping(value = {"base-exception"})
-	public CommonResult<Void> baseException(HttpServletRequest request) throws Exception {
-		Object baseException = request.getAttribute("BaseException");
-		throw (BaseException) baseException;
-	}
+    @GetMapping(value = {"base-exception"})
+    public CommonResult<Void> baseException(HttpServletRequest request) throws Exception {
+        Object baseException = request.getAttribute("BaseException");
+        throw (BaseException) baseException;
+    }
 }

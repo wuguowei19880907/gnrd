@@ -19,7 +19,7 @@ package org.gnrd.lam.common.constants;
 
 public class AuthToken {
 
-	public static final String COOKIE_NAME = "X-Auth-Token";
+    public static final String COOKIE_NAME = "X-Auth-Token";
 
-	public static final String ATTRIBUTE = "loginUser";
+    public static final String ATTRIBUTE = "loginUser";
 }

@@ -28,14 +28,14 @@ import java.util.List;
 
 public interface IndexService {
 
-	ModelAndView login(String username, String password, HttpServletRequest request, HttpServletResponse response)
-			throws Exception;
+    ModelAndView login(String username, String password, HttpServletRequest request,
+            HttpServletResponse response) throws Exception;
 
-	CommonLoginVO login(String username, String password) throws Exception;
+    CommonLoginVO login(String username, String password) throws Exception;
 
-	String index(HttpServletRequest request, HttpServletResponse response);
+    String index(HttpServletRequest request, HttpServletResponse response);
 
-	ModelAndView getAdminUsers(String username, ParamPager pager);
+    ModelAndView getAdminUsers(String username, ParamPager pager);
 
-	List<MenuVO> getMe(String token);
+    List<MenuVO> getMe(String token);
 }

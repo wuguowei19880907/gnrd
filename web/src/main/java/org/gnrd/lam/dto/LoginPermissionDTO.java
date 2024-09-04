@@ -30,34 +30,34 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class LoginPermissionDTO implements Serializable {
 
-	/**
-	 * 权限名称
-	 */
-	private String name;
+    /**
+     * 权限名称
+     */
+    private String name;
 
-	/**
-	 * 权限编码
-	 */
-	private String code;
+    /**
+     * 权限编码
+     */
+    private String code;
 
-	@Override
-	public boolean equals(Object object) {
-		if (this == object)
-			return true;
-		if (!(object instanceof LoginPermissionDTO))
-			return false;
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (!(object instanceof LoginPermissionDTO))
+            return false;
 
-		LoginPermissionDTO that = (LoginPermissionDTO) object;
+        LoginPermissionDTO that = (LoginPermissionDTO) object;
 
-		if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
-			return false;
-		return getCode() != null ? getCode().equals(that.getCode()) : that.getCode() == null;
-	}
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
+            return false;
+        return getCode() != null ? getCode().equals(that.getCode()) : that.getCode() == null;
+    }
 
-	@Override
-	public int hashCode() {
-		int result = getName() != null ? getName().hashCode() : 0;
-		result = 31 * result + (getCode() != null ? getCode().hashCode() : 0);
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getCode() != null ? getCode().hashCode() : 0);
+        return result;
+    }
 }

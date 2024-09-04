@@ -33,82 +33,82 @@ import java.util.Date;
 @Getter
 public class RequestMappingPO extends BasePO {
 
-	/**
-	 * RequestMapping.name
-	 */
-	@Column(name = "df_name")
-	private String name;
+    /**
+     * RequestMapping.name
+     */
+    @Column(name = "df_name")
+    private String name;
 
-	/**
-	 * RequestMapping.path
-	 */
-	@Column(name = "df_path")
-	private String path;
+    /**
+     * RequestMapping.path
+     */
+    @Column(name = "df_path")
+    private String path;
 
-	/**
-	 * RequestMapping.method
-	 */
-	@Column(name = "df_method")
-	private String method;
+    /**
+     * RequestMapping.method
+     */
+    @Column(name = "df_method")
+    private String method;
 
-	/**
-	 * RequestMapping.params
-	 */
-	@Column(name = "df_params")
-	private String params;
+    /**
+     * RequestMapping.params
+     */
+    @Column(name = "df_params")
+    private String params;
 
-	/**
-	 * RequestMapping.headers
-	 */
-	@Column(name = "df_headers")
-	private String headers;
+    /**
+     * RequestMapping.headers
+     */
+    @Column(name = "df_headers")
+    private String headers;
 
-	/**
-	 * RequestMapping.consumes
-	 */
-	@Column(name = "df_consumes")
-	private String consumes;
+    /**
+     * RequestMapping.consumes
+     */
+    @Column(name = "df_consumes")
+    private String consumes;
 
-	/**
-	 * RequestMapping.produces
-	 */
-	@Column(name = "df_produces")
-	private String produces;
+    /**
+     * RequestMapping.produces
+     */
+    @Column(name = "df_produces")
+    private String produces;
 
-	/**
-	 * url是否还存在，有可能被移除或修改
-	 */
-	@Column(name = "is_lost")
-	private Integer isLost;
+    /**
+     * url是否还存在，有可能被移除或修改
+     */
+    @Column(name = "is_lost")
+    private Integer isLost;
 
-	/**
-	 * 创建时间
-	 */
-	@Column(name = "create_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-	/**
-	 * 更新时间
-	 */
-	@Column(name = "update_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updatedAt;
+    /**
+     * 更新时间
+     */
+    @Column(name = "update_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof RequestMappingPO))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof RequestMappingPO))
+            return false;
 
-		RequestMappingPO entity = (RequestMappingPO) o;
+        RequestMappingPO entity = (RequestMappingPO) o;
 
-		return id.equals(entity.getId());
-	}
+        return id.equals(entity.getId());
+    }
 
-	@Override
-	public int hashCode() {
-		return id != null ? id.hashCode() : 0;
-	}
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

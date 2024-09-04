@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.ro.admin;
+package org.gnrd.lam.ro.admin.user;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,10 +24,10 @@ import lombok.Setter;
 @Getter
 public class ResetPasswordRO {
 
-	/**
-	 * 重置后的密码
-	 *
-	 * @mock 123456
-	 */
-	private String password;
+    /**
+     * 重置后的密码
+     *
+     * @mock 123456
+     */
+    private String password;
 }

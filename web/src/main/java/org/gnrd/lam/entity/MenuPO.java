@@ -33,57 +33,57 @@ import java.util.Date;
 @Getter
 public class MenuPO extends BasePO {
 
-	/**
-	 * 菜单名称
-	 */
-	@Column(name = "df_name")
-	private String name;
+    /**
+     * 菜单名称
+     */
+    @Column(name = "df_name")
+    private String name;
 
-	/**
-	 * 菜单编码
-	 */
-	@Column(name = "df_code")
-	private String code;
+    /**
+     * 菜单编码
+     */
+    @Column(name = "df_code")
+    private String code;
 
-	/**
-	 * 菜单路径
-	 */
-	@Column(name = "df_path")
-	private String path;
+    /**
+     * 菜单路径
+     */
+    @Column(name = "df_path")
+    private String path;
 
-	/**
-	 * 排序，值越大，菜单越靠上
-	 */
-	@Column(name = "df_sort")
-	private Integer sort;
+    /**
+     * 排序，值越大，菜单越靠上
+     */
+    @Column(name = "df_sort")
+    private Integer sort;
 
-	/**
-	 * 状态 0-禁用 1-启用
-	 */
-	@Column(name = "df_status")
-	private Integer state;
+    /**
+     * 状态 0-禁用 1-启用
+     */
+    @Column(name = "df_status")
+    private Integer state;
 
-	/**
-	 * 创建时间
-	 */
-	@Column(name = "create_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof MenuPO))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof MenuPO))
+            return false;
 
-		MenuPO entity = (MenuPO) o;
+        MenuPO entity = (MenuPO) o;
 
-		return id.equals(entity.getId());
-	}
+        return id.equals(entity.getId());
+    }
 
-	@Override
-	public int hashCode() {
-		return id != null ? id.hashCode() : 0;
-	}
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

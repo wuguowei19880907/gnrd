@@ -36,43 +36,43 @@ import java.util.List;
 @Getter
 public class PermissionRequestPO extends BasePO {
 
-	/**
-	 * 权限id
-	 */
-	@Column(name = "df_permission_id")
-	private Long permissionId;
+    /**
+     * 权限id
+     */
+    @Column(name = "df_permission_id")
+    private Long permissionId;
 
-	/**
-	 * RequestMapping表id
-	 */
-	@Column(name = "df_request_id")
-	private Long requestId;
+    /**
+     * RequestMapping表id
+     */
+    @Column(name = "df_request_id")
+    private Long requestId;
 
-	/**
-	 * 创建时间
-	 */
-	@Column(name = "create_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-	@OneToMany
-	@JoinColumn(name = "df_request_id", insertable = false, updatable = false)
-	private List<RequestMappingPO> requestMappings;
+    @OneToMany
+    @JoinColumn(name = "df_request_id", insertable = false, updatable = false)
+    private List<RequestMappingPO> requestMappings;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof PermissionRequestPO))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof PermissionRequestPO))
+            return false;
 
-		PermissionRequestPO entity = (PermissionRequestPO) o;
+        PermissionRequestPO entity = (PermissionRequestPO) o;
 
-		return id.equals(entity.getId());
-	}
+        return id.equals(entity.getId());
+    }
 
-	@Override
-	public int hashCode() {
-		return id != null ? id.hashCode() : 0;
-	}
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

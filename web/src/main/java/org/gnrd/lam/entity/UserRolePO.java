@@ -35,43 +35,43 @@ import java.util.Date;
 @Getter
 public class UserRolePO extends BasePO {
 
-	/**
-	 * 用户id
-	 */
-	@Column(name = "c_user_id")
-	private Long userId;
+    /**
+     * 用户id
+     */
+    @Column(name = "c_user_id")
+    private Long userId;
 
-	/**
-	 * 角色id
-	 */
-	@Column(name = "c_role_id")
-	private Long roleId;
+    /**
+     * 角色id
+     */
+    @Column(name = "c_role_id")
+    private Long roleId;
 
-	/**
-	 * 创建时间
-	 */
-	@Column(name = "create_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-	@ManyToOne
-	@JoinColumn(name = "c_role_id", insertable = false, updatable = false)
-	private RolePO roles;
+    @ManyToOne
+    @JoinColumn(name = "c_role_id", insertable = false, updatable = false)
+    private RolePO roles;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof UserRolePO))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof UserRolePO))
+            return false;
 
-		UserRolePO entity = (UserRolePO) o;
+        UserRolePO entity = (UserRolePO) o;
 
-		return id.equals(entity.getId());
-	}
+        return id.equals(entity.getId());
+    }
 
-	@Override
-	public int hashCode() {
-		return id != null ? id.hashCode() : 0;
-	}
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

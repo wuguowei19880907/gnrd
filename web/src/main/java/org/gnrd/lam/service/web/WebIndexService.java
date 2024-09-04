@@ -58,139 +58,144 @@ import java.util.stream.Collectors;
 @Slf4j
 public class WebIndexService implements IndexService {
 
-	private final String REDIRECT_URL = "redirect:%s?%s=%s";
+    private final String REDIRECT_URL = "redirect:%s?%s=%s";
 
-	@Resource
-	private UserDao userDao;
-	@Resource
-	private UserRoleDao userRoleDao;
-	@Resource
-	private RSAUtil rsaUtil;
-	@Resource
-	private ModelMapper modelMapper;
-	@Resource
-	private AppProperties appProperties;
-	@Resource
-	private SessionUtils sessionUtil;
-	@Resource
-	private PasswordEncoder passwordEncoder;
+    @Resource
+    private UserDao userDao;
+    @Resource
+    private UserRoleDao userRoleDao;
+    @Resource
+    private RSAUtil rsaUtil;
+    @Resource
+    private ModelMapper modelMapper;
+    @Resource
+    private AppProperties appProperties;
+    @Resource
+    private SessionUtils sessionUtil;
+    @Resource
+    private PasswordEncoder passwordEncoder;
 
-	private final LoginPermissionDTO SUPER_PERMISSION = new LoginPermissionDTO("超级管理员", "super");
+    private final LoginPermissionDTO SUPER_PERMISSION = new LoginPermissionDTO("超级管理员", "super");
 
-	@Override
-	public ModelAndView login(String username, String password, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		final String plainUsername;
-		final String plainPassword;
-		try {
-			plainUsername = rsaUtil.decrypt(username);
-			plainPassword = rsaUtil.decrypt(password);
-		} catch (Exception e) {
-			log.error("用户名或密码不能正确解密", e);
-			throw new BaseException(ECode.E_000001);
-		}
-		Optional<UserPO> byName = userDao.findByName(plainUsername);
-		UserPO user = byName.orElseThrow(() -> {
-			log.error("用户名不存在");
-			return new BaseException(ECode.E_000001);
-		});
+    @Override
+    public ModelAndView login(String username, String password, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        final String plainUsername;
+        final String plainPassword;
+        try {
+            plainUsername = rsaUtil.decrypt(username);
+            plainPassword = rsaUtil.decrypt(password);
+        } catch (Exception e) {
+            log.error("用户名或密码不能正确解密", e);
+            throw new BaseException(ECode.E_000001);
+        }
+        Optional<UserPO> byName = userDao.findByName(plainUsername);
+        UserPO user = byName.orElseThrow(() -> {
+            log.error("用户名不存在");
+            return new BaseException(ECode.E_000001);
+        });
 
-		if (!passwordEncoder.matches(plainPassword, user.getPassword())) {
-			log.debug("密码错误");
-			throw new BaseException(ECode.E_000001);
-		}
-		Set<PermissionPO> permissionPOSet = userRoleDao.findPermissionsByUserId(user.getId());
-		Set<MenuPO> menuPOSet = userRoleDao.findMenusByUserId(user.getId());
-		List<LoginPermissionDTO> permissionDTOS = permissionPOSet.stream()
-				.sorted(Comparator.comparing(PermissionPO::getId))
-				.map(permissionPO -> modelMapper.map(permissionPO, LoginPermissionDTO.class))
-				.collect(Collectors.toList());
-		List<LoginMenuDTO> menuDTOS = menuPOSet.stream().sorted(Comparator.comparing(MenuPO::getSort))
-				.map(menuPO -> modelMapper.map(menuPO, LoginMenuDTO.class)).collect(Collectors.toList());
-		LoginUserDTO loginUserDTO = modelMapper.map(user, LoginUserDTO.class);
-		loginUserDTO.setPermissions(permissionDTOS);
-		loginUserDTO.setMenus(menuDTOS);
-		String uuid = sessionUtil.getUUid();
-		sessionUtil.storeInfo(uuid, loginUserDTO);
-		if (permissionDTOS.contains(SUPER_PERMISSION)) {
-			Cookie cookie = new Cookie("X-Auth-Token", uuid);
-			cookie.setPath("/");
-			cookie.setMaxAge((int) appProperties.getSessionTimeout().getSeconds());
-			response.addCookie(cookie);
-			ModelAndView dashboard = new ModelAndView("dashboard");
-			dashboard.addObject(AuthToken.ATTRIBUTE, loginUserDTO);
-			return dashboard;
-		} else {
-			String url = String.format(REDIRECT_URL, appProperties.getIndexUrl(), "df-auth-id",
-					URLEncoder.encode(uuid, "UTF-8"));
-			return new ModelAndView(url);
-		}
-	}
+        if (!passwordEncoder.matches(plainPassword, user.getPassword())) {
+            log.debug("密码错误");
+            throw new BaseException(ECode.E_000001);
+        }
+        Set<PermissionPO> permissionPOSet = userRoleDao.findPermissionsByUserId(user.getId());
+        Set<MenuPO> menuPOSet = userRoleDao.findMenusByUserId(user.getId());
+        List<LoginPermissionDTO> permissionDTOS = permissionPOSet.stream()
+                .sorted(Comparator.comparing(PermissionPO::getId))
+                .map(permissionPO -> modelMapper.map(permissionPO, LoginPermissionDTO.class))
+                .collect(Collectors.toList());
+        List<LoginMenuDTO> menuDTOS =
+                menuPOSet.stream().sorted(Comparator.comparing(MenuPO::getSort))
+                        .map(menuPO -> modelMapper.map(menuPO, LoginMenuDTO.class))
+                        .collect(Collectors.toList());
+        LoginUserDTO loginUserDTO = modelMapper.map(user, LoginUserDTO.class);
+        loginUserDTO.setPermissions(permissionDTOS);
+        loginUserDTO.setMenus(menuDTOS);
+        String uuid = sessionUtil.getUUid();
+        sessionUtil.storeInfo(uuid, loginUserDTO);
+        if (permissionDTOS.contains(SUPER_PERMISSION)) {
+            Cookie cookie = new Cookie("X-Auth-Token", uuid);
+            cookie.setPath("/");
+            cookie.setMaxAge((int) appProperties.getSessionTimeout().getSeconds());
+            response.addCookie(cookie);
+            ModelAndView dashboard = new ModelAndView("dashboard");
+            dashboard.addObject(AuthToken.ATTRIBUTE, loginUserDTO);
+            return dashboard;
+        } else {
+            String url = String.format(REDIRECT_URL, appProperties.getIndexUrl(), "df-auth-id",
+                    URLEncoder.encode(uuid, "UTF-8"));
+            return new ModelAndView(url);
+        }
+    }
 
-	@Override
-	public CommonLoginVO login(String username, String password) throws Exception {
-		final String plainUsername;
-		final String plainPassword;
-		try {
-			plainUsername = rsaUtil.decrypt(username);
-			plainPassword = rsaUtil.decrypt(password);
-		} catch (Exception e) {
-			log.error("用户名或密码不能正确解密", e);
-			throw new BaseException(ECode.E_000001);
-		}
-		Optional<UserPO> byName = userDao.findByName(plainUsername);
-		UserPO user = byName.orElseThrow(() -> {
-			log.error("用户名不存在");
-			return new BaseException(ECode.E_000001);
-		});
-		if (!passwordEncoder.matches(plainPassword, user.getPassword())) {
-			log.debug("密码错误");
-			throw new BaseException(ECode.E_000001);
-		}
-		Set<PermissionPO> permissionPOSet = userRoleDao.findPermissionsByUserId(user.getId());
-		Set<MenuPO> menuPOSet = userRoleDao.findMenusByUserId(user.getId());
-		List<LoginPermissionDTO> permissionDTOS = permissionPOSet.stream()
-				.sorted(Comparator.comparing(PermissionPO::getId))
-				.map(permissionPO -> modelMapper.map(permissionPO, LoginPermissionDTO.class))
-				.collect(Collectors.toList());
-		List<LoginMenuDTO> menuDTOS = menuPOSet.stream().sorted(Comparator.comparing(MenuPO::getSort))
-				.map(menuPO -> modelMapper.map(menuPO, LoginMenuDTO.class)).collect(Collectors.toList());
-		LoginUserDTO loginUserDTO = modelMapper.map(user, LoginUserDTO.class);
-		loginUserDTO.setPermissions(permissionDTOS);
-		loginUserDTO.setMenus(menuDTOS);
-		String uuid = sessionUtil.getUUid();
-		sessionUtil.storeInfo(uuid, loginUserDTO);
-		if (user.getSuperAdmin().equals(1)) {
-			return new CommonLoginVO(true, uuid);
-		} else {
-			String url = String.format(REDIRECT_URL, appProperties.getIndexUrl(), "df-auth-id",
-					URLEncoder.encode(uuid, "UTF-8"));
-			return new CommonLoginVO(false, url);
-		}
-	}
+    @Override
+    public CommonLoginVO login(String username, String password) throws Exception {
+        final String plainUsername;
+        final String plainPassword;
+        try {
+            plainUsername = rsaUtil.decrypt(username);
+            plainPassword = rsaUtil.decrypt(password);
+        } catch (Exception e) {
+            log.error("用户名或密码不能正确解密", e);
+            throw new BaseException(ECode.E_000001);
+        }
+        Optional<UserPO> byName = userDao.findByName(plainUsername);
+        UserPO user = byName.orElseThrow(() -> {
+            log.error("用户名不存在");
+            return new BaseException(ECode.E_000001);
+        });
+        if (!passwordEncoder.matches(plainPassword, user.getPassword())) {
+            log.debug("密码错误");
+            throw new BaseException(ECode.E_000001);
+        }
+        Set<PermissionPO> permissionPOSet = userRoleDao.findPermissionsByUserId(user.getId());
+        Set<MenuPO> menuPOSet = userRoleDao.findMenusByUserId(user.getId());
+        List<LoginPermissionDTO> permissionDTOS = permissionPOSet.stream()
+                .sorted(Comparator.comparing(PermissionPO::getId))
+                .map(permissionPO -> modelMapper.map(permissionPO, LoginPermissionDTO.class))
+                .collect(Collectors.toList());
+        List<LoginMenuDTO> menuDTOS =
+                menuPOSet.stream().sorted(Comparator.comparing(MenuPO::getSort))
+                        .map(menuPO -> modelMapper.map(menuPO, LoginMenuDTO.class))
+                        .collect(Collectors.toList());
+        LoginUserDTO loginUserDTO = modelMapper.map(user, LoginUserDTO.class);
+        loginUserDTO.setPermissions(permissionDTOS);
+        loginUserDTO.setMenus(menuDTOS);
+        String uuid = sessionUtil.getUUid();
+        sessionUtil.storeInfo(uuid, loginUserDTO);
+        if (user.getSuperAdmin().equals(1)) {
+            return new CommonLoginVO(true, uuid);
+        } else {
+            String url = String.format(REDIRECT_URL, appProperties.getIndexUrl(), "df-auth-id",
+                    URLEncoder.encode(uuid, "UTF-8"));
+            return new CommonLoginVO(false, url);
+        }
+    }
 
-	@Override
-	public String index(HttpServletRequest request, HttpServletResponse response) {
-		HttpSession session = request.getSession();
-		List<LoginPermissionDTO> list = CastUtils.cast(session.getAttribute("login-permissions"));
-		response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-		if (list.contains(SUPER_PERMISSION)) {
-			return "super/dashboard";
-		} else {
-			return appProperties.getIndexUrl();
-		}
-	}
+    @Override
+    public String index(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        List<LoginPermissionDTO> list = CastUtils.cast(session.getAttribute("login-permissions"));
+        response.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
+        if (list.contains(SUPER_PERMISSION)) {
+            return "super/dashboard";
+        } else {
+            return appProperties.getIndexUrl();
+        }
+    }
 
-	@Override
-	public ModelAndView getAdminUsers(String username, ParamPager pager) {
+    @Override
+    public ModelAndView getAdminUsers(String username, ParamPager pager) {
 
-		return null;
-	}
+        return null;
+    }
 
-	@Override
-	public List<MenuVO> getMe(String token) {
-		LoginUserDTO loginUserDTO = (LoginUserDTO) sessionUtil.getInfo(token);
-		return loginUserDTO.getMenus().stream().map(loginMenuDTO -> modelMapper.map(loginMenuDTO, MenuVO.class))
-				.collect(Collectors.toList());
-	}
+    @Override
+    public List<MenuVO> getMe(String token) {
+        LoginUserDTO loginUserDTO = (LoginUserDTO) sessionUtil.getInfo(token);
+        return loginUserDTO.getMenus().stream()
+                .map(loginMenuDTO -> modelMapper.map(loginMenuDTO, MenuVO.class))
+                .collect(Collectors.toList());
+    }
 }

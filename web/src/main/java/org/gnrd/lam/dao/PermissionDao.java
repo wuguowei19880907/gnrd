@@ -19,6 +19,12 @@ package org.gnrd.lam.dao;
 
 import org.gnrd.lam.entity.PermissionPO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface PermissionDao extends JpaRepository<PermissionPO, Long> {
+public interface PermissionDao
+        extends JpaRepository<PermissionPO, Long>, JpaSpecificationExecutor<PermissionPO> {
+
+    long countByName(String name);
+
+    long countByCode(String code);
 }

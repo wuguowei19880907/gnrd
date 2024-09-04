@@ -35,43 +35,43 @@ import java.util.Date;
 @Getter
 public class RoleMenuPO extends BasePO {
 
-	/**
-	 * 角色id
-	 */
-	@Column(name = "df_role_id")
-	private Long roleId;
+    /**
+     * 角色id
+     */
+    @Column(name = "df_role_id")
+    private Long roleId;
 
-	/**
-	 * 菜单id
-	 */
-	@Column(name = "df_menu_id")
-	private Long menuId;
+    /**
+     * 菜单id
+     */
+    @Column(name = "df_menu_id")
+    private Long menuId;
 
-	/**
-	 * 创建时间
-	 */
-	@Column(name = "create_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-	@ManyToOne
-	@JoinColumn(name = "df_menu_id", insertable = false, updatable = false)
-	private MenuPO menuPO;
+    @ManyToOne
+    @JoinColumn(name = "df_menu_id", insertable = false, updatable = false)
+    private MenuPO menuPO;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof RoleMenuPO))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof RoleMenuPO))
+            return false;
 
-		RoleMenuPO entity = (RoleMenuPO) o;
+        RoleMenuPO entity = (RoleMenuPO) o;
 
-		return id.equals(entity.getId());
-	}
+        return id.equals(entity.getId());
+    }
 
-	@Override
-	public int hashCode() {
-		return id != null ? id.hashCode() : 0;
-	}
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

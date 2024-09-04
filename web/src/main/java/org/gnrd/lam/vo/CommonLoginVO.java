@@ -26,13 +26,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CommonLoginVO {
 
-	/**
-	 * 信息标志。true/false
-	 */
-	private boolean flag;
+    /**
+     * 信息标志。true/false
+     */
+    private boolean flag;
 
-	/**
-	 * 返回信息。 当flag=true，返回的是token；如果flag=false,返回的是跳转的地址（全路径）
-	 */
-	private String content;
+    /**
+     * 返回信息。 当flag=true，返回的是token；如果flag=false,返回的是跳转的地址（全路径）
+     */
+    private String content;
 }

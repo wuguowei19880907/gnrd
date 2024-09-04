@@ -31,18 +31,18 @@ import java.time.temporal.ChronoUnit;
 @Setter
 public class AppProperties {
 
-	/**
-	 * 登录后跳转的地址
-	 */
-	private String indexUrl = "/index";
+    /**
+     * 登录后跳转的地址
+     */
+    private String indexUrl = "/index";
 
-	/**
-	 * session在redis中的前缀
-	 */
-	private String sessionNamespace = "door-for:session";
+    /**
+     * session在redis中的前缀
+     */
+    private String sessionNamespace = "door-for:session";
 
-	/**
-	 * session有效期。 默认30分钟
-	 */
-	private Duration sessionTimeout = Duration.of(30, ChronoUnit.MINUTES);
+    /**
+     * session有效期。 默认30分钟
+     */
+    private Duration sessionTimeout = Duration.of(30, ChronoUnit.MINUTES);
 }

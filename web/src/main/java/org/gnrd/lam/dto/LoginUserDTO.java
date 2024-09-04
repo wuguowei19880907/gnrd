@@ -28,33 +28,33 @@ import java.util.List;
 @Getter
 public class LoginUserDTO implements Serializable {
 
-	/**
-	 * 用户名称
-	 */
-	private String name;
+    /**
+     * 用户名称
+     */
+    private String name;
 
-	/**
-	 * 手机号
-	 */
-	private String phone;
+    /**
+     * 手机号
+     */
+    private String phone;
 
-	/**
-	 * 状态 0-禁用 1-启用
-	 */
-	private Integer state;
+    /**
+     * 状态 0-禁用 1-启用
+     */
+    private Integer state;
 
-	/**
-	 * 权限信息
-	 */
-	private List<LoginPermissionDTO> permissions;
+    /**
+     * 权限信息
+     */
+    private List<LoginPermissionDTO> permissions;
 
-	/**
-	 * 菜单信息
-	 */
-	private List<LoginMenuDTO> menus;
+    /**
+     * 菜单信息
+     */
+    private List<LoginMenuDTO> menus;
 
-	@Override
-	public String toString() {
-		return JSONObject.toJSONString(this);
-	}
+    @Override
+    public String toString() {
+        return JSONObject.toJSONString(this);
+    }
 }

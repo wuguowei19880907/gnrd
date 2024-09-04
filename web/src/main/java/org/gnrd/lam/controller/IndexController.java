@@ -34,27 +34,27 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("api")
 public class IndexController {
 
-	@Resource
-	private IndexService indexService;
+    @Resource
+    private IndexService indexService;
 
-	@GetMapping(name = "abcde", value = "me", params = {"abc", "def"}, headers = {"auth=text/*"}, consumes = {
-			"text/plain", "application/*"}, produces = {"text/plain", "application/*"})
-	@ResponseBody
-	@Authorize("@authUtil.hasPermissions('get_user_me')")
-	public CommonResult<String> getInfo(HttpServletRequest request) throws Exception {
-		HttpSession session = request.getSession();
-		LoginUserDTO loginUser = (LoginUserDTO) session.getAttribute("login-user");
-		return new CommonResult<>(loginUser.getName());
-	}
+    @GetMapping(name = "abcde", value = "me", params = {"abc", "def"}, headers = {"auth=text/*"},
+            consumes = {"text/plain", "application/*"}, produces = {"text/plain", "application/*"})
+    @ResponseBody
+    @Authorize("@authUtil.hasPermissions('get_user_me')")
+    public CommonResult<String> getInfo(HttpServletRequest request) throws Exception {
+        HttpSession session = request.getSession();
+        LoginUserDTO loginUser = (LoginUserDTO) session.getAttribute("login-user");
+        return new CommonResult<>(loginUser.getName());
+    }
 
-	@RequestMapping(value = {"index", ""})
-	public String index() {
-		return "index";
-	}
+    @RequestMapping(value = {"index", ""})
+    public String index() {
+        return "index";
+    }
 
-	@GetMapping(value = "super/dashboard")
-	@Authorize("@authUtil.hasLogin()")
-	public String superDashboard() {
-		return "dashboard";
-	}
+    @GetMapping(value = "super/dashboard")
+    @Authorize("@authUtil.hasLogin()")
+    public String superDashboard() {
+        return "dashboard";
+    }
 }

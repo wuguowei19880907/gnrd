@@ -30,83 +30,78 @@ import java.util.UUID;
 @Component("sessionUtil")
 public class SessionUtils {
 
-	@Resource
-	private AppProperties appProperties;
+    @Resource
+    private AppProperties appProperties;
 
-	@Resource
-	private RedissonClient redisson;
+    @Resource
+    private RedissonClient redisson;
 
-	public String getUUid() {
-		// 分布式锁确保唯一
-		RLock lock = redisson.getLock("uuidLock");
-		lock.lock();
-		try {
-			return UUID.randomUUID().toString();
-		} finally {
-			lock.unlock();
-		}
-	}
+    public String getUUid() {
+        // 分布式锁确保唯一
+        RLock lock = redisson.getLock("uuidLock");
+        lock.lock();
+        try {
+            return UUID.randomUUID().toString();
+        } finally {
+            lock.unlock();
+        }
+    }
 
-	/**
-	 * session 存储信息
-	 * 
-	 * @author wuguowei
-	 * @param id
-	 *            session id
-	 * @param info
-	 *            被存储的信息
-	 */
-	public void storeInfo(final String id, final Object info) {
-		Preconditions.checkNotNull(id, "id cannot be null");
-		Preconditions.checkNotNull(info, "info cannot be null");
-		RBucket<Object> bucket = redisson.getBucket(appProperties.getSessionNamespace() + ":" + id);
-		bucket.set(info, appProperties.getSessionTimeout());
-	}
+    /**
+     * session 存储信息
+     * 
+     * @author wuguowei
+     * @param id session id
+     * @param info 被存储的信息
+     */
+    public void storeInfo(final String id, final Object info) {
+        Preconditions.checkNotNull(id, "id cannot be null");
+        Preconditions.checkNotNull(info, "info cannot be null");
+        RBucket<Object> bucket = redisson.getBucket(appProperties.getSessionNamespace() + ":" + id);
+        bucket.set(info, appProperties.getSessionTimeout());
+    }
 
-	/**
-	 * 从session中获取信息
-	 * 
-	 * @author wuguowei
-	 * @param id
-	 *            session id
-	 */
-	public Object getInfo(final String id) {
-		Preconditions.checkNotNull(id, "id cannot be null");
-		RBucket<Object> bucket = redisson.getBucket(appProperties.getSessionNamespace() + ":" + id);
-		Object value = bucket.get();
-		// 如果对象存在，更新其过期时间
-		if (value != null) {
-			bucket.expire(appProperties.getSessionTimeout());
-		}
-		return bucket.get();
-	}
+    /**
+     * 从session中获取信息
+     * 
+     * @author wuguowei
+     * @param id session id
+     */
+    public Object getInfo(final String id) {
+        Preconditions.checkNotNull(id, "id cannot be null");
+        RBucket<Object> bucket = redisson.getBucket(appProperties.getSessionNamespace() + ":" + id);
+        Object value = bucket.get();
+        // 如果对象存在，更新其过期时间
+        if (value != null) {
+            bucket.expire(appProperties.getSessionTimeout());
+        }
+        return bucket.get();
+    }
 
-	/**
-	 * 延长session 中信息的过期时间
-	 * 
-	 * @author wuguowei
-	 * @param id
-	 *            session id
-	 */
-	public void refreshInfo(final String id) {
-		Preconditions.checkNotNull(id, "id cannot be null");
-		RBucket<Object> bucket = redisson.getBucket(appProperties.getSessionNamespace() + ":" + id);
-		Object value = bucket.get();
-		if (value != null) {
-			bucket.expire(appProperties.getSessionTimeout());
-		}
-	}
+    /**
+     * 延长session 中信息的过期时间
+     * 
+     * @author wuguowei
+     * @param id session id
+     */
+    public void refreshInfo(final String id) {
+        Preconditions.checkNotNull(id, "id cannot be null");
+        RBucket<Object> bucket = redisson.getBucket(appProperties.getSessionNamespace() + ":" + id);
+        Object value = bucket.get();
+        if (value != null) {
+            bucket.expire(appProperties.getSessionTimeout());
+        }
+    }
 
-	/**
-	 * 删除 session 中信息的过期时间
-	 * 
-	 * @author wuguowei
-	 * @param id
-	 *            session id
-	 */
-	public void deleteInfo(final String id) {
-		Preconditions.checkNotNull(id, "id cannot be null");
-		RBucket<Object> bucket = redisson.getBucket(appProperties.getSessionNamespace() + ":" + id);
-		bucket.delete();
-	}
+    /**
+     * 删除 session 中信息的过期时间
+     * 
+     * @author wuguowei
+     * @param id session id
+     */
+    public void deleteInfo(final String id) {
+        Preconditions.checkNotNull(id, "id cannot be null");
+        RBucket<Object> bucket = redisson.getBucket(appProperties.getSessionNamespace() + ":" + id);
+        bucket.delete();
+    }
 }

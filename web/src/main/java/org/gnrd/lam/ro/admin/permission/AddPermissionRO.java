@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.ro.admin;
+package org.gnrd.lam.ro.admin.permission;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,21 +24,21 @@ import javax.validation.constraints.NotEmpty;
 
 @Setter
 @Getter
-public class ModifyUserRO {
+public class AddPermissionRO {
 
-	/**
-	 * 用户名
-	 *
-	 * @mock admin
-	 */
-	@NotEmpty(message = "用户名不可为空")
-	private String name;
+    /**
+     * 角色名
+     *
+     * @mock 经理
+     */
+    @NotEmpty(message = "角色名不可为空")
+    private String name;
 
-	/**
-	 * 手机号
-	 *
-	 * @mock 15500100020
-	 */
-	@NotEmpty(message = "手机号不可为空")
-	private String phone;
+    /**
+     * 角色编码
+     *
+     * @mock create_menu
+     */
+    @NotEmpty(message = "角色编码不可为空")
+    private String code;
 }

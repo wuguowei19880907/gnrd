@@ -29,31 +29,31 @@ import lombok.Setter;
 @Getter
 public class UserItemVO {
 
-	/**
-	 * 用户id
-	 *
-	 * @mock 100010
-	 */
-	private String id;
+    /**
+     * 用户id
+     *
+     * @mock 100010
+     */
+    private String id;
 
-	/**
-	 * 用户名
-	 *
-	 * @mock admin
-	 */
-	private String name;
+    /**
+     * 用户名
+     *
+     * @mock admin
+     */
+    private String name;
 
-	/**
-	 * 手机号
-	 *
-	 * @mock 15500100020
-	 */
-	private String phone;
+    /**
+     * 手机号
+     *
+     * @mock 15500100020
+     */
+    private String phone;
 
-	/**
-	 * 用户状态；0-禁用 1-启用
-	 *
-	 * @mock 1
-	 */
-	private Integer state;
+    /**
+     * 用户状态；0-禁用 1-启用
+     *
+     * @mock 1
+     */
+    private Integer state;
 }

@@ -32,21 +32,21 @@ import java.util.Base64;
 @Component("rsaUtil")
 public class RSAUtil {
 
-	private final byte[] pubKey;
+    private final byte[] pubKey;
 
-	public RSAUtil(@Value("${rsa.private-key}") String key) {
-		Security.addProvider(new BouncyCastleProvider());
-		this.pubKey = Base64.getDecoder().decode(key);
-	}
+    public RSAUtil(@Value("${rsa.private-key}") String key) {
+        Security.addProvider(new BouncyCastleProvider());
+        this.pubKey = Base64.getDecoder().decode(key);
+    }
 
-	public String decrypt(String txt) throws Exception {
-		// 创建私钥对象
-		KeyFactory keyFactory = KeyFactory.getInstance("RSA", "BC");
-		PrivateKey privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(pubKey));
-		// 解密
-		Cipher decryptCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
-		decryptCipher.init(Cipher.DECRYPT_MODE, privateKey);
-		byte[] decryptedText = decryptCipher.doFinal(Base64.getDecoder().decode(txt));
-		return new String(decryptedText, StandardCharsets.UTF_8);
-	}
+    public String decrypt(String txt) throws Exception {
+        // 创建私钥对象
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA", "BC");
+        PrivateKey privateKey = keyFactory.generatePrivate(new PKCS8EncodedKeySpec(pubKey));
+        // 解密
+        Cipher decryptCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
+        decryptCipher.init(Cipher.DECRYPT_MODE, privateKey);
+        byte[] decryptedText = decryptCipher.doFinal(Base64.getDecoder().decode(txt));
+        return new String(decryptedText, StandardCharsets.UTF_8);
+    }
 }

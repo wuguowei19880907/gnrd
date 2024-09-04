@@ -24,5 +24,5 @@ import java.util.List;
 
 public interface RequestMappingDao extends JpaRepository<RequestMappingPO, Long> {
 
-	List<RequestMappingPO> findByIsLost(Integer isLost);
+    List<RequestMappingPO> findByIsLost(Integer isLost);
 }

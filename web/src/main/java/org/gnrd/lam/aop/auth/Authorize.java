@@ -30,9 +30,8 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Authorize {
 
-	/**
-	 * @return the Spring-EL expression to be evaluated before invoking the
-	 *         protected method
-	 */
-	String value();
+    /**
+     * @return the Spring-EL expression to be evaluated before invoking the protected method
+     */
+    String value();
 }

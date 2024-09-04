@@ -37,29 +37,28 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class AuthorizeAspect {
 
-	private final SpelExpressionParser spelExpressionParser;
+    private final SpelExpressionParser spelExpressionParser;
 
-	private final BeanFactoryResolver beanFactoryResolver;
+    private final BeanFactoryResolver beanFactoryResolver;
 
-	public AuthorizeAspect(BeanFactory beanFactory) {
-		this.spelExpressionParser = new SpelExpressionParser();
-		this.beanFactoryResolver = new BeanFactoryResolver(beanFactory);
-	}
+    public AuthorizeAspect(BeanFactory beanFactory) {
+        this.spelExpressionParser = new SpelExpressionParser();
+        this.beanFactoryResolver = new BeanFactoryResolver(beanFactory);
+    }
 
-	@Pointcut("@annotation(authorize)")
-	public void point(Authorize authorize) {
-	}
+    @Pointcut("@annotation(authorize)")
+    public void point(Authorize authorize) {}
 
-	@Before(value = "point(authorize)")
-	public void successLog(JoinPoint joinPoint, Authorize authorize) {
-		// 创建StandardEvaluationContext
-		StandardEvaluationContext evaluationContext = new StandardEvaluationContext();
-		evaluationContext.setBeanResolver(beanFactoryResolver);
-		String value = authorize.value();
-		Expression expression = spelExpressionParser.parseExpression(value);
-		Boolean result = expression.getValue(evaluationContext, Boolean.class);
-		if (Boolean.FALSE.equals(result)) {
-			throw new BaseException(HttpStatus.BAD_REQUEST, ECode.E_100002);
-		}
-	}
+    @Before(value = "point(authorize)")
+    public void successLog(JoinPoint joinPoint, Authorize authorize) {
+        // 创建StandardEvaluationContext
+        StandardEvaluationContext evaluationContext = new StandardEvaluationContext();
+        evaluationContext.setBeanResolver(beanFactoryResolver);
+        String value = authorize.value();
+        Expression expression = spelExpressionParser.parseExpression(value);
+        Boolean result = expression.getValue(evaluationContext, Boolean.class);
+        if (Boolean.FALSE.equals(result)) {
+            throw new BaseException(HttpStatus.BAD_REQUEST, ECode.E_100002);
+        }
+    }
 }

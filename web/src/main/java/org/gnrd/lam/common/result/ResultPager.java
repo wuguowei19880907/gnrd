@@ -29,141 +29,141 @@ import java.util.List;
  */
 public class ResultPager<T> implements Serializable {
 
-	/**
-	 * 查询结果
-	 * 
-	 * @since v1.0.0
-	 */
-	private List<T> content;
-	/**
-	 * 查询参数 number，从1开始
-	 * 
-	 * @mock 0
-	 * @since v1.0.0
-	 */
-	private int number;
-	/**
-	 * 查询参数 size
-	 * 
-	 * @mock 10
-	 * @since v1.0.0
-	 */
-	private int size;
-	/**
-	 * 此页实际有多少条记录
-	 * 
-	 * @mock 10
-	 * @since v1.0.0
-	 */
-	private int numberOfElements;
-	/**
-	 * 总记录数
-	 * 
-	 * @mock 100
-	 * @since v1.0.0
-	 */
-	private long totalElements;
+    /**
+     * 查询结果
+     * 
+     * @since v1.0.0
+     */
+    private List<T> content;
+    /**
+     * 查询参数 number，从1开始
+     * 
+     * @mock 0
+     * @since v1.0.0
+     */
+    private int number;
+    /**
+     * 查询参数 size
+     * 
+     * @mock 10
+     * @since v1.0.0
+     */
+    private int size;
+    /**
+     * 此页实际有多少条记录
+     * 
+     * @mock 10
+     * @since v1.0.0
+     */
+    private int numberOfElements;
+    /**
+     * 总记录数
+     * 
+     * @mock 100
+     * @since v1.0.0
+     */
+    private long totalElements;
 
-	/**
-	 * 总分页数
-	 * 
-	 * @mock 10
-	 * @since v1.0.0
-	 */
-	private int totalPages;
-	/**
-	 * 是否为最后一页
-	 * 
-	 * @mock false
-	 * @since v1.0.0
-	 */
-	private boolean last;
-	/**
-	 * 是否为第一页
-	 * 
-	 * @mock true
-	 * @since v1.0.0
-	 */
-	private boolean first;
+    /**
+     * 总分页数
+     * 
+     * @mock 10
+     * @since v1.0.0
+     */
+    private int totalPages;
+    /**
+     * 是否为最后一页
+     * 
+     * @mock false
+     * @since v1.0.0
+     */
+    private boolean last;
+    /**
+     * 是否为第一页
+     * 
+     * @mock true
+     * @since v1.0.0
+     */
+    private boolean first;
 
-	public ResultPager(Page<T> page) {
-		super();
-		this.content = page.getContent();
-		this.number = page.getNumber();
-		this.numberOfElements = page.getNumberOfElements();
-		this.size = page.getSize();
-		this.totalElements = page.getTotalElements();
-		this.totalPages = page.getTotalPages();
-		this.last = page.isLast();
-		this.first = page.isFirst();
-	}
+    public ResultPager(Page<T> page) {
+        super();
+        this.content = page.getContent();
+        this.number = page.getNumber();
+        this.numberOfElements = page.getNumberOfElements();
+        this.size = page.getSize();
+        this.totalElements = page.getTotalElements();
+        this.totalPages = page.getTotalPages();
+        this.last = page.isLast();
+        this.first = page.isFirst();
+    }
 
-	public static <S> ResultPager<S> of(final Page<S> page) {
-		return new ResultPager<>(page);
-	}
+    public static <S> ResultPager<S> of(final Page<S> page) {
+        return new ResultPager<>(page);
+    }
 
-	public List<T> getContent() {
-		return content;
-	}
+    public List<T> getContent() {
+        return content;
+    }
 
-	public void setContent(List<T> content) {
-		this.content = content;
-	}
+    public void setContent(List<T> content) {
+        this.content = content;
+    }
 
-	public int getNumber() {
-		return number + 1;
-	}
+    public int getNumber() {
+        return number + 1;
+    }
 
-	public void setNumber(int number) {
-		this.number = number;
-	}
+    public void setNumber(int number) {
+        this.number = number;
+    }
 
-	public int getNumberOfElements() {
-		return numberOfElements;
-	}
+    public int getNumberOfElements() {
+        return numberOfElements;
+    }
 
-	public void setNumberOfElements(int numberOfElements) {
-		this.numberOfElements = numberOfElements;
-	}
+    public void setNumberOfElements(int numberOfElements) {
+        this.numberOfElements = numberOfElements;
+    }
 
-	public int getSize() {
-		return size;
-	}
+    public int getSize() {
+        return size;
+    }
 
-	public void setSize(int size) {
-		this.size = size;
-	}
+    public void setSize(int size) {
+        this.size = size;
+    }
 
-	public long getTotalElements() {
-		return totalElements;
-	}
+    public long getTotalElements() {
+        return totalElements;
+    }
 
-	public void setTotalElements(long totalElements) {
-		this.totalElements = totalElements;
-	}
+    public void setTotalElements(long totalElements) {
+        this.totalElements = totalElements;
+    }
 
-	public int getTotalPages() {
-		return totalPages;
-	}
+    public int getTotalPages() {
+        return totalPages;
+    }
 
-	public void setTotalPages(int totalPages) {
-		this.totalPages = totalPages;
-	}
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
+    }
 
-	public boolean isLast() {
-		return last;
-	}
+    public boolean isLast() {
+        return last;
+    }
 
-	public void setLast(boolean last) {
-		this.last = last;
-	}
+    public void setLast(boolean last) {
+        this.last = last;
+    }
 
-	public boolean isFirst() {
-		return first;
-	}
+    public boolean isFirst() {
+        return first;
+    }
 
-	public void setFirst(boolean first) {
-		this.first = first;
-	}
+    public void setFirst(boolean first) {
+        this.first = first;
+    }
 
 }

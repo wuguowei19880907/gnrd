@@ -33,57 +33,57 @@ import java.util.Date;
 @Getter
 public class UserPO extends BasePO {
 
-	/**
-	 * 用户名称
-	 */
-	@Column(name = "c_name")
-	private String name;
+    /**
+     * 用户名称
+     */
+    @Column(name = "c_name")
+    private String name;
 
-	/**
-	 * 手机号
-	 */
-	@Column(name = "c_phone")
-	private String phone;
+    /**
+     * 手机号
+     */
+    @Column(name = "c_phone")
+    private String phone;
 
-	/**
-	 * 登录密码
-	 */
-	@Column(name = "c_password")
-	private String password;
+    /**
+     * 登录密码
+     */
+    @Column(name = "c_password")
+    private String password;
 
-	/**
-	 * 超级管理员 0-不是 1-是
-	 */
-	@Column(name = "is_super")
-	private Integer superAdmin;
+    /**
+     * 超级管理员 0-不是 1-是
+     */
+    @Column(name = "is_super")
+    private Integer superAdmin;
 
-	/**
-	 * 状态 0-禁用 1-启用
-	 */
-	@Column(name = "c_state")
-	private Integer state;
+    /**
+     * 状态 0-禁用 1-启用
+     */
+    @Column(name = "c_state")
+    private Integer state;
 
-	/**
-	 * 创建时间
-	 */
-	@Column(name = "create_time")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdAt;
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (!(o instanceof UserPO))
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof UserPO))
+            return false;
 
-		UserPO entity = (UserPO) o;
+        UserPO entity = (UserPO) o;
 
-		return id.equals(entity.getId());
-	}
+        return id.equals(entity.getId());
+    }
 
-	@Override
-	public int hashCode() {
-		return id != null ? id.hashCode() : 0;
-	}
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

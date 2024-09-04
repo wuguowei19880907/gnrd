@@ -32,12 +32,12 @@ import java.io.Serializable;
 @MappedSuperclass
 public class BasePO implements Serializable {
 
-	/**
-	 * id
-	 */
-	@Id
-	@Column(updatable = false)
-	@GenericGenerator(name = "uid", strategy = "org.gnrd.lam.common.tools.SnowflakeId")
-	@GeneratedValue(generator = "uid")
-	protected Long id;
+    /**
+     * id
+     */
+    @Id
+    @Column(updatable = false)
+    @GenericGenerator(name = "uid", strategy = "org.gnrd.lam.common.tools.SnowflakeId")
+    @GeneratedValue(generator = "uid")
+    protected Long id;
 }

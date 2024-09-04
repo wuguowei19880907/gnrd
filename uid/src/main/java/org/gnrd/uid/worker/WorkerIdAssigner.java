@@ -18,18 +18,17 @@
 package org.gnrd.uid.worker;
 
 /**
- * Represents a worker id assigner for
- * {@link org.gnrd.uid.impl.DefaultUidGenerator}
+ * Represents a worker id assigner for {@link org.gnrd.uid.impl.DefaultUidGenerator}
  * 
  * @author yutianbao
  */
 public interface WorkerIdAssigner {
 
-	/**
-	 * Assign worker id for {@link org.gnrd.uid.impl.DefaultUidGenerator}
-	 * 
-	 * @return assigned worker id
-	 */
-	long assignWorkerId();
+    /**
+     * Assign worker id for {@link org.gnrd.uid.impl.DefaultUidGenerator}
+     * 
+     * @return assigned worker id
+     */
+    long assignWorkerId();
 
 }

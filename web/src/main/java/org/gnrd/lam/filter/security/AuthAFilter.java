@@ -43,34 +43,34 @@ import java.io.IOException;
 @Slf4j
 public class AuthAFilter implements Filter {
 
-	@Resource
-	private SessionUtils sessionUtils;
+    @Resource
+    private SessionUtils sessionUtils;
 
-	@Override
-	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-			throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest) servletRequest;
-		String authToken = getTokenCookie(request);
-		if (!StringUtils.hasText(authToken)) {
-			log.error("X-Auth-Token is " + authToken);
-			HttpServletResponse response = (HttpServletResponse) servletResponse;
-			response.sendRedirect("/");
-			return;
-		}
-		Object info = sessionUtils.getInfo(authToken);
-		servletRequest.setAttribute(AuthToken.ATTRIBUTE, info);
-		filterChain.doFilter(servletRequest, servletResponse);
-	}
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
+            FilterChain filterChain) throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        String authToken = getTokenCookie(request);
+        if (!StringUtils.hasText(authToken)) {
+            log.error("X-Auth-Token is " + authToken);
+            HttpServletResponse response = (HttpServletResponse) servletResponse;
+            response.sendRedirect("/");
+            return;
+        }
+        Object info = sessionUtils.getInfo(authToken);
+        servletRequest.setAttribute(AuthToken.ATTRIBUTE, info);
+        filterChain.doFilter(servletRequest, servletResponse);
+    }
 
-	private String getTokenCookie(HttpServletRequest request) {
-		if (request.getCookies() == null) {
-			return null;
-		}
-		for (Cookie cookie : request.getCookies()) {
-			if (AuthToken.COOKIE_NAME.equals(cookie.getName())) {
-				return cookie.getValue();
-			}
-		}
-		return null;
-	}
+    private String getTokenCookie(HttpServletRequest request) {
+        if (request.getCookies() == null) {
+            return null;
+        }
+        for (Cookie cookie : request.getCookies()) {
+            if (AuthToken.COOKIE_NAME.equals(cookie.getName())) {
+                return cookie.getValue();
+            }
+        }
+        return null;
+    }
 }

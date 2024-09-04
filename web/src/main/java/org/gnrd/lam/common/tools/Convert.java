@@ -22,28 +22,27 @@ import java.util.List;
 
 public class Convert {
 
-	public static <T> List<T> toList(Object object, Class<T> clazz) {
-		final List<T> result = new ArrayList<T>();
-		if (object instanceof List<?>) {
-			for (Object o : (List<?>) object) {
-				result.add(clazz.cast(o));
-			}
-		}
-		return result;
-	}
+    public static <T> List<T> toList(Object object, Class<T> clazz) {
+        final List<T> result = new ArrayList<T>();
+        if (object instanceof List<?>) {
+            for (Object o : (List<?>) object) {
+                result.add(clazz.cast(o));
+            }
+        }
+        return result;
+    }
 
-	/**
-	 * 将模糊查询参数中的 / _ %三个特殊字符转义，并在开头和结尾添加 % 后返回
-	 *
-	 * @author wuguowei
-	 * @param param
-	 *            原始查询条件
-	 * @return 转换后的查询条件
-	 */
-	public static String getFuzzyQueryParam(final String param) {
-		if (param == null) {
-			return null;
-		}
-		return "%" + param.replace("/", "\\/").replace("_", "\\_").replace("%", "\\%") + "%";
-	}
+    /**
+     * 将模糊查询参数中的 / _ %三个特殊字符转义，并在开头和结尾添加 % 后返回
+     *
+     * @author wuguowei
+     * @param param 原始查询条件
+     * @return 转换后的查询条件
+     */
+    public static String getFuzzyQueryParam(final String param) {
+        if (param == null) {
+            return null;
+        }
+        return "%" + param.replace("/", "\\/").replace("_", "\\_").replace("%", "\\%") + "%";
+    }
 }

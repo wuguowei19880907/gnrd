@@ -28,18 +28,18 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MenuVO {
 
-	/**
-	 * 菜单名称
-	 */
-	private String name;
+    /**
+     * 菜单名称
+     */
+    private String name;
 
-	/**
-	 * 菜单编码
-	 */
-	private String code;
+    /**
+     * 菜单编码
+     */
+    private String code;
 
-	/**
-	 * 路径
-	 */
-	private String path;
+    /**
+     * 路径
+     */
+    private String path;
 }

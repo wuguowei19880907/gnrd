@@ -27,11 +27,11 @@ import java.io.Serializable;
 
 public class SnowflakeId implements IdentifierGenerator {
 
-	@Override
-	public Serializable generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object o)
-			throws HibernateException {
-		CachedUidGenerator cachedUidGenerator = (CachedUidGenerator) ApplicationContextHelper
-				.getBean("cachedUidGenerator");
-		return cachedUidGenerator.getUID();
-	}
+    @Override
+    public Serializable generate(SharedSessionContractImplementor sharedSessionContractImplementor,
+            Object o) throws HibernateException {
+        CachedUidGenerator cachedUidGenerator =
+                (CachedUidGenerator) ApplicationContextHelper.getBean("cachedUidGenerator");
+        return cachedUidGenerator.getUID();
+    }
 }

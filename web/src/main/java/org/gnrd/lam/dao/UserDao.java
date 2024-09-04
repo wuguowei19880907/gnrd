@@ -25,13 +25,13 @@ import java.util.Optional;
 
 public interface UserDao extends JpaRepository<UserPO, Long>, JpaSpecificationExecutor<UserPO> {
 
-	Optional<UserPO> findByName(String name);
+    Optional<UserPO> findByName(String name);
 
-	long countByName(String name);
+    long countByName(String name);
 
-	long countByPhone(String phone);
+    long countByPhone(String phone);
 
-	long countByIdNotAndName(Long id, String name);
+    long countByIdNotAndName(Long id, String name);
 
-	long countByIdNotAndPhone(Long id, String phone);
+    long countByIdNotAndPhone(Long id, String phone);
 }

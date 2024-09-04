@@ -26,19 +26,19 @@ import java.io.Serializable;
 @Getter
 public class VoidResult implements Serializable {
 
-	private final String SUCCESS = "000000";
+    private final String SUCCESS = "000000";
 
-	private String code;
+    private String code;
 
-	private String message;
+    private String message;
 
-	public VoidResult() {
-		this.code = SUCCESS;
-		this.message = "success";
-	}
+    public VoidResult() {
+        this.code = SUCCESS;
+        this.message = "success";
+    }
 
-	public VoidResult(String code, String message) {
-		this.code = code;
-		this.message = message;
-	}
+    public VoidResult(String code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 }

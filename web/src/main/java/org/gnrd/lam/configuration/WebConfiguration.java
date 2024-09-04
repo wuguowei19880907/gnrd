@@ -27,18 +27,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedOriginPatterns("http://localhost:*")
-				.allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
-				// 解决跨域读取不出header的内容
-				.allowedHeaders("*").exposedHeaders("Accept", "Origin", "X-Requested-With", "Content-Type",
-						"Last-Modified", "content-disposition")
-				.allowCredentials(true);
-	}
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedOriginPatterns("http://localhost:*")
+                .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
+                // 解决跨域读取不出header的内容
+                .allowedHeaders("*").exposedHeaders("Accept", "Origin", "X-Requested-With",
+                        "Content-Type", "Last-Modified", "content-disposition")
+                .allowCredentials(true);
+    }
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

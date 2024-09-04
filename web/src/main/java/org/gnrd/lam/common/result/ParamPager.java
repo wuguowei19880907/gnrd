@@ -27,48 +27,47 @@ import java.io.Serializable;
  */
 public class ParamPager implements Serializable {
 
-	/**
-	 * 分页参数，第几页，从1开始，默认为1
-	 * 
-	 * @mock 1
-	 */
-	@Min(message = "分页参数number最小为1", value = 1)
-	private Integer number = 1;
+    /**
+     * 分页参数，第几页，从1开始，默认为1
+     * 
+     * @mock 1
+     */
+    @Min(message = "分页参数number最小为1", value = 1)
+    private Integer number = 1;
 
-	/**
-	 * 分页参数，每一页有几条记录，最少为1，默认为10
-	 * 
-	 * @mock 10
-	 */
-	@Min(message = "分页参数size最小为1", value = 1)
-	private Integer size = 10;
+    /**
+     * 分页参数，每一页有几条记录，最少为1，默认为10
+     * 
+     * @mock 10
+     */
+    @Min(message = "分页参数size最小为1", value = 1)
+    private Integer size = 10;
 
-	public ParamPager() {
-	}
+    public ParamPager() {}
 
-	public ParamPager(Integer number, Integer size) {
-		this.number = number;
-		this.size = size;
-	}
+    public ParamPager(Integer number, Integer size) {
+        this.number = number;
+        this.size = size;
+    }
 
-	public ParamPager(Integer size) {
-		this.size = size;
-	}
+    public ParamPager(Integer size) {
+        this.size = size;
+    }
 
-	public Integer getNumber() {
-		return number - 1;
-	}
+    public Integer getNumber() {
+        return number - 1;
+    }
 
-	public void setNumber(Integer number) {
-		this.number = number;
-	}
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
 
-	public Integer getSize() {
-		return size;
-	}
+    public Integer getSize() {
+        return size;
+    }
 
-	public void setSize(Integer size) {
-		this.size = size;
-	}
+    public void setSize(Integer size) {
+        this.size = size;
+    }
 
 }

@@ -30,39 +30,39 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class LoginMenuDTO implements Serializable {
 
-	/**
-	 * 菜单名称
-	 */
-	private String name;
+    /**
+     * 菜单名称
+     */
+    private String name;
 
-	/**
-	 * 菜单编码
-	 */
-	private String code;
+    /**
+     * 菜单编码
+     */
+    private String code;
 
-	/**
-	 * 菜单网页地址
-	 */
-	private String path;
+    /**
+     * 菜单网页地址
+     */
+    private String path;
 
-	@Override
-	public boolean equals(Object object) {
-		if (this == object)
-			return true;
-		if (!(object instanceof LoginMenuDTO))
-			return false;
+    @Override
+    public boolean equals(Object object) {
+        if (this == object)
+            return true;
+        if (!(object instanceof LoginMenuDTO))
+            return false;
 
-		LoginMenuDTO that = (LoginMenuDTO) object;
+        LoginMenuDTO that = (LoginMenuDTO) object;
 
-		if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
-			return false;
-		return getCode() != null ? getCode().equals(that.getCode()) : that.getCode() == null;
-	}
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
+            return false;
+        return getCode() != null ? getCode().equals(that.getCode()) : that.getCode() == null;
+    }
 
-	@Override
-	public int hashCode() {
-		int result = getName() != null ? getName().hashCode() : 0;
-		result = 31 * result + (getCode() != null ? getCode().hashCode() : 0);
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getCode() != null ? getCode().hashCode() : 0);
+        return result;
+    }
 }
