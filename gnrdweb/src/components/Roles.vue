@@ -1,6 +1,6 @@
 <template>
   <div class="data-table">
-    <h2>后台角色列表</h2>
+    <h2>用户角色列表</h2>
 
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
       <div style="display: flex; align-items: center;">
@@ -18,14 +18,14 @@
         <el-button type="primary" @click="fetchData" size="small">搜索</el-button>
       </div>
 
-      <el-button type="success" @click="addUser" size="small">添加用户</el-button>
+      <el-button type="success" @click="add" size="small">添加用户角色</el-button>
     </div>
 
     <!-- 数据表格 -->
     <el-table :data="rawData" style="width: 100%" border>
-      <el-table-column prop="name" label="用户名" width="180" align="center"></el-table-column>
-      <el-table-column prop="phone" label="手机号" width="180" align="center"></el-table-column>
-      <el-table-column prop="state" label="状态" align="center" width="120">
+      <el-table-column prop="name" label="用户角色名称" width="180" align="center"></el-table-column>
+      <el-table-column prop="code" label="用户角色编码" width="180" align="center"></el-table-column>
+      <el-table-column prop="state" label="用户角色状态" align="center" width="120">
         <template v-slot="scope">
           <el-switch
               v-model="scope.row.state"
@@ -42,7 +42,7 @@
       <el-table-column label="操作" align="center" min-width="150">
         <template v-slot="scope">
           <el-button @click="editItem(scope.row)" size="default" type="primary">编 辑</el-button>
-          <el-button @click="resetPassword(scope.row)" size="default" type="success">重置密码</el-button>
+          <el-button @click="config(scope.row)" size="default" type="success">配置用户权限</el-button>
           <el-button @click="deleteItem(scope.row)" type="danger" size="default">删 除</el-button>
         </template>
       </el-table-column>
@@ -60,36 +60,48 @@
         @size-change="handleSizeChange"
     ></el-pagination>
 
-    <!-- 添加用户的对话框 -->
-    <el-dialog title="添加用户" v-model="dialogVisible" width="400px">
-      <el-form :model="newUser" ref="formRef" label-width="60px" label-position="left">
-        <el-form-item label="用户名" required>
-          <el-input v-model="newUser.name" placeholder="请输入用户名" style="width: 100%; text-align: right;"></el-input>
+    <!-- 添加角色的对话框 -->
+    <el-dialog title="添加用户角色" v-model="addDialogVisible" width="400px">
+      <el-form :model="newRole" ref="formRef" label-width="100px" label-position="left">
+        <el-form-item label="用户角色名称" required>
+          <el-input v-model="newRole.name" placeholder="请输入用户角色名称" style="width: 100%; text-align: right;"></el-input>
         </el-form-item>
-        <el-form-item label="密码" required>
-          <el-input type="password" v-model="newUser.password" placeholder="请输入密码" style="width: 100%; text-align: right;"></el-input>
+        <el-form-item label="用户角色编码" required>
+          <el-input v-model="newRole.code" placeholder="请输入用户角色编码" style="width: 100%; text-align: right;"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" required>
-          <el-input v-model="newUser.phone" placeholder="请输入手机号" style="width: 100%; text-align: right;"></el-input>
+        <el-form-item label="设置用户权限">
+          <el-select
+              v-model="selectPermissions"
+              multiple
+              placeholder="请设置用户权限"
+              style="width: 240px"
+          >
+            <el-option
+                v-for="permission in permissions"
+                :key="permission.id"
+                :label="permission.name"
+                :value="permission.id"
+            />
+          </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="closeDialog">取 消</el-button>
+        <el-button @click="closeAddDialog">取 消</el-button>
         <el-button
             type="primary"
             :disabled="!isAddFormValid"
-            @click="submitUser">添 加</el-button>
+            @click="submitAdd">添 加</el-button>
       </span>
     </el-dialog>
 
-    <!-- 编辑用户的对话框 -->
-    <el-dialog title="编辑用户" v-model="editDialogVisible" width="400px">
-      <el-form :model="editedUser" ref="editFormRef" label-width="60px" label-position="left">
-        <el-form-item label="用户名" required>
-          <el-input v-model="editedUser.name" placeholder="请输入用户名" style="width: 100%; text-align: right;"></el-input>
+    <!-- 编辑用户角色的对话框 -->
+    <el-dialog title="编辑用户角色" v-model="editDialogVisible" width="400px">
+      <el-form :model="editRole" ref="editFormRef" label-width="100px" label-position="left">
+        <el-form-item label="用户角色名称" required>
+          <el-input v-model="editRole.name" placeholder="请输入用户角色名称" style="width: 100%; text-align: right;"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" required>
-          <el-input v-model="editedUser.phone" placeholder="请输入手机号" style="width: 100%; text-align: right;"></el-input>
+        <el-form-item label="用户角色编码" required>
+          <el-input v-model="editRole.code" placeholder="请输入用户角色编码" style="width: 100%; text-align: right;"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -98,19 +110,28 @@
       </span>
     </el-dialog>
 
-    <!-- 重置用户登录密码的对话框 -->
-    <el-dialog title="重置密码" v-model="resetDialogVisible" width="400px">
-      <el-form :model="resetUserPwd" ref="editFormRef" label-width="100px" label-position="left">
-        <el-form-item label="请输入密码" required>
-          <el-input v-model="resetUserPwd.newPassword" placeholder="请输入用户名" style="width: 100%; text-align: right;"></el-input>
-        </el-form-item>
-        <el-form-item label="确认密码" required>
-          <el-input v-model="resetUserPwd.confirmPassword" placeholder="请输入手机号" style="width: 100%; text-align: right;"></el-input>
+    <!-- 设置角色权限的对话框 -->
+    <el-dialog title="设置用户权限" v-model="configDialogVisible" width="400px">
+      <el-form ref="configFormRef" label-width="100px" label-position="left">
+        <el-form-item label="设置用户权限">
+          <el-select
+              v-model="selectPermissions"
+              multiple
+              placeholder="请设置用户权限"
+              style="width: 240px"
+          >
+            <el-option
+                v-for="permission in permissions"
+                :key="permission.id"
+                :label="permission.name"
+                :value="permission.id"
+            />
+          </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="closeResetDialog">取 消</el-button>
-        <el-button type="primary" :disabled="!isResetFormValid" @click="resetUser">编 辑</el-button>
+        <el-button @click="closeConfigDialog">取 消</el-button>
+        <el-button type="primary" @click="reConfig">编 辑</el-button>
       </span>
     </el-dialog>
   </div>
@@ -119,32 +140,33 @@
 <script>
 import axios from "axios";
 import {ElMessage} from "element-plus";
+import {toRaw} from "@vue/reactivity";
+
 
 export default {
   data() {
     return {
       query1: '',
       selectedState: null,
-      dialogVisible: false,
+      addDialogVisible: false,
       editDialogVisible: false,
-      resetDialogVisible: false,
-      newUser: {
+      configDialogVisible: false,
+      newRole: {
         name: '',
-        password: '',
-        phone: ''
+        code: ''
       },
-      editedUser: {
+      editRole: {
         name: '',
         id: '',
-        phone: ''
+        code: ''
       },
-      resetUserPwd: {
-        id: '',
-        newPassword: '',
-        confirmPassword: ''
+      reConfigData: {
+        id: ''
       },
       total: 0,
       rawData: [], // 原始数据
+      permissions: [], // 原始数据
+      selectPermissions: [], // 原始数据
       pageSize: 10, // 每页显示的数据数量
       currentPage: 1 // 当前页码
     };
@@ -152,15 +174,11 @@ export default {
   computed: {
     isAddFormValid() {
       // 检查每个输入是否都有值
-      return this.newUser.name && this.newUser.password && this.newUser.phone;
+      return this.newRole.name && this.newRole.code;
     },
     isUpdateFormValid() {
       // 检查每个输入是否都有值
-      return this.editedUser.name && this.editedUser.id && this.editedUser.phone;
-    },
-    isResetFormValid() {
-      // 检查每个输入是否都有值
-      return this.resetUserPwd.id && this.resetUserPwd.newPassword && this.resetUserPwd.confirmPassword;
+      return this.editRole.name && this.editRole.id && this.editRole.code;
     }
   },
   methods: {
@@ -178,35 +196,50 @@ export default {
       if (this.selectedState !== null && this.selectedState !== '') {
         queryData.state = parseInt(this.selectedState);
       }
-      axios.get('/api/df-admin/users', {headers, params: queryData})
+      axios.get('/api/df-admin/roles', {headers, params: queryData})
           .then(response => {
-            this.rawData = response.data.result.content; // 将返回的数据赋值给 menuItems
+            this.rawData = response.data.result.content; // 将返回的数据赋值给 rawData
             this.total = parseInt(response.data.result.totalElements);
           })
           .catch(error => {
             ElMessage({
-              message: '获取后台用户列表失败：' + error.response.data.message,
+              message: '获取用户角色列表失败：' + error.response.data.message,
               type: 'error'
             });
           });
     },
-    addUser() {
-      this.dialogVisible = true;
-      // 清空输入框
-      this.newUser = {
-        name: '',
-        password: '',
-        phone: ''
+    getPermissions() {
+      const headers = {
+        'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
       };
+      axios.get('/api/df-admin/roles/permissions', {headers})
+          .then(response => {
+            this.permissions = response.data.result; // 将返回的数据赋值
+          })
+          .catch(error => {
+            ElMessage({
+              message: '获取权限列表失败：' + error.response.data.message,
+              type: 'error'
+            });
+          });
     },
-    closeDialog() {
+    add() {
+      this.addDialogVisible = true;
+      // 清空输入框
+      this.newRole = {
+        name: '',
+        code: ''
+      };
+      this.selectPermissions = []
+    },
+    closeAddDialog() {
       this.dialogVisible = false;
     },
     closeEditDialog() {
       this.editDialogVisible = false;
     },
-    closeResetDialog() {
-      this.resetDialogVisible = false;
+    closeConfigDialog() {
+      this.configDialogVisible = false;
     },
     handleSizeChange(newSize) {
       this.currentPage = 1;
@@ -217,52 +250,51 @@ export default {
       this.currentPage = currentPageNew;
       this.fetchData();
     },
-    handleStatusChange(user) {
-      if (user.state === 0) {
-        const headers = {
-          'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
-        };
-        axios.put(`/api/df-admin/users/${user.id}/disable`, {headers}).then(response => {
-          this.fetchData(); // 刷新列表
-        }).catch(error => {
-          ElMessage({
-            message: '修改用户状态失败：' + error.response.data.message,
-            type: 'error'
-          });
+    handleStatusChange(role) {
+      const headers = {
+        'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
+      };
+      // 提交数据到后台
+      const userData = {
+        state: role.state
+      };
+      axios.put(`/api/df-admin/roles/${role.id}/change-status`, userData, {headers}).then(response => {
+        this.fetchData(); // 刷新列表
+      }).catch(error => {
+        ElMessage({
+          message: '修改用户角色状态失败：' + error.response.data.message,
+          type: 'error'
         });
-      } else {
-        const headers = {
-          'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
-        };
-        axios.put(`/api/df-admin/users/${user.id}/enable`, {headers}).then(response => {
-          this.fetchData(); // 刷新列表
-        }).catch(error => {
-          ElMessage({
-            message: '修改用户状态失败：' + error.response.data.message,
-            type: 'error'
-          });
-        });
-      }
+      });
     },
     editItem(item) {
       this.editDialogVisible = true;
       // 清空输入框
-      this.editedUser = {
-        name: '',
+      this.editRole = {
+        name: item.name,
         id: item.id,
-        phone: ''
+        code: item.code
       };
     },
-    resetPassword(item) {
-      this.resetDialogVisible = true;
-      // 清空输入框
-      this.resetUserPwd = {
-        id: item.id,
-        password: ''
+    config(item) {
+      this.configDialogVisible = true;
+      const headers = {
+        'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
       };
+      this.reConfigData.id = item.id;
+      axios.get(`/api/df-admin/roles/${item.id}/permissions`, { headers })
+          .then(response => {
+            this.selectPermissions = response.data.result.permissionIds; // 将返回的数据赋值
+          })
+          .catch(error => {
+            ElMessage({
+              message: '获取用户角色失败：' + error.response.data.message,
+              type: 'error'
+            });
+          });
     },
     deleteItem(item) {
-      this.$confirm('确定要删除该用户吗?', '提示', {
+      this.$confirm('确定要删除该用户角色吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -270,8 +302,7 @@ export default {
         const headers = {
           'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
         };
-        // 假设删除接口为 /api/df-admin/users/{id}
-        axios.delete(`/api/df-admin/users/${item.id}`, { headers })
+        axios.delete(`/api/df-admin/roles/${item.id}`, { headers })
             .then(response => {
               this.$message({
                 type: 'success',
@@ -292,22 +323,24 @@ export default {
         });
       });
     },
-    submitUser() {
+    submitAdd() {
       // 提交数据到后台
       const userData = {
-        name: this.newUser.name,
-        password: this.newUser.password,
-        phone: this.newUser.phone
+        name: this.newRole.name,
+        code: this.newRole.code
       };
+      if (this.selectPermissions.length > 0) {
+        userData.permissionIds = toRaw(this.selectPermissions);
+      }
       const headers = {
         'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
       };
-      axios.post('/api/df-admin/users', userData, {headers}).then(response => {
+      axios.post('/api/df-admin/roles', userData, {headers}).then(response => {
         this.fetchData(); // 刷新列表
-        this.dialogVisible = false; // 关闭对话框
+        this.addDialogVisible = false; // 关闭对话框
       }).catch(error => {
         ElMessage({
-          message: '添加后台用户失败：' + error.response.data.message,
+          message: '添加用户角色失败：' + error.response.data.message,
           type: 'error'
         });
       });
@@ -315,43 +348,36 @@ export default {
     updateUser() {
       // 提交数据到后台
       const userData = {
-        name: this.editedUser.name,
-        phone: this.editedUser.phone
+        name: this.editRole.name,
+        code: this.editRole.code
       };
       const headers = {
         'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
       };
-      axios.put(`/api/df-admin/users/${this.editedUser.id}`, userData, {headers}).then(response => {
+      axios.put(`/api/df-admin/roles/${this.editRole.id}`, userData, {headers}).then(response => {
         this.fetchData(); // 刷新列表
-        this.dialogVisible = false; // 关闭对话框
+        this.editDialogVisible = false; // 关闭对话框
       }).catch(error => {
         ElMessage({
-          message: '编辑后台用户失败：' + error.response.data.message,
+          message: '编辑用户角色失败：' + error.response.data.message,
           type: 'error'
         });
       });
     },
-    resetUser() {
-      if (this.resetUserPwd.newPassword !== this.resetUserPwd.confirmPassword) {
-        ElMessage({
-          message: '两次密码不相同',
-          type: 'error'
-        });
-        return;
-      }
+    reConfig() {
       // 提交数据到后台
       const userData = {
-        password: this.resetUserPwd.newPassword
+        permissionIds: this.selectPermissions
       };
       const headers = {
         'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
       };
-      axios.put(`/api/df-admin/users/${this.resetUserPwd.id}/reset-password`, userData, {headers}).then(response => {
+      axios.put(`/api/df-admin/roles/${this.reConfigData.id}/permissions`, userData, {headers}).then(response => {
         this.fetchData(); // 刷新列表
-        this.dialogVisible = false; // 关闭对话框
+        this.configDialogVisible = false; // 关闭对话框
       }).catch(error => {
         ElMessage({
-          message: '重置密码失败：' + error.response.data.message,
+          message: '配置用户权限失败：' + error.response.data.message,
           type: 'error'
         });
       });
@@ -359,6 +385,7 @@ export default {
   },
   mounted() {
     this.fetchData(); // 组件挂载后获取数据
+    this.getPermissions();
   }
 };
 </script>

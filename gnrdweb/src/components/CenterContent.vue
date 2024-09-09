@@ -15,7 +15,7 @@
       <el-container>
         <!-- Aside Menu -->
         <el-aside v-if="menuVisible" width="200px" class="aside-menu">
-          <el-menu :router="true" default-active="1" class="menu" text-color="white" background-color="#333">
+          <el-menu :router="true" default-active="1" class="menu" text-color="white" background-color="#333" active-text-color="#ffd04b">
             <el-menu-item v-for="item in menuItems" :key="item.path" :index="item.path" @click="go(item.path)">
 <!--              <router-link :to="item.path"></router-link>-->
               {{ item.name }}
