@@ -15,20 +15,21 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.dao;
+package org.gnrd.lam.ro.admin.permission;
 
-import org.gnrd.lam.entity.PermissionPO;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import lombok.Getter;
+import lombok.Setter;
 
-public interface PermissionDao
-        extends JpaRepository<PermissionPO, Long>, JpaSpecificationExecutor<PermissionPO> {
+import java.util.List;
 
-    long countByName(String name);
+@Setter
+@Getter
+public class MapRequestRO {
 
-    long countByCode(String code);
-
-    long countByIdNotAndName(Long id, String name);
-
-    long countByIdNotAndCode(Long id, String phone);
+    /**
+     * request_mapping id的集合
+     * 
+     * @mock [1,2]
+     */
+    private List<Long> requestIds;
 }

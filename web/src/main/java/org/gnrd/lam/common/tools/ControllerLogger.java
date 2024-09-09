@@ -56,6 +56,9 @@ public class ControllerLogger implements ApplicationListener<ApplicationReadyEve
             RequestMappingInfo mappingInfo = entry.getKey();
 
             String name = mappingInfo.getName();
+            if (StringUtils.isBlank(name)) {
+                continue;
+            }
             String url = mappingInfo.getPatternsCondition() != null
                     ? mappingInfo.getPatternsCondition().toString()
                     : mappingInfo.getPathPatternsCondition().toString();

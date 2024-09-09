@@ -33,7 +33,7 @@ create table df_permission_request
         constraint df_permission_request_pk primary key
         constraint id_gt_zero check ( id > 0 ),
     df_permission_id bigint not null references c_permission(id),
-    df_request_id bigint not null  references df_permission_request(id),
+    df_request_id bigint not null  references df_request_mapping(id),
     create_time timestamp
 );
 comment on column df_permission_request.id is '主键';

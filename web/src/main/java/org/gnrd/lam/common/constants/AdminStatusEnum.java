@@ -17,7 +17,7 @@
 
 package org.gnrd.lam.common.constants;
 
-public enum UserStatusEnum {
+public enum AdminStatusEnum {
 
     /**
      * 禁用
@@ -30,7 +30,7 @@ public enum UserStatusEnum {
 
     private final int value;
 
-    UserStatusEnum(int value) {
+    AdminStatusEnum(int value) {
         this.value = value;
     }
 

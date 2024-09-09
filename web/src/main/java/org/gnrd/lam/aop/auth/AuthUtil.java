@@ -19,7 +19,7 @@ package org.gnrd.lam.aop.auth;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import org.gnrd.lam.common.constants.UserStatusEnum;
+import org.gnrd.lam.common.constants.AdminStatusEnum;
 import org.gnrd.lam.common.tools.Convert;
 import org.gnrd.lam.common.tools.SessionUtils;
 import org.gnrd.lam.dto.LoginPermissionDTO;
@@ -48,7 +48,7 @@ public class AuthUtil {
         Object loginUserObj = sessionUtil.getInfo(authToken);
         if (loginUserObj != null) {
             LoginUserDTO loginUserDTO = (LoginUserDTO) loginUserObj;
-            return loginUserDTO.getState() == UserStatusEnum.ENABLED.getValue();
+            return loginUserDTO.getState() == AdminStatusEnum.ENABLED.getValue();
         }
         return false;
     }

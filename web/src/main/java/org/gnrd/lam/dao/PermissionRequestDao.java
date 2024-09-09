@@ -19,7 +19,19 @@ package org.gnrd.lam.dao;
 
 import org.gnrd.lam.entity.PermissionRequestPO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public interface PermissionRequestDao extends JpaRepository<PermissionRequestPO, Long> {
 
+    List<PermissionRequestPO> findByPermissionId(Long permissionId);
+
+    @Transactional
+    @Query(value = "delete PermissionRequestPO p where p.permissionId = :permissionId")
+    @Modifying
+    void deleteByPermissionId(@Param("permissionId") Long permissionId);
 }

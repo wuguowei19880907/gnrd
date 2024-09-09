@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Setter
 @Getter
@@ -41,4 +42,11 @@ public class AddPermissionRO {
      */
     @NotEmpty(message = "角色编码不可为空")
     private String code;
+
+    /**
+     * request_mapping id的集合
+     * 
+     * @mock [1,2]
+     */
+    private List<Long> requestIds;
 }

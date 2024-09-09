@@ -39,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping(value = "df-admin/users", name = "df.admin.users")
+@RequestMapping(value = "df-admin/users")
 public class UserController {
 
     @Resource
@@ -52,7 +52,7 @@ public class UserController {
      * @param nameQuery 用户名或者手机号，支持模糊查询|155
      * @param state 用户状态，0：禁用；1：激活|1
      */
-    @GetMapping(name = "list", value = "")
+    @GetMapping(name = "查询后台用户列表", value = "")
     public CommonResult<ResultPager<UserItemVO>> list(String nameQuery, Integer state,
             ParamPager pager) throws Exception {
         ResultPager<UserItemVO> list = userService.list(nameQuery, state, pager);
@@ -62,7 +62,7 @@ public class UserController {
     /**
      * 新增后台用户
      */
-    @PostMapping(name = "addUser", value = "")
+    @PostMapping(name = "新增后台用户", value = "")
     public VoidResult addUser(@RequestBody @Validated AddUserRO ro) throws Exception {
         userService.addUser(ro);
         return new VoidResult();
@@ -73,7 +73,7 @@ public class UserController {
      * 
      * @param id 后台用户id|10010
      */
-    @PutMapping(name = "modifyUser", value = "{id}")
+    @PutMapping(name = "修改后台用户", value = "{id}")
     public VoidResult modifyUser(@PathVariable(name = "id") Long id,
             @RequestBody @Validated ModifyUserRO ro) throws Exception {
         userService.modifyUser(id, ro);
@@ -85,7 +85,7 @@ public class UserController {
      * 
      * @param id 后台用户id|10010
      */
-    @PutMapping(name = "resetPassword", value = "{id}/reset-password")
+    @PutMapping(name = "重置后台用户登录密码", value = "{id}/reset-password")
     public VoidResult resetPassword(@PathVariable(name = "id") Long id,
             @RequestBody @Validated ResetPasswordRO ro) throws Exception {
         userService.resetPassword(id, ro);
@@ -97,7 +97,7 @@ public class UserController {
      * 
      * @param id 后台用户id|10010
      */
-    @DeleteMapping(name = "deleteUser", value = "{id}")
+    @DeleteMapping(name = "删除后台用户", value = "{id}")
     public VoidResult deleteUser(@PathVariable(name = "id") Long id) throws Exception {
         userService.deleteUser(id);
         return new VoidResult();
@@ -108,7 +108,7 @@ public class UserController {
      * 
      * @param id 后台用户id|10010
      */
-    @PutMapping(name = "enableUser", value = "{id}/enable")
+    @PutMapping(name = "启用后台用户", value = "{id}/enable")
     public VoidResult enable(@PathVariable(name = "id") Long id) throws Exception {
         userService.enableUser(id);
         return new VoidResult();
@@ -119,7 +119,7 @@ public class UserController {
      * 
      * @param id 后台用户id|10010
      */
-    @PutMapping(name = "disableUser", value = "{id}/disable")
+    @PutMapping(name = "禁用后台用户", value = "{id}/disable")
     public VoidResult disable(@PathVariable(name = "id") Long id) throws Exception {
         userService.disableUser(id);
         return new VoidResult();

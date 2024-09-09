@@ -20,11 +20,29 @@ package org.gnrd.lam.service.admin;
 import org.gnrd.lam.common.result.ParamPager;
 import org.gnrd.lam.common.result.ResultPager;
 import org.gnrd.lam.ro.admin.permission.AddPermissionRO;
+import org.gnrd.lam.ro.admin.permission.MapRequestRO;
+import org.gnrd.lam.ro.admin.permission.ModifyPermissionRO;
 import org.gnrd.lam.vo.admin.PermissionItemVO;
+import org.gnrd.lam.vo.admin.RequestIdVO;
+import org.gnrd.lam.vo.admin.RequestMappingVO;
+
+import java.util.List;
 
 public interface PermissionService {
 
     ResultPager<PermissionItemVO> list(String nameQuery, Integer status, ParamPager pager);
 
     void add(AddPermissionRO ro);
+
+    void modify(Long id, ModifyPermissionRO ro);
+
+    void delete(Long id);
+
+    void changeStatus(Long id, Integer status);
+
+    void configRequest(Long id, MapRequestRO ro);
+
+    List<RequestMappingVO> getAllRequest();
+
+    RequestIdVO getConfigRequest(Long permissionId);
 }

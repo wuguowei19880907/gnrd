@@ -17,7 +17,7 @@
 
 package org.gnrd.lam.service.admin.impl;
 
-import org.gnrd.lam.common.constants.UserStatusEnum;
+import org.gnrd.lam.common.constants.AdminStatusEnum;
 import org.gnrd.lam.common.encrypt.password.PasswordEncoder;
 import org.gnrd.lam.common.exception.BaseException;
 import org.gnrd.lam.common.exception.ECode;
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
         UserPO userPO = new UserPO();
         userPO.setName(ro.getName());
         userPO.setPassword(passwordEncoder.encode(ro.getPassword()));
-        userPO.setState(UserStatusEnum.Constants.ENABLED);
+        userPO.setState(AdminStatusEnum.Constants.ENABLED);
         userPO.setPhone(ro.getPhone());
         userPO.setSuperAdmin(0);
         userPO.setCreatedAt(new Date());
@@ -132,10 +132,10 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Exception.class)
     public void disableUser(Long id) {
         UserPO po = userDao.findById(id).orElseThrow(() -> new BaseException(ECode.E_100052));
-        if (UserStatusEnum.DISABLED.getValue() == po.getState()) {
+        if (AdminStatusEnum.DISABLED.getValue() == po.getState()) {
             throw new BaseException(ECode.E_100053);
         }
-        po.setState(UserStatusEnum.DISABLED.getValue());
+        po.setState(AdminStatusEnum.DISABLED.getValue());
         userDao.save(po);
     }
 
@@ -143,10 +143,10 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Exception.class)
     public void enableUser(Long id) {
         UserPO po = userDao.findById(id).orElseThrow(() -> new BaseException(ECode.E_100052));
-        if (UserStatusEnum.ENABLED.getValue() == po.getState()) {
+        if (AdminStatusEnum.ENABLED.getValue() == po.getState()) {
             throw new BaseException(ECode.E_100053);
         }
-        po.setState(UserStatusEnum.ENABLED.getValue());
+        po.setState(AdminStatusEnum.ENABLED.getValue());
         userDao.save(po);
     }
 }
