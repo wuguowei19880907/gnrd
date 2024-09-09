@@ -15,24 +15,33 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.ro.admin.permission;
+package org.gnrd.lam.vo.admin;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
-import java.util.List;
-
+/**
+ * 角色包含的权限数据
+ *
+ * @author WUGUOWEI
+ * 2024年09月09日
+ */
 @Setter
 @Getter
-public class AddPermissionRO {
+public class RolePermissionVO {
+
+    /**
+     * 权限表 id
+     *
+     * @mock 100010
+     */
+    private String id;
 
     /**
      * 权限名
      *
-     * @mock 经理
+     * @mock 创建xx
      */
-    @NotEmpty(message = "权限名不可为空")
     private String name;
 
     /**
@@ -40,13 +49,5 @@ public class AddPermissionRO {
      *
      * @mock create_menu
      */
-    @NotEmpty(message = "权限编码不可为空")
     private String code;
-
-    /**
-     * request_mapping id的集合
-     * 
-     * @mock [1,2]
-     */
-    private List<Long> requestIds;
 }

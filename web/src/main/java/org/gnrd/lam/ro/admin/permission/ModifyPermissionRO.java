@@ -27,18 +27,18 @@ import javax.validation.constraints.NotEmpty;
 public class ModifyPermissionRO {
 
     /**
-     * 角色名
+     * 权限名
      *
      * @mock 经理
      */
-    @NotEmpty(message = "角色名不可为空")
+    @NotEmpty(message = "权限名不可为空")
     private String name;
 
     /**
-     * 角色编码
+     * 权限编码
      *
      * @mock create_menu
      */
-    @NotEmpty(message = "角色编码不可为空")
+    @NotEmpty(message = "权限编码不可为空")
     private String code;
 }

@@ -15,23 +15,38 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.dao;
+package org.gnrd.lam.ro.admin.role;
 
-import org.gnrd.lam.entity.RolePermissionPO;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
-public interface RolePermissionDao extends JpaRepository<RolePermissionPO, Long> {
+@Setter
+@Getter
+public class AddRoleRO {
 
-    List<RolePermissionPO> findByRoleId(Long roleId);
+    /**
+     * 角色名
+     *
+     * @mock 经理
+     */
+    @NotEmpty(message = "角色名不可为空")
+    private String name;
 
-    @Transactional
-    @Query(value = "delete RolePermissionPO p where p.roleId = :roleId")
-    @Modifying
-    void deleteByRoleId(@Param("roleId") Long roleId);
+    /**
+     * 角色编码
+     *
+     * @mock create_menu
+     */
+    @NotEmpty(message = "角色编码不可为空")
+    private String code;
+
+    /**
+     * 权限 id的集合
+     *
+     * @mock [1,2]
+     */
+    private List<Long> permissionIds;
 }

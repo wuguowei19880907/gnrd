@@ -19,6 +19,15 @@ package org.gnrd.lam.dao;
 
 import org.gnrd.lam.entity.RolePO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface RoleDao extends JpaRepository<RolePO, Long> {
+public interface RoleDao extends JpaRepository<RolePO, Long>, JpaSpecificationExecutor<RolePO> {
+
+    long countByName(String name);
+
+    long countByCode(String code);
+
+    long countByIdNotAndName(Long id, String name);
+
+    long countByIdNotAndCode(Long id, String phone);
 }
