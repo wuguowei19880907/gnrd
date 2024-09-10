@@ -24,15 +24,20 @@ import org.gnrd.lam.common.exception.ECode;
 import org.gnrd.lam.common.result.ParamPager;
 import org.gnrd.lam.common.result.ResultPager;
 import org.gnrd.lam.common.tools.Convert;
+import org.gnrd.lam.dao.RoleDao;
 import org.gnrd.lam.dao.UserDao;
+import org.gnrd.lam.dao.UserRoleDao;
+import org.gnrd.lam.dto.UserRoleLinkDTO;
 import org.gnrd.lam.entity.UserPO;
 import org.gnrd.lam.ro.admin.user.AddUserRO;
 import org.gnrd.lam.ro.admin.user.ModifyUserRO;
 import org.gnrd.lam.ro.admin.user.ResetPasswordRO;
 import org.gnrd.lam.service.admin.UserService;
+import org.gnrd.lam.vo.admin.RoleIInUserVO;
 import org.gnrd.lam.vo.admin.UserItemVO;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -43,7 +48,11 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component("userService")
 public class UserServiceImpl implements UserService {
@@ -52,6 +61,10 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     @Resource
     private UserDao userDao;
+    @Resource
+    private UserRoleDao userRoleDao;
+    @Resource
+    private RoleDao roleDao;
     @Resource
     private ModelMapper modelMapper;
 
@@ -75,7 +88,25 @@ public class UserServiceImpl implements UserService {
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
         Pageable pageable = PageRequest.of(pager.getNumber(), pager.getSize(), sort);
         Page<UserPO> users = userDao.findAll(specification, pageable);
-        Page<UserItemVO> map = users.map(userPO -> modelMapper.map(userPO, UserItemVO.class));
+        List<UserPO> content = users.getContent();
+        final List<UserItemVO> vos = new ArrayList<>(content.size());
+        final List<Long> userIds = content.stream().map(UserPO::getId).collect(Collectors.toList());
+        final List<UserRoleLinkDTO> userRoles = userRoleDao.findUserRoles(userIds);
+        Map<Long, List<UserRoleLinkDTO>> userRoleMap =
+                userRoles.stream().collect(Collectors.groupingBy(UserRoleLinkDTO::getUserId));
+        for (UserPO userPO : content) {
+            UserItemVO userItemVO = modelMapper.map(userPO, UserItemVO.class);
+            List<UserRoleLinkDTO> linkDTOS = userRoleMap.get(userPO.getId());
+            List<RoleIInUserVO> inUserVOS = linkDTOS.stream().map(userRoleLinkDTO -> {
+                RoleIInUserVO vo = new RoleIInUserVO();
+                vo.setId(userRoleLinkDTO.getRoleId().toString());
+                vo.setName(userRoleLinkDTO.getRoleName());
+                return vo;
+            }).collect(Collectors.toList());
+            userItemVO.setRoles(inUserVOS);
+            vos.add(userItemVO);
+        }
+        Page<UserItemVO> map = new PageImpl<>(vos, users.getPageable(), users.getTotalElements());
         return ResultPager.of(map);
     }
 

@@ -39,6 +39,19 @@
           </el-switch>
         </template>
       </el-table-column>
+      <el-table-column prop="roles" label="角色" align="center">
+        <template v-slot="scope">
+          <el-tag
+              v-for="role in scope.row.roles"
+              :key="role.id"
+              :type="role.name"
+              effect="dark"
+              round
+          >
+            {{ role.name }}
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" min-width="150">
         <template v-slot="scope">
           <el-button @click="editItem(scope.row)" size="default" type="primary">编 辑</el-button>

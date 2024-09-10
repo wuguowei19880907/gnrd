@@ -20,6 +20,8 @@ package org.gnrd.lam.vo.admin;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * 用户列表数据
  *
@@ -56,4 +58,9 @@ public class UserItemVO {
      * @mock 1
      */
     private Integer state;
+
+    /**
+     * 用户包含的角色列表
+     */
+    private List<RoleIInUserVO> roles;
 }

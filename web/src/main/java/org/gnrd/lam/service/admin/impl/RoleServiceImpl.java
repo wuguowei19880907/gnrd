@@ -88,8 +88,8 @@ public class RoleServiceImpl implements RoleService {
         Sort sort = Sort.by(Sort.Direction.DESC, "createdAt");
         Pageable pageable = PageRequest.of(pager.getNumber(), pager.getSize(), sort);
         Page<RolePO> rolePOS = roleDao.findAll(specification, pageable);
-        Page<RoleItemVO> map = rolePOS
-                .map(permissionPO -> modelMapper.map(permissionPO, RoleItemVO.class));
+        Page<RoleItemVO> map =
+                rolePOS.map(permissionPO -> modelMapper.map(permissionPO, RoleItemVO.class));
         return ResultPager.of(map);
     }
 
@@ -138,16 +138,14 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long id) {
-        RolePO po =
-                roleDao.findById(id).orElseThrow(() -> new BaseException(ECode.E_100072));
+        RolePO po = roleDao.findById(id).orElseThrow(() -> new BaseException(ECode.E_100072));
         roleDao.delete(po);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void changeStatus(Long id, Integer status) {
-        RolePO po =
-                roleDao.findById(id).orElseThrow(() -> new BaseException(ECode.E_100072));
+        RolePO po = roleDao.findById(id).orElseThrow(() -> new BaseException(ECode.E_100072));
         if (status.equals(po.getState())) {
             throw new BaseException(ECode.E_100073);
         }
@@ -183,8 +181,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RolePermissionVO> getPermissions() {
         List<PermissionPO> permissionPOS = permissionDao.findAll();
-        return permissionPOS.stream()
-                .sorted(Comparator.comparing(PermissionPO::getCreatedAt))
+        return permissionPOS.stream().sorted(Comparator.comparing(PermissionPO::getCreatedAt))
                 .map(requestMappingPO -> modelMapper.map(requestMappingPO, RolePermissionVO.class))
                 .collect(Collectors.toList());
     }
@@ -200,8 +197,7 @@ public class RoleServiceImpl implements RoleService {
         return permissionIdVO;
     }
 
-    private boolean containPermissionId(final List<RolePermissionPO> list,
-                                        Long permissionId) {
+    private boolean containPermissionId(final List<RolePermissionPO> list, Long permissionId) {
         Iterator<RolePermissionPO> iterator = list.iterator();
         while (iterator.hasNext()) {
             RolePermissionPO next = iterator.next();

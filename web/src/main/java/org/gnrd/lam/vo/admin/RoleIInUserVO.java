@@ -21,32 +21,25 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 角色包含的权限数据
+ * 用户包含的角色信息
  *
- * @author WUGUOWEI 2024年09月09日
+ * @author WUGUOWEI 2024年09月10日
  */
 @Setter
 @Getter
-public class RolePermissionVO {
+public class RoleIInUserVO {
 
     /**
-     * 权限表 id
+     * 角色id
      *
      * @mock 100010
      */
     private String id;
 
     /**
-     * 权限名
+     * 角色名
      *
      * @mock 创建xx
      */
     private String name;
-
-    /**
-     * 权限编码
-     *
-     * @mock create_menu
-     */
-    private String code;
 }

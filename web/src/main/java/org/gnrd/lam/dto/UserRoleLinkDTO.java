@@ -15,38 +15,25 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.vo.admin;
+package org.gnrd.lam.dto;
+
 
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * 角色包含的权限数据
- *
- * @author WUGUOWEI 2024年09月09日
- */
 @Setter
 @Getter
-public class RolePermissionVO {
+public class UserRoleLinkDTO {
 
-    /**
-     * 权限表 id
-     *
-     * @mock 100010
-     */
-    private String id;
+    private Long userId;
 
-    /**
-     * 权限名
-     *
-     * @mock 创建xx
-     */
-    private String name;
+    private Long roleId;
 
-    /**
-     * 权限编码
-     *
-     * @mock create_menu
-     */
-    private String code;
+    private String roleName;
+
+    public UserRoleLinkDTO(Long userId, Long roleId, String roleName) {
+        this.userId = userId;
+        this.roleId = roleId;
+        this.roleName = roleName;
+    }
 }

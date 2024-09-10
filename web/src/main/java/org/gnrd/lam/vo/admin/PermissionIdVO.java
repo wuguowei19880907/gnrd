@@ -25,8 +25,7 @@ import java.util.List;
 /**
  * 权限id 数据
  *
- * @author WUGUOWEI
- * 2024年09月09日
+ * @author WUGUOWEI 2024年09月09日
  */
 @Setter
 @Getter

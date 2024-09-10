@@ -57,7 +57,8 @@ public class RoleController {
      * @param state 角色状态，0：禁用；1：激活|1
      */
     @GetMapping(name = "查询后台角色列表", value = "")
-    public CommonResult<ResultPager<RoleItemVO>> list(String nameQuery, Integer state, ParamPager pager) throws Exception {
+    public CommonResult<ResultPager<RoleItemVO>> list(String nameQuery, Integer state,
+            ParamPager pager) throws Exception {
         ResultPager<RoleItemVO> list = roleService.list(nameQuery, state, pager);
         return new CommonResult<>(list);
     }
@@ -78,7 +79,7 @@ public class RoleController {
      */
     @PutMapping(name = "修改用户角色", value = "{id}")
     public VoidResult modifyRole(@PathVariable(name = "id") Long id,
-                                       @RequestBody @Validated ModifyRoleRO ro) throws Exception {
+            @RequestBody @Validated ModifyRoleRO ro) throws Exception {
         roleService.modify(id, ro);
         return new VoidResult();
     }
@@ -101,7 +102,7 @@ public class RoleController {
      */
     @PutMapping(name = "用户角色的启用与禁用", value = "{id}/change-status")
     public VoidResult changeStatus(@PathVariable(name = "id") Long id,
-                                   @RequestBody @Validated ChangeStatusRO ro) throws Exception {
+            @RequestBody @Validated ChangeStatusRO ro) throws Exception {
         roleService.changeStatus(id, ro.getState());
         return new VoidResult();
     }
@@ -124,7 +125,7 @@ public class RoleController {
      */
     @PutMapping(name = "为角色配置权限", value = "{id}/permissions")
     public VoidResult configPermissions(@PathVariable(name = "id") Long id,
-                                            @RequestBody @Validated MapPermissionRO ro) throws Exception {
+            @RequestBody @Validated MapPermissionRO ro) throws Exception {
         roleService.configPermissions(id, ro);
         return new VoidResult();
     }
