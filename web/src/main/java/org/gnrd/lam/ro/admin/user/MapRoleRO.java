@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.vo.admin;
+package org.gnrd.lam.ro.admin.user;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,18 +23,18 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * 权限id 数据
+ * 用户绑定角色
  *
- * @author WUGUOWEI 2024年09月09日
+ * @author WUGUOWEI 2024年09月11日
  */
 @Setter
 @Getter
-public class PermissionIdVO {
+public class MapRoleRO {
 
     /**
-     * 权限 id的集合
-     *
+     * 用户角色 id的集合
+     * 
      * @mock [1,2]
      */
-    private List<String> permissionIds;
+    private List<Long> roleIds;
 }

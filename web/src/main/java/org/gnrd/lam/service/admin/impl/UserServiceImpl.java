@@ -28,13 +28,17 @@ import org.gnrd.lam.dao.RoleDao;
 import org.gnrd.lam.dao.UserDao;
 import org.gnrd.lam.dao.UserRoleDao;
 import org.gnrd.lam.dto.UserRoleLinkDTO;
+import org.gnrd.lam.entity.RolePO;
 import org.gnrd.lam.entity.UserPO;
+import org.gnrd.lam.entity.UserRolePO;
 import org.gnrd.lam.ro.admin.user.AddUserRO;
+import org.gnrd.lam.ro.admin.user.MapRoleRO;
 import org.gnrd.lam.ro.admin.user.ModifyUserRO;
 import org.gnrd.lam.ro.admin.user.ResetPasswordRO;
 import org.gnrd.lam.service.admin.UserService;
-import org.gnrd.lam.vo.admin.RoleIInUserVO;
-import org.gnrd.lam.vo.admin.UserItemVO;
+import org.gnrd.lam.vo.admin.user.RoleIInUserVO;
+import org.gnrd.lam.vo.admin.user.RoleIdVO;
+import org.gnrd.lam.vo.admin.user.UserItemVO;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -44,12 +48,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -127,6 +133,16 @@ public class UserServiceImpl implements UserService {
         userPO.setSuperAdmin(0);
         userPO.setCreatedAt(new Date());
         userDao.save(userPO);
+        // 添加关联的角色
+        if (ro.getRoleIds() != null) {
+            ro.getRoleIds().forEach(id -> {
+                UserRolePO userRolePO = new UserRolePO();
+                userRolePO.setUserId(userPO.getId());
+                userRolePO.setRoleId(id);
+                userRolePO.setCreatedAt(new Date());
+                userRoleDao.save(userRolePO);
+            });
+        }
     }
 
     @Override
@@ -179,5 +195,59 @@ public class UserServiceImpl implements UserService {
         }
         po.setState(AdminStatusEnum.ENABLED.getValue());
         userDao.save(po);
+    }
+
+    @Override
+    public List<RoleIInUserVO> getActiveRoles() {
+        List<RolePO> pos = roleDao.findAll();
+        return pos.stream().map(rolePO -> modelMapper.map(rolePO, RoleIInUserVO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void bindRoles(Long id, MapRoleRO ro) {
+        if (CollectionUtils.isEmpty(ro.getRoleIds())) {
+            // 如果是空，则直接删除关联的 user_role 记录即可
+            userRoleDao.deleteByUserId(id);
+        } else {
+            final List<UserRolePO> needDelete = userRoleDao.findByUserId(id);
+            final List<UserRolePO> needInsert = new ArrayList<>(ro.getRoleIds().size());
+            for (Long roleId : ro.getRoleIds()) {
+                if (!containRoleId(needDelete, roleId)) {
+                    UserRolePO userRolePO = new UserRolePO();
+                    userRolePO.setUserId(id);
+                    userRolePO.setRoleId(roleId);
+                    userRolePO.setCreatedAt(new Date());
+                    needInsert.add(userRolePO);
+                }
+            }
+            // 删除role_permission信息
+            userRoleDao.deleteAll(needDelete);
+            // 插入role_permission信息
+            userRoleDao.saveAll(needInsert);
+        }
+    }
+
+    @Override
+    public RoleIdVO getConfiguredRoleIds(Long userId) {
+        List<UserRolePO> userRolePOS = userRoleDao.findByUserId(userId);
+        List<String> roleIds = userRolePOS.stream()
+                .map(userRolePO -> userRolePO.getRoleId().toString()).collect(Collectors.toList());
+        RoleIdVO roleIdVO = new RoleIdVO();
+        roleIdVO.setRoleIds(roleIds);
+        return roleIdVO;
+    }
+
+    private boolean containRoleId(final List<UserRolePO> list, Long roleId) {
+        Iterator<UserRolePO> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            UserRolePO next = iterator.next();
+            if (next.getRoleId().equals(roleId)) {
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
     }
 }

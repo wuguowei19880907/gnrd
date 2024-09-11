@@ -288,7 +288,7 @@ export default {
           })
           .catch(error => {
             ElMessage({
-              message: '获取用户角色失败：' + error.response.data.message,
+              message: '获取用户角色已配置权限失败：' + error.response.data.message,
               type: 'error'
             });
           });

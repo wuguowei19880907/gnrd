@@ -22,8 +22,10 @@ import org.gnrd.lam.entity.MenuPO;
 import org.gnrd.lam.entity.PermissionPO;
 import org.gnrd.lam.entity.UserRolePO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -38,4 +40,11 @@ public interface UserRoleDao extends JpaRepository<UserRolePO, Long> {
 
     @Query(value = "select new org.gnrd.lam.dto.UserRoleLinkDTO(ur.userId,ur.roleId,r.name) from UserRolePO ur left join ur.roles r where ur.userId in (:userIds)")
     List<UserRoleLinkDTO> findUserRoles(@Param("userIds") List<Long> userIds);
+
+    @Transactional
+    @Query(value = "delete UserRolePO p where p.userId = :userId")
+    @Modifying
+    void deleteByUserId(@Param("userId") Long userId);
+
+    List<UserRolePO> findByUserId(Long userId);
 }

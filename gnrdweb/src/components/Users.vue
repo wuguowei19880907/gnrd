@@ -44,9 +44,10 @@
           <el-tag
               v-for="role in scope.row.roles"
               :key="role.id"
-              :type="role.name"
+              type="warning"
               effect="dark"
               round
+              style="margin-right: 8px;"
           >
             {{ role.name }}
           </el-tag>
@@ -55,6 +56,7 @@
       <el-table-column label="操作" align="center" min-width="150">
         <template v-slot="scope">
           <el-button @click="editItem(scope.row)" size="default" type="primary">编 辑</el-button>
+          <el-button @click="configRole(scope.row)" size="default" type="primary">设置用户角色</el-button>
           <el-button @click="resetPassword(scope.row)" size="default" type="success">重置密码</el-button>
           <el-button @click="deleteItem(scope.row)" type="danger" size="default">删 除</el-button>
         </template>
@@ -75,7 +77,7 @@
 
     <!-- 添加用户的对话框 -->
     <el-dialog title="添加用户" v-model="dialogVisible" width="400px">
-      <el-form :model="newUser" ref="formRef" label-width="60px" label-position="left">
+      <el-form :model="newUser" ref="formRef" label-width="100px" label-position="left">
         <el-form-item label="用户名" required>
           <el-input v-model="newUser.name" placeholder="请输入用户名" style="width: 100%; text-align: right;"></el-input>
         </el-form-item>
@@ -84,6 +86,21 @@
         </el-form-item>
         <el-form-item label="手机号" required>
           <el-input v-model="newUser.phone" placeholder="请输入手机号" style="width: 100%; text-align: right;"></el-input>
+        </el-form-item>
+        <el-form-item label="设置用户角色">
+          <el-select
+              v-model="selectRoles"
+              multiple
+              placeholder="请设置用户角色"
+              style="width: 240px"
+          >
+            <el-option
+                v-for="role in roles"
+                :key="role.id"
+                :label="role.name"
+                :value="role.id"
+            />
+          </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -97,7 +114,7 @@
 
     <!-- 编辑用户的对话框 -->
     <el-dialog title="编辑用户" v-model="editDialogVisible" width="400px">
-      <el-form :model="editedUser" ref="editFormRef" label-width="60px" label-position="left">
+      <el-form :model="editedUser" ref="editFormRef" label-width="100px" label-position="left">
         <el-form-item label="用户名" required>
           <el-input v-model="editedUser.name" placeholder="请输入用户名" style="width: 100%; text-align: right;"></el-input>
         </el-form-item>
@@ -126,12 +143,38 @@
         <el-button type="primary" :disabled="!isResetFormValid" @click="resetUser">编 辑</el-button>
       </span>
     </el-dialog>
+
+    <!-- 设置用户角色的对话框 -->
+    <el-dialog title="设置用户角色" v-model="configDialogVisible" width="400px">
+      <el-form ref="configFormRef" label-width="100px" label-position="left">
+        <el-form-item label="设置用户角色">
+          <el-select
+              v-model="selectRoles"
+              multiple
+              placeholder="请设置用户角色"
+              style="width: 240px"
+          >
+            <el-option
+                v-for="role in roles"
+                :key="role.id"
+                :label="role.name"
+                :value="role.id"
+            />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="closeConfigDialog">取 消</el-button>
+        <el-button type="primary" @click="reConfig">编 辑</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import {ElMessage} from "element-plus";
+import {toRaw} from "@vue/reactivity";
 
 export default {
   data() {
@@ -141,6 +184,7 @@ export default {
       dialogVisible: false,
       editDialogVisible: false,
       resetDialogVisible: false,
+      configDialogVisible: false,
       newUser: {
         name: '',
         password: '',
@@ -156,8 +200,13 @@ export default {
         newPassword: '',
         confirmPassword: ''
       },
+      reConfigData: {
+        id: ''
+      },
       total: 0,
       rawData: [], // 原始数据
+      roles: [], // 原始数据
+      selectRoles: [], // 原始数据
       pageSize: 10, // 每页显示的数据数量
       currentPage: 1 // 当前页码
     };
@@ -211,6 +260,22 @@ export default {
         password: '',
         phone: ''
       };
+      this.selectRoles = [];
+    },
+    getRoles() {
+      const headers = {
+        'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
+      };
+      axios.get('/api/df-admin/users/roles', {headers})
+          .then(response => {
+            this.roles = response.data.result; // 将返回的数据赋值
+          })
+          .catch(error => {
+            ElMessage({
+              message: '获取权限列表失败：' + error.response.data.message,
+              type: 'error'
+            });
+          });
     },
     closeDialog() {
       this.dialogVisible = false;
@@ -220,6 +285,10 @@ export default {
     },
     closeResetDialog() {
       this.resetDialogVisible = false;
+    },
+    closeConfigDialog() {
+      this.configDialogVisible = false;
+      this.reConfigData.id = '';
     },
     handleSizeChange(newSize) {
       this.currentPage = 1;
@@ -256,6 +325,23 @@ export default {
           });
         });
       }
+    },
+    configRole(item) {
+      this.configDialogVisible = true;
+      const headers = {
+        'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
+      };
+      this.reConfigData.id = item.id;
+      axios.get(`/api/df-admin/users/${item.id}/roles`, { headers })
+          .then(response => {
+            this.selectRoles = response.data.result.roleIds; // 将返回的数据赋值
+          })
+          .catch(error => {
+            ElMessage({
+              message: '获取用户已配置角色失败：' + error.response.data.message,
+              type: 'error'
+            });
+          });
     },
     editItem(item) {
       this.editDialogVisible = true;
@@ -312,6 +398,9 @@ export default {
         password: this.newUser.password,
         phone: this.newUser.phone
       };
+      if (this.selectRoles.length > 0) {
+        userData.roleIds = toRaw(this.selectRoles);
+      }
       const headers = {
         'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
       };
@@ -368,10 +457,29 @@ export default {
           type: 'error'
         });
       });
+    },
+    reConfig() {
+      // 提交数据到后台
+      const userData = {
+        roleIds: this.selectRoles
+      };
+      const headers = {
+        'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
+      };
+      axios.put(`/api/df-admin/users/${this.reConfigData.id}/roles`, userData, {headers}).then(response => {
+        this.fetchData(); // 刷新列表
+        this.configDialogVisible = false; // 关闭对话框
+      }).catch(error => {
+        ElMessage({
+          message: '配置用户权限失败：' + error.response.data.message,
+          type: 'error'
+        });
+      });
     }
   },
   mounted() {
     this.fetchData(); // 组件挂载后获取数据
+    this.getRoles();
   }
 };
 </script>

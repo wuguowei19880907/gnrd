@@ -15,66 +15,31 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.vo.admin;
+package org.gnrd.lam.vo.admin.user;
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * request_mapping数据
+ * 用户包含的角色信息
  *
- * @author WUGUOWEI 2024年08月28日
+ * @author WUGUOWEI 2024年09月10日
  */
 @Setter
 @Getter
-public class RequestMappingVO {
+public class RoleIInUserVO {
 
     /**
-     * request_mapping id
+     * 角色id
      *
      * @mock 100010
      */
     private String id;
 
     /**
-     * request_mapping name
+     * 角色名
      *
-     * @mock df.admin.users#list
+     * @mock 创建xx
      */
     private String name;
-
-    /**
-     * RequestMapping.path
-     */
-    private String path;
-
-    /**
-     * RequestMapping.method
-     */
-    private String method;
-
-    /**
-     * RequestMapping.params
-     */
-    private String params;
-
-    /**
-     * RequestMapping.headers
-     */
-    private String headers;
-
-    /**
-     * RequestMapping.consumes
-     */
-    private String consumes;
-
-    /**
-     * RequestMapping.produces
-     */
-    private String produces;
-
-    /**
-     * url是否还存在，有可能被移除或修改
-     */
-    private Integer isLost;
 }

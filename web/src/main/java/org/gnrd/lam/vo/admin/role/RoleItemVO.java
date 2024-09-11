@@ -15,26 +15,45 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.vo.admin;
+package org.gnrd.lam.vo.admin.role;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 /**
- * request_mapping_id 数据
+ * 角色列表记录
  *
- * @author WUGUOWEI 2024年08月28日
+ * @author WUGUOWEI 2024年09月09日
  */
 @Setter
 @Getter
-public class RequestIdVO {
+public class RoleItemVO {
 
     /**
-     * request_mapping id
+     * 角色id
      *
      * @mock 100010
      */
-    private List<String> requestIds;
+    private String id;
+
+    /**
+     * 角色名
+     *
+     * @mock 创建xx
+     */
+    private String name;
+
+    /**
+     * 角色编码
+     *
+     * @mock common_user
+     */
+    private String code;
+
+    /**
+     * 状态；0-禁用 1-启用
+     *
+     * @mock 1
+     */
+    private Integer state;
 }

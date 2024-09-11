@@ -15,47 +15,52 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.ro.admin.user;
+package org.gnrd.lam.vo.admin.user;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
+/**
+ * 用户列表数据
+ *
+ * @author WUGUOWEI 2024年08月28日
+ */
 @Setter
 @Getter
-public class AddUserRO {
+public class UserItemVO {
+
+    /**
+     * 用户id
+     *
+     * @mock 100010
+     */
+    private String id;
 
     /**
      * 用户名
      *
      * @mock admin
      */
-    @NotEmpty(message = "用户名不可为空")
     private String name;
-
-    /**
-     * 登录密码
-     *
-     * @mock 123456
-     */
-    @NotEmpty(message = "登录密码不可为空")
-    private String password;
 
     /**
      * 手机号
      *
      * @mock 15500100020
      */
-    @NotEmpty(message = "手机号不可为空")
     private String phone;
 
+    /**
+     * 用户状态；0-禁用 1-启用
+     *
+     * @mock 1
+     */
+    private Integer state;
 
     /**
-     * 角色 id的集合
-     *
-     * @mock [1,2]
+     * 用户包含的角色列表
      */
-    private List<Long> roleIds;
+    private List<RoleIInUserVO> roles;
 }

@@ -15,31 +15,38 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.vo.admin;
+package org.gnrd.lam.vo.admin.role;
 
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 用户包含的角色信息
+ * 角色包含的权限数据
  *
- * @author WUGUOWEI 2024年09月10日
+ * @author WUGUOWEI 2024年09月09日
  */
 @Setter
 @Getter
-public class RoleIInUserVO {
+public class RolePermissionVO {
 
     /**
-     * 角色id
+     * 权限表 id
      *
      * @mock 100010
      */
     private String id;
 
     /**
-     * 角色名
+     * 权限名
      *
      * @mock 创建xx
      */
     private String name;
+
+    /**
+     * 权限编码
+     *
+     * @mock create_menu
+     */
+    private String code;
 }

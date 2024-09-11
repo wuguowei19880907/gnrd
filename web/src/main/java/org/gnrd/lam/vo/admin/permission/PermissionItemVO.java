@@ -15,52 +15,45 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.vo.admin;
+package org.gnrd.lam.vo.admin.permission;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 /**
- * 用户列表数据
+ * 用户权限列表数据
  *
  * @author WUGUOWEI 2024年08月28日
  */
 @Setter
 @Getter
-public class UserItemVO {
+public class PermissionItemVO {
 
     /**
-     * 用户id
+     * 权限id
      *
      * @mock 100010
      */
     private String id;
 
     /**
-     * 用户名
+     * 权限名
      *
-     * @mock admin
+     * @mock 创建xx
      */
     private String name;
 
     /**
-     * 手机号
+     * 权限编码
      *
-     * @mock 15500100020
+     * @mock create_menu
      */
-    private String phone;
+    private String code;
 
     /**
-     * 用户状态；0-禁用 1-启用
+     * 状态；0-禁用 1-启用
      *
      * @mock 1
      */
     private Integer state;
-
-    /**
-     * 用户包含的角色列表
-     */
-    private List<RoleIInUserVO> roles;
 }

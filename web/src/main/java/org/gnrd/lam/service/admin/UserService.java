@@ -20,9 +20,14 @@ package org.gnrd.lam.service.admin;
 import org.gnrd.lam.common.result.ParamPager;
 import org.gnrd.lam.common.result.ResultPager;
 import org.gnrd.lam.ro.admin.user.AddUserRO;
+import org.gnrd.lam.ro.admin.user.MapRoleRO;
 import org.gnrd.lam.ro.admin.user.ModifyUserRO;
 import org.gnrd.lam.ro.admin.user.ResetPasswordRO;
-import org.gnrd.lam.vo.admin.UserItemVO;
+import org.gnrd.lam.vo.admin.user.RoleIInUserVO;
+import org.gnrd.lam.vo.admin.user.RoleIdVO;
+import org.gnrd.lam.vo.admin.user.UserItemVO;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -39,4 +44,10 @@ public interface UserService {
     void disableUser(Long id);
 
     void enableUser(Long id);
+
+    List<RoleIInUserVO> getActiveRoles();
+
+    void bindRoles(Long id, MapRoleRO ro);
+
+    RoleIdVO getConfiguredRoleIds(Long userId);
 }

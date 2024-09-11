@@ -22,9 +22,9 @@ import org.gnrd.lam.common.result.ResultPager;
 import org.gnrd.lam.ro.admin.role.AddRoleRO;
 import org.gnrd.lam.ro.admin.role.MapPermissionRO;
 import org.gnrd.lam.ro.admin.role.ModifyRoleRO;
-import org.gnrd.lam.vo.admin.PermissionIdVO;
-import org.gnrd.lam.vo.admin.RoleItemVO;
-import org.gnrd.lam.vo.admin.RolePermissionVO;
+import org.gnrd.lam.vo.admin.role.PermissionIdVO;
+import org.gnrd.lam.vo.admin.role.RoleItemVO;
+import org.gnrd.lam.vo.admin.role.RolePermissionVO;
 
 import java.util.List;
 

@@ -22,10 +22,13 @@ import org.gnrd.lam.common.result.ParamPager;
 import org.gnrd.lam.common.result.ResultPager;
 import org.gnrd.lam.common.result.VoidResult;
 import org.gnrd.lam.ro.admin.user.AddUserRO;
+import org.gnrd.lam.ro.admin.user.MapRoleRO;
 import org.gnrd.lam.ro.admin.user.ModifyUserRO;
 import org.gnrd.lam.ro.admin.user.ResetPasswordRO;
 import org.gnrd.lam.service.admin.UserService;
-import org.gnrd.lam.vo.admin.UserItemVO;
+import org.gnrd.lam.vo.admin.user.RoleIInUserVO;
+import org.gnrd.lam.vo.admin.user.RoleIdVO;
+import org.gnrd.lam.vo.admin.user.UserItemVO;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "df-admin/users")
@@ -123,5 +127,38 @@ public class UserController {
     public VoidResult disable(@PathVariable(name = "id") Long id) throws Exception {
         userService.disableUser(id);
         return new VoidResult();
+    }
+
+    /**
+     * 后台用户管理中获取所有用户角色
+     */
+    @GetMapping(name = "后台用户管理中获取所有用户角色", value = "roles")
+    public CommonResult<List<RoleIInUserVO>> roles() throws Exception {
+        List<RoleIInUserVO> list = userService.getActiveRoles();
+        return new CommonResult<>(list);
+    }
+
+    /**
+     * 为后台用户设置角色
+     *
+     * @param id 用户id|10010
+     */
+    @PutMapping(name = "为后台用户设置角色", value = "{id}/roles")
+    public VoidResult bindRoles(@PathVariable(name = "id") Long id,
+            @RequestBody @Validated MapRoleRO ro) throws Exception {
+        userService.bindRoles(id, ro);
+        return new VoidResult();
+    }
+
+    /**
+     * 查看用户已配置的角色
+     *
+     * @param id 用户id|10010
+     */
+    @GetMapping(name = "查看用户已配置的角色", value = "{id}/roles")
+    public CommonResult<RoleIdVO> getConfigPermissions(@PathVariable(name = "id") Long id)
+            throws Exception {
+        RoleIdVO vo = userService.getConfiguredRoleIds(id);
+        return new CommonResult<>(vo);
     }
 }
