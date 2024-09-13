@@ -17,9 +17,15 @@
 
 package org.gnrd.lam.dao;
 
+import org.gnrd.lam.cache.PermissionCache;
+import org.gnrd.lam.dto.PermissionRequestDTO;
 import org.gnrd.lam.entity.PermissionPO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.Set;
 
 public interface PermissionDao
         extends JpaRepository<PermissionPO, Long>, JpaSpecificationExecutor<PermissionPO> {
@@ -31,4 +37,13 @@ public interface PermissionDao
     long countByIdNotAndName(Long id, String name);
 
     long countByIdNotAndCode(Long id, String phone);
+
+    @Query(value = "select new org.gnrd.lam.cache.PermissionCache(p.id,p.name,p.code,p.state) from PermissionPO p where p.id =:id ")
+    PermissionCache findCache(@Param("id") Long id);
+
+    @Query(value = "select p.name from PermissionRequestPO pr left join pr.requestMappingPO p where pr.permissionId =:id ")
+    Set<String> findRequestCache(@Param("id") Long id);
+
+    @Query(value = "select new org.gnrd.lam.dto.PermissionRequestDTO(pr.permissionId,p.name) from PermissionRequestPO pr left join pr.requestMappingPO p")
+    Set<PermissionRequestDTO> findRequests();
 }

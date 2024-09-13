@@ -15,11 +15,21 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.constants;
+package org.gnrd.lam.cache;
 
-public class AuthToken {
 
-    public static final String HEADER = "df-auth-token";
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-    public static final String ATTRIBUTE = "loginUser";
+import java.util.Set;
+
+@Setter
+@Getter
+@AllArgsConstructor
+public class PermissionRequestCache {
+
+    private Long permissionId;
+
+    private Set<String> requestNames;
 }

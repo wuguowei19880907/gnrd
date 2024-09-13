@@ -22,10 +22,13 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "c_permission")
@@ -57,6 +60,10 @@ public class PermissionPO extends BasePO {
     @Column(name = "create_time")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
+    @OneToMany
+    @JoinColumn(name = "df_permission_id")
+    private Set<PermissionRequestPO> permissionRequestPOS;
 
     @Override
     public boolean equals(Object o) {

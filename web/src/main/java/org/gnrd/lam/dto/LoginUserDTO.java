@@ -22,7 +22,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Setter
 @Getter
@@ -44,14 +43,9 @@ public class LoginUserDTO implements Serializable {
     private Integer state;
 
     /**
-     * 权限信息
+     * 超级管理员 0-不是 1-是
      */
-    private List<LoginPermissionDTO> permissions;
-
-    /**
-     * 菜单信息
-     */
-    private List<LoginMenuDTO> menus;
+    private Integer superAdmin;
 
     @Override
     public String toString() {

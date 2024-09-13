@@ -15,11 +15,24 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.constants;
+package org.gnrd.lam.aop.auth;
 
-public class AuthToken {
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    public static final String HEADER = "df-auth-token";
+/**
+ * 该注解的方法只能是super用户可访问的接口
+ *
+ * @author WUGUOWEI 2024年09月13日
+ */
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Inherited
+@Documented
+public @interface SuperAdmin {
 
-    public static final String ATTRIBUTE = "loginUser";
 }

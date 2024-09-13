@@ -17,12 +17,19 @@
 
 package org.gnrd.lam.dao;
 
+import org.gnrd.lam.dto.RequestMappingDTO;
 import org.gnrd.lam.entity.RequestMappingPO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 public interface RequestMappingDao extends JpaRepository<RequestMappingPO, Long> {
 
     List<RequestMappingPO> findByIsLost(Integer isLost);
+
+    @Query(value = "select new org.gnrd.lam.dto.RequestMappingDTO(p.name, p.path, p.method, p.params, p.headers, p.consumes, p.produces)"
+            + " from RequestMappingPO p where p.id in (:ids) and p.isLost = 0")
+    List<RequestMappingDTO> findByIds(@Param("ids") List<Long> ids);
 }

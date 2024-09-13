@@ -175,6 +175,7 @@
 import axios from "axios";
 import {ElMessage} from "element-plus";
 import {toRaw} from "@vue/reactivity";
+import {TOKEN_HEADER} from "../constants.js";
 
 export default {
   data() {
@@ -228,7 +229,7 @@ export default {
   methods: {
     fetchData() {
       const headers = {
-        'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
+        'df-auth-token': sessionStorage.getItem(TOKEN_HEADER)
       };
       const queryData = {
         number: this.currentPage,
@@ -240,7 +241,7 @@ export default {
       if (this.selectedState !== null && this.selectedState !== '') {
         queryData.state = parseInt(this.selectedState);
       }
-      axios.get('/api/df-admin/users', {headers, params: queryData})
+      axios.get('/df-admin/users', {headers, params: queryData})
           .then(response => {
             this.rawData = response.data.result.content; // 将返回的数据赋值给 menuItems
             this.total = parseInt(response.data.result.totalElements);
@@ -264,9 +265,9 @@ export default {
     },
     getRoles() {
       const headers = {
-        'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
+        'df-auth-token': sessionStorage.getItem(TOKEN_HEADER)
       };
-      axios.get('/api/df-admin/users/roles', {headers})
+      axios.get('/df-admin/users/roles', {headers})
           .then(response => {
             this.roles = response.data.result; // 将返回的数据赋值
           })
@@ -302,9 +303,9 @@ export default {
     handleStatusChange(user) {
       if (user.state === 0) {
         const headers = {
-          'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
+          'df-auth-token': sessionStorage.getItem(TOKEN_HEADER)
         };
-        axios.put(`/api/df-admin/users/${user.id}/disable`, {headers}).then(response => {
+        axios.put(`/df-admin/users/${user.id}/disable`, {headers}).then(response => {
           this.fetchData(); // 刷新列表
         }).catch(error => {
           ElMessage({
@@ -314,9 +315,9 @@ export default {
         });
       } else {
         const headers = {
-          'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
+          'df-auth-token': sessionStorage.getItem(TOKEN_HEADER)
         };
-        axios.put(`/api/df-admin/users/${user.id}/enable`, {headers}).then(response => {
+        axios.put(`/df-admin/users/${user.id}/enable`, {headers}).then(response => {
           this.fetchData(); // 刷新列表
         }).catch(error => {
           ElMessage({
@@ -329,10 +330,10 @@ export default {
     configRole(item) {
       this.configDialogVisible = true;
       const headers = {
-        'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
+        'df-auth-token': sessionStorage.getItem(TOKEN_HEADER)
       };
       this.reConfigData.id = item.id;
-      axios.get(`/api/df-admin/users/${item.id}/roles`, { headers })
+      axios.get(`/df-admin/users/${item.id}/roles`, { headers })
           .then(response => {
             this.selectRoles = response.data.result.roleIds; // 将返回的数据赋值
           })
@@ -367,10 +368,10 @@ export default {
         type: 'warning'
       }).then(() => {
         const headers = {
-          'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
+          'df-auth-token': sessionStorage.getItem(TOKEN_HEADER)
         };
-        // 假设删除接口为 /api/df-admin/users/{id}
-        axios.delete(`/api/df-admin/users/${item.id}`, { headers })
+        // 假设删除接口为 /df-admin/users/{id}
+        axios.delete(`/df-admin/users/${item.id}`, { headers })
             .then(response => {
               this.$message({
                 type: 'success',
@@ -402,9 +403,9 @@ export default {
         userData.roleIds = toRaw(this.selectRoles);
       }
       const headers = {
-        'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
+        'df-auth-token': sessionStorage.getItem(TOKEN_HEADER)
       };
-      axios.post('/api/df-admin/users', userData, {headers}).then(response => {
+      axios.post('/df-admin/users', userData, {headers}).then(response => {
         this.fetchData(); // 刷新列表
         this.dialogVisible = false; // 关闭对话框
       }).catch(error => {
@@ -421,9 +422,9 @@ export default {
         phone: this.editedUser.phone
       };
       const headers = {
-        'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
+        'df-auth-token': sessionStorage.getItem(TOKEN_HEADER)
       };
-      axios.put(`/api/df-admin/users/${this.editedUser.id}`, userData, {headers}).then(response => {
+      axios.put(`/df-admin/users/${this.editedUser.id}`, userData, {headers}).then(response => {
         this.fetchData(); // 刷新列表
         this.dialogVisible = false; // 关闭对话框
       }).catch(error => {
@@ -446,9 +447,9 @@ export default {
         password: this.resetUserPwd.newPassword
       };
       const headers = {
-        'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
+        'df-auth-token': sessionStorage.getItem(TOKEN_HEADER)
       };
-      axios.put(`/api/df-admin/users/${this.resetUserPwd.id}/reset-password`, userData, {headers}).then(response => {
+      axios.put(`/df-admin/users/${this.resetUserPwd.id}/reset-password`, userData, {headers}).then(response => {
         this.fetchData(); // 刷新列表
         this.dialogVisible = false; // 关闭对话框
       }).catch(error => {
@@ -464,9 +465,9 @@ export default {
         roleIds: this.selectRoles
       };
       const headers = {
-        'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
+        'df-auth-token': sessionStorage.getItem(TOKEN_HEADER)
       };
-      axios.put(`/api/df-admin/users/${this.reConfigData.id}/roles`, userData, {headers}).then(response => {
+      axios.put(`/df-admin/users/${this.reConfigData.id}/roles`, userData, {headers}).then(response => {
         this.fetchData(); // 刷新列表
         this.configDialogVisible = false; // 关闭对话框
       }).catch(error => {

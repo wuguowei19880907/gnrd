@@ -67,7 +67,7 @@ public class AuthAFilter implements Filter {
             return null;
         }
         for (Cookie cookie : request.getCookies()) {
-            if (AuthToken.COOKIE_NAME.equals(cookie.getName())) {
+            if (AuthToken.HEADER.equals(cookie.getName())) {
                 return cookie.getValue();
             }
         }

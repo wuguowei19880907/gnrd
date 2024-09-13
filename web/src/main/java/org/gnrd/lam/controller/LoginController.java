@@ -17,7 +17,6 @@
 
 package org.gnrd.lam.controller;
 
-import org.gnrd.lam.common.constants.AuthToken;
 import org.gnrd.lam.common.exception.BaseException;
 import org.gnrd.lam.common.result.CommonResult;
 import org.gnrd.lam.ro.LoginRO;
@@ -29,13 +28,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -45,17 +41,12 @@ public class LoginController {
     @Resource
     private IndexService indexService;
 
-    @PostMapping(value = "auth/login")
-    public ModelAndView auth(LoginRO loginRO, HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        return indexService.login(loginRO.getUsername(), loginRO.getPassword(), request, response);
-    }
-
     @PostMapping(value = "common/login")
     @ResponseBody
-    public CommonResult<CommonLoginVO> commonLogin(@RequestBody @Validated LoginRO loginRO)
-            throws Exception {
-        CommonLoginVO login = indexService.login(loginRO.getUsername(), loginRO.getPassword());
+    public CommonResult<CommonLoginVO> commonLogin(@RequestBody @Validated LoginRO loginRO,
+            HttpServletRequest request) throws Exception {
+        CommonLoginVO login =
+                indexService.login(loginRO.getUsername(), loginRO.getPassword(), request);
         return new CommonResult<>(login);
     }
 
@@ -69,9 +60,8 @@ public class LoginController {
 
     @GetMapping(value = "current-user")
     @ResponseBody
-    public CommonResult<List<MenuVO>> me(@RequestHeader(AuthToken.COOKIE_NAME) String token)
-            throws Exception {
-        List<MenuVO> me = indexService.getMe(token);
+    public CommonResult<List<MenuVO>> me(HttpServletRequest request) throws Exception {
+        List<MenuVO> me = indexService.getMe(request);
         return new CommonResult<>(me);
     }
 

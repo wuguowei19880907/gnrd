@@ -15,11 +15,18 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.constants;
+package org.gnrd.lam.dto;
 
-public class AuthToken {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-    public static final String HEADER = "df-auth-token";
+@Setter
+@Getter
+@AllArgsConstructor
+public class RequestPermissionDTO {
 
-    public static final String ATTRIBUTE = "loginUser";
+    private String requestName;
+
+    private Long permissionId;
 }

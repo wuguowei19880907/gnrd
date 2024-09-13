@@ -22,43 +22,72 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.gnrd.lam.common.constants.AdminStatusEnum;
+import org.gnrd.lam.common.constants.CacheKeys;
 import org.gnrd.lam.common.exception.BaseException;
 import org.gnrd.lam.common.exception.ECode;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.context.expression.BeanFactoryResolver;
-import org.springframework.expression.Expression;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.gnrd.lam.common.tools.Convert;
+import org.gnrd.lam.dto.LoginUserDTO;
+import org.gnrd.lam.dto.RequestMappingDTO;
+import org.gnrd.lam.manager.DFCacheManage;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Aspect
 @Component
 @Slf4j
 public class AuthorizeAspect {
 
-    private final SpelExpressionParser spelExpressionParser;
+    @Resource
+    private DFCacheManage dfCacheManage;
 
-    private final BeanFactoryResolver beanFactoryResolver;
+    @Pointcut("@annotation(requestMapping)")
+    public void point(RequestMapping requestMapping) {}
 
-    public AuthorizeAspect(BeanFactory beanFactory) {
-        this.spelExpressionParser = new SpelExpressionParser();
-        this.beanFactoryResolver = new BeanFactoryResolver(beanFactory);
+    @Pointcut("@annotation(superAdmin)")
+    public void point0(SuperAdmin superAdmin) {}
+
+    @Before(value = "point(requestMapping)", argNames = "joinPoint,requestMapping")
+    public void successLog(JoinPoint joinPoint, RequestMapping requestMapping) {
+
+        // 对于RequestMapping未设置name的接口，不做校验，直接跳过
+        if (org.springframework.util.StringUtils.hasLength(requestMapping.name())) {
+            // 获取当前登录用户的userId
+            HttpSession session = Convert.currentRequest().getSession(false);
+            Long userId = (Long) session.getAttribute(CacheKeys.SK_LOGIN_USERID);
+            LoginUserDTO loginUser = dfCacheManage.getLoginUser(userId);
+            // 如果用户被禁用，则不允许访问任何接口
+            if (loginUser.getState() == AdminStatusEnum.Constants.DISABLED) {
+                throw new BaseException(HttpStatus.BAD_REQUEST, ECode.E_100004);
+            }
+            // 根据userId，获取当前用户所包含的RequestMapping信息
+            List<RequestMappingDTO> loginUserRequestMappings =
+                    dfCacheManage.getLoginUserRequestMappings(userId);
+            for (RequestMappingDTO loginUserRequestMapping : loginUserRequestMappings) {
+                // 如果当前的RequestMapping name等于用户绑定的。说明用户有权限访问改接口
+                if (requestMapping.name().equals(loginUserRequestMapping.getName())) {
+                    return;
+                }
+            }
+
+        }
     }
 
-    @Pointcut("@annotation(authorize)")
-    public void point(Authorize authorize) {}
-
-    @Before(value = "point(authorize)")
-    public void successLog(JoinPoint joinPoint, Authorize authorize) {
-        // 创建StandardEvaluationContext
-        StandardEvaluationContext evaluationContext = new StandardEvaluationContext();
-        evaluationContext.setBeanResolver(beanFactoryResolver);
-        String value = authorize.value();
-        Expression expression = spelExpressionParser.parseExpression(value);
-        Boolean result = expression.getValue(evaluationContext, Boolean.class);
-        if (Boolean.FALSE.equals(result)) {
-            throw new BaseException(HttpStatus.BAD_REQUEST, ECode.E_100002);
+    /**
+     * 超级管理员角色访问接口的权限校验
+     */
+    @Before(value = "point0(superAdmin)", argNames = "joinPoint,superAdmin")
+    public void superAdminSuccess(JoinPoint joinPoint, SuperAdmin superAdmin) {
+        HttpSession session = Convert.currentRequest().getSession(false);
+        Long userId = (Long) session.getAttribute(CacheKeys.SK_LOGIN_USERID);
+        LoginUserDTO loginUser = dfCacheManage.getLoginUser(userId);
+        if (loginUser.getSuperAdmin() != 1) {
+            throw new BaseException(ECode.E_100002);
         }
     }
 }

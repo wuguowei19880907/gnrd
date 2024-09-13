@@ -17,6 +17,7 @@
 
 package org.gnrd.lam.controller.admin;
 
+import org.gnrd.lam.aop.auth.SuperAdmin;
 import org.gnrd.lam.common.result.CommonResult;
 import org.gnrd.lam.common.result.ParamPager;
 import org.gnrd.lam.common.result.ResultPager;
@@ -57,6 +58,7 @@ public class PermissionController {
      * @param state 角色状态，0：禁用；1：激活|1
      */
     @GetMapping(name = "list", value = "")
+    @SuperAdmin
     public CommonResult<ResultPager<PermissionItemVO>> list(String nameQuery, Integer state,
             ParamPager pager) throws Exception {
         ResultPager<PermissionItemVO> list = permissionService.list(nameQuery, state, pager);
@@ -66,6 +68,7 @@ public class PermissionController {
     /**
      * 新增用户权限
      */
+    @SuperAdmin
     @PostMapping(name = "addPermission", value = "")
     public VoidResult addPermission(@RequestBody @Validated AddPermissionRO ro) throws Exception {
         permissionService.add(ro);
@@ -77,6 +80,7 @@ public class PermissionController {
      *
      * @param id 用户权限id|10010
      */
+    @SuperAdmin
     @PutMapping(name = "modifyPermission", value = "{id}")
     public VoidResult modifyPermission(@PathVariable(name = "id") Long id,
             @RequestBody @Validated ModifyPermissionRO ro) throws Exception {
@@ -89,6 +93,7 @@ public class PermissionController {
      *
      * @param id 用户权限id|10010
      */
+    @SuperAdmin
     @DeleteMapping(name = "deletePermission", value = "{id}")
     public VoidResult deletePermission(@PathVariable(name = "id") Long id) throws Exception {
         permissionService.delete(id);
@@ -100,6 +105,7 @@ public class PermissionController {
      *
      * @param id 用户权限id|10010
      */
+    @SuperAdmin
     @PutMapping(name = "变更权限状态", value = "{id}/change-status")
     public VoidResult changeStatus(@PathVariable(name = "id") Long id,
             @RequestBody @Validated ChangeStatusRO ro) throws Exception {
@@ -112,6 +118,7 @@ public class PermissionController {
      *
      * @author wuguowei
      */
+    @SuperAdmin
     @GetMapping(name = "allRequestMappings", value = "request-mappings")
     public CommonResult<List<RequestMappingVO>> allRequestMappings() throws Exception {
         List<RequestMappingVO> allRequest = permissionService.getAllRequest();
@@ -123,6 +130,7 @@ public class PermissionController {
      *
      * @param id 用户权限id|10010
      */
+    @SuperAdmin
     @PutMapping(name = "configRequestMappings", value = "{id}/request-mappings")
     public VoidResult configRequestMappings(@PathVariable(name = "id") Long id,
             @RequestBody @Validated MapRequestRO ro) throws Exception {
@@ -135,6 +143,7 @@ public class PermissionController {
      *
      * @param id 用户权限id|10010
      */
+    @SuperAdmin
     @GetMapping(name = "查看权限已配置的 RequestMapping", value = "{id}/request-mappings")
     public CommonResult<RequestIdVO> getRequestMappings(@PathVariable(name = "id") Long id)
             throws Exception {

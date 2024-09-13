@@ -31,11 +31,12 @@ public interface IndexService {
     ModelAndView login(String username, String password, HttpServletRequest request,
             HttpServletResponse response) throws Exception;
 
-    CommonLoginVO login(String username, String password) throws Exception;
+    CommonLoginVO login(String username, String password, HttpServletRequest request)
+            throws Exception;
 
     String index(HttpServletRequest request, HttpServletResponse response);
 
     ModelAndView getAdminUsers(String username, ParamPager pager);
 
-    List<MenuVO> getMe(String token);
+    List<MenuVO> getMe(HttpServletRequest request);
 }

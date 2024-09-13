@@ -17,6 +17,10 @@
 
 package org.gnrd.lam.common.tools;
 
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +34,13 @@ public class Convert {
             }
         }
         return result;
+    }
+
+    public static HttpServletRequest currentRequest() {
+        ServletRequestAttributes attributes =
+                (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        assert attributes != null;
+        return attributes.getRequest();
     }
 
     /**

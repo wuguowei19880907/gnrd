@@ -21,6 +21,7 @@
 <script>
 import axios from 'axios';
 import JSEncrypt from 'jsencrypt';
+import {TOKEN_HEADER} from "../constants.js";
 
 const publicKey = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4xg8XEY89wr4P9DQGRdeRldLk7PsnHt6zgvm+J6CNteN733llu8OpVTJAXLhVXg4Ntj2e+KEghHd+CyCOry8u0iLhnH4j/Zrdc1+xYRkBvt2Zcxb20O7XLWJoltbNZ1uHo/TcOhDOgX1MY3UvKoxvDAp0Wj5Eq8GK0NbHXRZENmrQ1O1OuDH5uJ5MEB7ceF8Mc0PwV5skk0EfrPL6S5dGUulc7QhopynBLX/iKGOJ/LXyXPp5XpaVuh7dNu/rAAegXufRK4q8zmfUrmTrrOddSUMmNBAFOZmrbmiLmoE950HgI5LVg9eLCBRVp4gwQPaEQYt+AT323urNJ4xEkFpewIDAQAB';
 
@@ -46,14 +47,14 @@ export default {
       encrypt.setPublicKey(publicKey); // 设置公钥
       const encryptedUsername = encrypt.encrypt(this.form.username); // 加密用户名
       const encryptedPassword = encrypt.encrypt(this.form.password); // 加密密码
-      // 模拟登录请求
-      axios.post('/api/common/login', {
+      // 登录请求
+      axios.post('/common/login', {
         username: encryptedUsername,
         password: encryptedPassword,
       }).then(response => {
         if ('000000' === response.data.code) {
           if (response.data.result.flag) {
-            sessionStorage.setItem('X-Auth-Token', response.data.result.content);
+            sessionStorage.setItem(TOKEN_HEADER, response.data.result.content);
             this.$router.push({name: 'CenterContent'});
           } else {
             window.location.href = response.data.result.content;

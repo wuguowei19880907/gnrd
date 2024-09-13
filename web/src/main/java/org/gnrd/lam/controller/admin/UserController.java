@@ -17,6 +17,7 @@
 
 package org.gnrd.lam.controller.admin;
 
+import org.gnrd.lam.aop.auth.SuperAdmin;
 import org.gnrd.lam.common.result.CommonResult;
 import org.gnrd.lam.common.result.ParamPager;
 import org.gnrd.lam.common.result.ResultPager;
@@ -56,6 +57,7 @@ public class UserController {
      * @param nameQuery 用户名或者手机号，支持模糊查询|155
      * @param state 用户状态，0：禁用；1：激活|1
      */
+    @SuperAdmin
     @GetMapping(name = "查询后台用户列表", value = "")
     public CommonResult<ResultPager<UserItemVO>> list(String nameQuery, Integer state,
             ParamPager pager) throws Exception {
@@ -66,6 +68,7 @@ public class UserController {
     /**
      * 新增后台用户
      */
+    @SuperAdmin
     @PostMapping(name = "新增后台用户", value = "")
     public VoidResult addUser(@RequestBody @Validated AddUserRO ro) throws Exception {
         userService.addUser(ro);
@@ -77,6 +80,7 @@ public class UserController {
      * 
      * @param id 后台用户id|10010
      */
+    @SuperAdmin
     @PutMapping(name = "修改后台用户", value = "{id}")
     public VoidResult modifyUser(@PathVariable(name = "id") Long id,
             @RequestBody @Validated ModifyUserRO ro) throws Exception {
@@ -89,6 +93,7 @@ public class UserController {
      * 
      * @param id 后台用户id|10010
      */
+    @SuperAdmin
     @PutMapping(name = "重置后台用户登录密码", value = "{id}/reset-password")
     public VoidResult resetPassword(@PathVariable(name = "id") Long id,
             @RequestBody @Validated ResetPasswordRO ro) throws Exception {
@@ -101,6 +106,7 @@ public class UserController {
      * 
      * @param id 后台用户id|10010
      */
+    @SuperAdmin
     @DeleteMapping(name = "删除后台用户", value = "{id}")
     public VoidResult deleteUser(@PathVariable(name = "id") Long id) throws Exception {
         userService.deleteUser(id);
@@ -112,6 +118,7 @@ public class UserController {
      * 
      * @param id 后台用户id|10010
      */
+    @SuperAdmin
     @PutMapping(name = "启用后台用户", value = "{id}/enable")
     public VoidResult enable(@PathVariable(name = "id") Long id) throws Exception {
         userService.enableUser(id);
@@ -123,6 +130,7 @@ public class UserController {
      * 
      * @param id 后台用户id|10010
      */
+    @SuperAdmin
     @PutMapping(name = "禁用后台用户", value = "{id}/disable")
     public VoidResult disable(@PathVariable(name = "id") Long id) throws Exception {
         userService.disableUser(id);
@@ -132,6 +140,7 @@ public class UserController {
     /**
      * 后台用户管理中获取所有用户角色
      */
+    @SuperAdmin
     @GetMapping(name = "后台用户管理中获取所有用户角色", value = "roles")
     public CommonResult<List<RoleIInUserVO>> roles() throws Exception {
         List<RoleIInUserVO> list = userService.getActiveRoles();
@@ -143,6 +152,7 @@ public class UserController {
      *
      * @param id 用户id|10010
      */
+    @SuperAdmin
     @PutMapping(name = "为后台用户设置角色", value = "{id}/roles")
     public VoidResult bindRoles(@PathVariable(name = "id") Long id,
             @RequestBody @Validated MapRoleRO ro) throws Exception {
@@ -155,6 +165,7 @@ public class UserController {
      *
      * @param id 用户id|10010
      */
+    @SuperAdmin
     @GetMapping(name = "查看用户已配置的角色", value = "{id}/roles")
     public CommonResult<RoleIdVO> getConfigPermissions(@PathVariable(name = "id") Long id)
             throws Exception {

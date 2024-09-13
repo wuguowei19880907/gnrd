@@ -15,11 +15,34 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.common.constants;
+package org.gnrd.lam.cache;
 
-public class AuthToken {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-    public static final String HEADER = "df-auth-token";
+@Setter
+@Getter
+@AllArgsConstructor
+public class RoleCache {
 
-    public static final String ATTRIBUTE = "loginUser";
+    /**
+     * 角色id
+     */
+    private Long id;
+
+    /**
+     * 角色名称
+     */
+    private String name;
+
+    /**
+     * 角色编码
+     */
+    private String code;
+
+    /**
+     * 状态 0-禁用 1-启用
+     */
+    private Integer state;
 }

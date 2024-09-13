@@ -15,23 +15,34 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.aop.auth;
+package org.gnrd.lam.dto;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Target({ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
-@Inherited
-@Documented
-public @interface Authorize {
+@Setter
+@Getter
+@AllArgsConstructor
+public class RoleDTO {
 
     /**
-     * @return the Spring-EL expression to be evaluated before invoking the protected method
+     * 角色id
      */
-    String value();
+    private Long id;
+
+    /**
+     * 角色名称
+     */
+    private String name;
+
+    /**
+     * 角色编码
+     */
+    private String code;
+
+    /**
+     * 状态 0-禁用 1-启用
+     */
+    private Integer state;
 }

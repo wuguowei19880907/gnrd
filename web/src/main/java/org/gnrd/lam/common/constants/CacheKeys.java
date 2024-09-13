@@ -17,9 +17,28 @@
 
 package org.gnrd.lam.common.constants;
 
-public class AuthToken {
+public class CacheKeys {
 
-    public static final String HEADER = "df-auth-token";
+    /**
+     * 当前用户的信息
+     */
+    public static final String LoginUserInfo = "login-user-info";
 
-    public static final String ATTRIBUTE = "loginUser";
+    /**
+     * 当前用户的菜单
+     */
+    public static final String CurrentUserMenus = "login-user-menus";
+
+    /**
+     * 当前用户的角色
+     */
+    public static final String CurrentUserRoles = "login-user-roles";
+
+    /**
+     * 当前用户的权限
+     */
+    public static final String CurrentUserPermissions = "login-user-permissions";
+
+    public static final String SK_LOGIN_USERID = "login-userId";
+    public static final String SK_LOGIN_USERNAME = "login-username";
 }

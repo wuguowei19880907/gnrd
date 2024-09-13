@@ -20,6 +20,7 @@ package org.gnrd.lam.dao;
 import org.gnrd.lam.dto.UserRoleLinkDTO;
 import org.gnrd.lam.entity.MenuPO;
 import org.gnrd.lam.entity.PermissionPO;
+import org.gnrd.lam.entity.RequestMappingPO;
 import org.gnrd.lam.entity.UserRolePO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -47,4 +48,7 @@ public interface UserRoleDao extends JpaRepository<UserRolePO, Long> {
     void deleteByUserId(@Param("userId") Long userId);
 
     List<UserRolePO> findByUserId(Long userId);
+
+    @Query(value = "select rm from UserRolePO ur left join ur.roles r left join r.rolePermissionPOSet rp left join rp.permissionPO p left join p.permissionRequestPOS pr left join pr.requestMappingPO rm where ur.userId = :userId")
+    Set<RequestMappingPO> findRequestMappingsByUserId(@Param("userId") Long userId);
 }

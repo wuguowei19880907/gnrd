@@ -40,6 +40,7 @@
 
 <script>
 import axios from 'axios';
+import {TOKEN_HEADER} from "../constants.js";
 
 export default {
   name: "App",
@@ -55,10 +56,10 @@ export default {
     },
     fetchMenuData() {
       const headers = {
-        'X-Auth-Token': sessionStorage.getItem('X-Auth-Token')
+        'df-auth-token': sessionStorage.getItem(TOKEN_HEADER)
       };
-      // 假设后端接口为 /api/menu
-      axios.get('/api/current-user', {headers})
+      // 假设后端接口为 /menu
+      axios.get('/current-user', {headers})
           .then(response => {
             this.menuItems = response.data.result; // 将返回的数据赋值给 menuItems
           })

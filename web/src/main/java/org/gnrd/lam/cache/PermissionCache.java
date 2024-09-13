@@ -15,20 +15,16 @@
  * limitations under the License.
  */
 
-package org.gnrd.lam.dto;
+package org.gnrd.lam.cache;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.io.Serializable;
 
 @Setter
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
-public class LoginPermissionDTO implements Serializable {
+public class PermissionCache {
 
     /**
      * 权限id
@@ -45,24 +41,8 @@ public class LoginPermissionDTO implements Serializable {
      */
     private String code;
 
-    @Override
-    public boolean equals(Object object) {
-        if (this == object)
-            return true;
-        if (!(object instanceof LoginPermissionDTO))
-            return false;
-
-        LoginPermissionDTO that = (LoginPermissionDTO) object;
-
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
-            return false;
-        return getCode() != null ? getCode().equals(that.getCode()) : that.getCode() == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = getName() != null ? getName().hashCode() : 0;
-        result = 31 * result + (getCode() != null ? getCode().hashCode() : 0);
-        return result;
-    }
+    /**
+     * 状态 0-禁用 1-启用
+     */
+    private Integer state;
 }

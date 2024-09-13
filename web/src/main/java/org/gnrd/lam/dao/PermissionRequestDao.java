@@ -17,6 +17,7 @@
 
 package org.gnrd.lam.dao;
 
+import org.gnrd.lam.dto.RequestMappingDTO;
 import org.gnrd.lam.entity.PermissionRequestPO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -34,4 +35,7 @@ public interface PermissionRequestDao extends JpaRepository<PermissionRequestPO,
     @Query(value = "delete PermissionRequestPO p where p.permissionId = :permissionId")
     @Modifying
     void deleteByPermissionId(@Param("permissionId") Long permissionId);
+
+    @Query(value = "select new org.gnrd.lam.dto.RequestMappingDTO(p.name, p.path, p.method, p.params, p.headers, p.consumes, p.produces) from PermissionRequestPO pr left join pr.requestMappingPO p where pr.permissionId in (:permissionIds) and p.isLost = 0")
+    List<RequestMappingDTO> getRequestMappingDTO(@Param("permissionIds") List<Long> permissionIds);
 }

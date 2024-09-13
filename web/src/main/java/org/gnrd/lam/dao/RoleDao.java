@@ -17,9 +17,12 @@
 
 package org.gnrd.lam.dao;
 
+import org.gnrd.lam.cache.RoleCache;
 import org.gnrd.lam.entity.RolePO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface RoleDao extends JpaRepository<RolePO, Long>, JpaSpecificationExecutor<RolePO> {
 
@@ -30,4 +33,7 @@ public interface RoleDao extends JpaRepository<RolePO, Long>, JpaSpecificationEx
     long countByIdNotAndName(Long id, String name);
 
     long countByIdNotAndCode(Long id, String phone);
+
+    @Query(value = "select new org.gnrd.lam.cache.RoleCache(p.id,p.name,p.code,p.state) from RolePO p where p.id =:id ")
+    RoleCache findCache(@Param("id") Long id);
 }
