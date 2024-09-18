@@ -57,7 +57,7 @@ public class PermissionController {
      * @param nameQuery 角色名，支持模糊查询|后台经理
      * @param state 角色状态，0：禁用；1：激活|1
      */
-    @GetMapping(name = "list", value = "")
+    @GetMapping(value = "")
     @SuperAdmin
     public CommonResult<ResultPager<PermissionItemVO>> list(String nameQuery, Integer state,
             ParamPager pager) throws Exception {
@@ -69,7 +69,7 @@ public class PermissionController {
      * 新增用户权限
      */
     @SuperAdmin
-    @PostMapping(name = "addPermission", value = "")
+    @PostMapping(value = "")
     public VoidResult addPermission(@RequestBody @Validated AddPermissionRO ro) throws Exception {
         permissionService.add(ro);
         return new VoidResult();
@@ -81,7 +81,7 @@ public class PermissionController {
      * @param id 用户权限id|10010
      */
     @SuperAdmin
-    @PutMapping(name = "modifyPermission", value = "{id}")
+    @PutMapping(value = "{id}")
     public VoidResult modifyPermission(@PathVariable(name = "id") Long id,
             @RequestBody @Validated ModifyPermissionRO ro) throws Exception {
         permissionService.modify(id, ro);
@@ -94,7 +94,7 @@ public class PermissionController {
      * @param id 用户权限id|10010
      */
     @SuperAdmin
-    @DeleteMapping(name = "deletePermission", value = "{id}")
+    @DeleteMapping(value = "{id}")
     public VoidResult deletePermission(@PathVariable(name = "id") Long id) throws Exception {
         permissionService.delete(id);
         return new VoidResult();
@@ -106,7 +106,7 @@ public class PermissionController {
      * @param id 用户权限id|10010
      */
     @SuperAdmin
-    @PutMapping(name = "变更权限状态", value = "{id}/change-status")
+    @PutMapping(value = "{id}/change-status")
     public VoidResult changeStatus(@PathVariable(name = "id") Long id,
             @RequestBody @Validated ChangeStatusRO ro) throws Exception {
         permissionService.changeStatus(id, ro.getState());
@@ -119,7 +119,7 @@ public class PermissionController {
      * @author wuguowei
      */
     @SuperAdmin
-    @GetMapping(name = "allRequestMappings", value = "request-mappings")
+    @GetMapping(value = "request-mappings")
     public CommonResult<List<RequestMappingVO>> allRequestMappings() throws Exception {
         List<RequestMappingVO> allRequest = permissionService.getAllRequest();
         return new CommonResult<>(allRequest);
@@ -131,7 +131,7 @@ public class PermissionController {
      * @param id 用户权限id|10010
      */
     @SuperAdmin
-    @PutMapping(name = "configRequestMappings", value = "{id}/request-mappings")
+    @PutMapping(value = "{id}/request-mappings")
     public VoidResult configRequestMappings(@PathVariable(name = "id") Long id,
             @RequestBody @Validated MapRequestRO ro) throws Exception {
         permissionService.configRequest(id, ro);
@@ -144,7 +144,7 @@ public class PermissionController {
      * @param id 用户权限id|10010
      */
     @SuperAdmin
-    @GetMapping(name = "查看权限已配置的 RequestMapping", value = "{id}/request-mappings")
+    @GetMapping(value = "{id}/request-mappings")
     public CommonResult<RequestIdVO> getRequestMappings(@PathVariable(name = "id") Long id)
             throws Exception {
         RequestIdVO configRequest = permissionService.getConfigRequest(id);

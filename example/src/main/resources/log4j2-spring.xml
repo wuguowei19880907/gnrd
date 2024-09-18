@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration strict="true" name="XMLConfigTest" monitorInterval="30">
+	<Properties>
+		<Property name="log_path">/usr/local/apache-tomcat-8.5.91/tfe/logs</Property>
+		<Property name="color_pattern_layout">%d %highlight{%-5p} %c{3}:%L - %m%n</Property>
+		<Property name="common_pattern_layout">%d %-5p %c{3}:%L - %m%n</Property>
+		<Property name="project_name">tfe</Property>
+		<Property name="err_file_name">_err.log</Property>
+		<Property name="info_file_name">_info.log</Property>
+		<Property name="charset">UTF-8</Property>
+	</Properties>
+	<Appenders>
+		<!--控制台打印-->
+		<Console name="Console" target="SYSTEM_OUT" follow="true">
+			<PatternLayout pattern="${color_pattern_layout}" charset="${charset}" disableAnsi="false"/>
+		</Console>
+		<!--错误日志打印-->
+		<RollingFile name="sync_err_file" fileName="${log_path}/${project_name}${err_file_name}" filePattern="${log_path}/$${date:yyyy-MM}/${project_name}${err_file_name}-%d{yyyy-MM-dd}-%i.log">
+			<LevelMatchFilter level="error" onMatch="ACCEPT" onMismatch="DENY"></LevelMatchFilter>
+			<PatternLayout pattern="${common_pattern_layout}" charset="${charset}"/>
+			<Policies>
+				<TimeBasedTriggeringPolicy modulate="true"/>
+				<SizeBasedTriggeringPolicy size="50 MB" />
+			</Policies>
+		</RollingFile>
+		<!--普通信息打印-->
+		<RollingFile name="sync_info_file" fileName="${log_path}/${project_name}${info_file_name}" filePattern="${log_path}/$${date:yyyy-MM}/${project_name}${info_file_name}-%d{yyyy-MM-dd}-%i.log.gz">
+			<LevelRangeFilter minLevel="warn" maxLevel="trace" onMatch="ACCEPT" onMismatch="DENY"></LevelRangeFilter>
+			<PatternLayout pattern="${common_pattern_layout}" charset="${charset}"/>
+			<Policies>
+				<TimeBasedTriggeringPolicy modulate="true"/>
+				<SizeBasedTriggeringPolicy size="100 MB" />
+			</Policies>
+		</RollingFile>
+		<Async name="err_file">
+			<AppenderRef ref="sync_err_file"/>
+		</Async>
+		<Async name="info_file">
+			<AppenderRef ref="sync_info_file"/>
+		</Async>
+	</Appenders>
+	<Loggers>
+		<Logger name="org.hibernate.SQL" level="debug">
+			<AppenderRef ref="info_file" />
+		</Logger>
+		<Logger name="org.hibernate.engine.QueryParameters" level="debug">
+			<AppenderRef ref="info_file" />
+		</Logger>
+		<Logger name="org.hibernate.engine.query.HQLQueryPlan" level="debug">
+			<AppenderRef ref="info_file" />
+		</Logger>
+		<Logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace">
+			<AppenderRef ref="info_file" />
+		</Logger>
+<!--		<Logger name="com.tfe.server.schedule" level="debug" additivity="false">
+			<AppenderRef ref="info_file" />
+		</Logger>-->
+<!--		<Logger name="com.tfe.server" level="error" additivity="false">
+			<AppenderRef ref="err_file" />
+		</Logger>
+		<Logger name="com.tfe.server" level="info" additivity="false">
+			<AppenderRef ref="info_file" />
+		</Logger>-->
+		<Root level="info">
+			<AppenderRef ref="Console" />
+<!--			<AppenderRef ref="err_file" />
+			<AppenderRef ref="info_file" />-->
+		</Root>
+	</Loggers>
+</Configuration>

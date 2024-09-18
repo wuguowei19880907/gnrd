@@ -17,22 +17,18 @@
 
 package org.gnrd.lam;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication(exclude = {DFAutoConfiguration.class})
 @EnableJpaRepositories(basePackages = {"org.gnrd.lam.dao"})
 @EntityScan(basePackages = {"org.gnrd.lam.entity"})
 @ServletComponentScan(basePackages = {"org.gnrd.lam.filter"})
 @EnableCaching
-public class DemoApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
-    }
-
+@AutoConfiguration
+@ComponentScan(basePackages = {"org.gnrd.lam"})
+public class DFAutoConfiguration {
 }

@@ -58,7 +58,7 @@ public class RoleController {
      * @param state 角色状态，0：禁用；1：激活|1
      */
     @SuperAdmin
-    @GetMapping(name = "查询后台角色列表", value = "")
+    @GetMapping(value = "")
     public CommonResult<ResultPager<RoleItemVO>> list(String nameQuery, Integer state,
             ParamPager pager) throws Exception {
         ResultPager<RoleItemVO> list = roleService.list(nameQuery, state, pager);
@@ -69,7 +69,7 @@ public class RoleController {
      * 新增用户角色
      */
     @SuperAdmin
-    @PostMapping(name = "新增用户角色", value = "")
+    @PostMapping(value = "")
     public VoidResult addRole(@RequestBody @Validated AddRoleRO ro) throws Exception {
         roleService.add(ro);
         return new VoidResult();
@@ -81,7 +81,7 @@ public class RoleController {
      * @param id 用户角色id|10010
      */
     @SuperAdmin
-    @PutMapping(name = "修改用户角色", value = "{id}")
+    @PutMapping(value = "{id}")
     public VoidResult modifyRole(@PathVariable(name = "id") Long id,
             @RequestBody @Validated ModifyRoleRO ro) throws Exception {
         roleService.modify(id, ro);
@@ -94,7 +94,7 @@ public class RoleController {
      * @param id 用户角色id|10010
      */
     @SuperAdmin
-    @DeleteMapping(name = "删除用户角色", value = "{id}")
+    @DeleteMapping(value = "{id}")
     public VoidResult deleteRole(@PathVariable(name = "id") Long id) throws Exception {
         roleService.delete(id);
         return new VoidResult();
@@ -106,7 +106,7 @@ public class RoleController {
      * @param id 用户角色id|10010
      */
     @SuperAdmin
-    @PutMapping(name = "用户角色的启用与禁用", value = "{id}/change-status")
+    @PutMapping(value = "{id}/change-status")
     public VoidResult changeStatus(@PathVariable(name = "id") Long id,
             @RequestBody @Validated ChangeStatusRO ro) throws Exception {
         roleService.changeStatus(id, ro.getState());
@@ -119,7 +119,7 @@ public class RoleController {
      * @author wuguowei
      */
     @SuperAdmin
-    @GetMapping(name = "角色管理获取权限列表", value = "permissions")
+    @GetMapping(value = "permissions")
     public CommonResult<List<RolePermissionVO>> allPermissions() throws Exception {
         List<RolePermissionVO> rolePermissionVOS = roleService.getPermissions();
         return new CommonResult<>(rolePermissionVOS);
@@ -131,7 +131,7 @@ public class RoleController {
      * @param id 用户角色id|10010
      */
     @SuperAdmin
-    @PutMapping(name = "为角色配置权限", value = "{id}/permissions")
+    @PutMapping(value = "{id}/permissions")
     public VoidResult configPermissions(@PathVariable(name = "id") Long id,
             @RequestBody @Validated MapPermissionRO ro) throws Exception {
         roleService.configPermissions(id, ro);
@@ -144,7 +144,7 @@ public class RoleController {
      * @param id 用户角色id|10010
      */
     @SuperAdmin
-    @GetMapping(name = "查看角色已经配置的权限", value = "{id}/permissions")
+    @GetMapping(value = "{id}/permissions")
     public CommonResult<PermissionIdVO> getConfigPermissions(@PathVariable(name = "id") Long id)
             throws Exception {
         PermissionIdVO permissionIdVO = roleService.getPermissionIds(id);

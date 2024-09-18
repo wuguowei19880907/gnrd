@@ -74,7 +74,7 @@ public class AuthorizeAspect {
                     return;
                 }
             }
-
+            throw new BaseException(ECode.E_100002);
         }
     }
 

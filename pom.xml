@@ -9,7 +9,6 @@
     <modules>
         <module>web</module>
         <module>uid</module>
-        <module>example</module>
     </modules>
 
     <properties>
@@ -56,11 +55,6 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.webjars.bowergithub.jquery</groupId>
-                <artifactId>jquery</artifactId>
-                <version>${jquery.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.modelmapper</groupId>

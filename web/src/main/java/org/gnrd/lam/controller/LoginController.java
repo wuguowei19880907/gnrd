@@ -50,6 +50,11 @@ public class LoginController {
         return new CommonResult<>(login);
     }
 
+    @GetMapping({"/", "index"})
+    public String index() {
+        return "forward:/df/admin/index.html";
+    }
+
     @PostMapping(value = "auth/logout")
     @ResponseBody
     public CommonResult<String> logout(HttpServletRequest request) throws Exception {

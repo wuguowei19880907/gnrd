@@ -15,16 +15,11 @@
  * limitations under the License.
  */
 
-package org.gnrd.examples;
+package org.gnrd.examples.dao;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.gnrd.examples.entity.StudentPO;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Controller
-public class IndexController {
+public interface StudentDao extends JpaRepository<StudentPO, Long> {
 
-    @RequestMapping("")
-    public String index() {
-        return "index";
-    }
 }

@@ -1,0 +1,7 @@
+singleServerConfig:
+  address: "redis://172.19.12.80:6379"
+  password: null
+  database: 1
+  timeout: 6000
+
+codec: !<org.redisson.codec.JsonJacksonCodec> {}

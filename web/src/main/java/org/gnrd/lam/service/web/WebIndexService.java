@@ -57,7 +57,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class WebIndexService implements IndexService {
 
-    private final String REDIRECT_URL = "redirect:%s?%s=%s";
+    private final String REDIRECT_URL = "%s?%s=%s";
 
     @Resource
     private UserDao userDao;
