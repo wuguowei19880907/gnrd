@@ -1,5 +1,5 @@
 singleServerConfig:
-  address: "redis://172.19.12.80:6379"
+  address: "redis://172.19.17.56:6379"
   password: null
   database: 1
   timeout: 6000
