@@ -17,7 +17,6 @@
 
 package org.gnrd.lam.controller;
 
-import org.gnrd.lam.common.exception.BaseException;
 import org.gnrd.lam.common.result.CommonResult;
 import org.gnrd.lam.ro.LoginRO;
 import org.gnrd.lam.service.IndexService;
@@ -68,11 +67,5 @@ public class LoginController {
     public CommonResult<List<MenuVO>> me(HttpServletRequest request) throws Exception {
         List<MenuVO> me = indexService.getMe(request);
         return new CommonResult<>(me);
-    }
-
-    @GetMapping(value = {"base-exception"})
-    public CommonResult<Void> baseException(HttpServletRequest request) throws Exception {
-        Object baseException = request.getAttribute("BaseException");
-        throw (BaseException) baseException;
     }
 }
